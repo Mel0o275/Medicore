@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/Medicare.jpg" alt="Banner" width="100%" />
+  <img src="https://github.com/Mel0o275/Medicare/blob/main/assets/Medicare.jpg?raw=true" alt="Banner" width="100%" />
 </p>
 
 
