@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="assets/banner.png" alt="Banner" width="100%" />
+</p>
+
+
 # 💊 Medicore – Smart Pharmacy App
 
 **Medicore** is a next-generation smart pharmacy application that makes healthcare smarter, faster, and more accessible.  
