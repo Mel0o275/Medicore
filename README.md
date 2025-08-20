@@ -1,10 +1,10 @@
 <p align="center">
   <img src="https://github.com/Mel0o275/Medicare/blob/main/assets/Medicare.jpg?raw=true" alt="Banner" width="100%" />
 </p>
-# 💊 Medicore – Smart Pharmacy App
+💊 Medicore – Smart Pharmacy App
 
 **Medicore** is a next-generation smart pharmacy application that makes healthcare smarter, faster, and more accessible.  
-With **AI-powered features** like prescription scanning, medicine reminders, and personalized offers, Medicore goes beyond just online ordering — it’s your **digital health companion**.
+With **AI-powered features** like prescription scanning, medicine reminders, and personalized offers, Medicore goes beyond just online ordering it’s your **digital health companion**.
 
 ---
 
