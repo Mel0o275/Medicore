@@ -8,6 +8,16 @@ With **AI-powered features** like prescription scanning, medicine reminders, and
 
 ---
 
+## 👥 Team Members  
+
+- 👩‍💻 **Mai Bakry Ahmed Morsy** 
+- 👩‍💻 **Malak Hassan Abd Elmonem Hashem**
+- 👩‍💻 **Rahma Magdy Fouad Abass**
+- 👩‍💻 **Jolie Nixon Ezzat Tawfeek**
+- 👨‍💻 **Youssef Ashraf Ali Gamal El Deen Saleh**
+
+---
+
 ## 🚀 Key Features
 
 - 🛒 **Easy Online Ordering** – Browse, purchase, and track medicines seamlessly.
