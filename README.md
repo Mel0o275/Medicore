@@ -20,11 +20,11 @@ With **AI-powered features** like prescription scanning, medicine reminders, and
 
 ## 🚀 Key Features
 
-🛒 **Easy Online Ordering** – Browse, purchase, and track medicines seamlessly.
-🤝 **Pharmacy Connectivity** – Connect with nearby pharmacies for quick and reliable service.
-🤖 **AI-Powered Healthcare** – Prescription scanning, personalized recommendations, and smart medicine reminders.
-🚨 **Emergency Button** – Get urgent medicines delivered when you need them the most.
-🎯 **Personalized Experience** – Tailored offers, reminders, and healthcare insights for every user.
+ 🛒 **Easy Online Ordering** – Browse, purchase, and track medicines seamlessly.
+ 🤝 **Pharmacy Connectivity** – Connect with nearby pharmacies for quick and reliable service.
+ 🤖 **AI-Powered Healthcare** – Prescription scanning, personalized recommendations, and smart medicine reminders.
+ 🚨 **Emergency Button** – Get urgent medicines delivered when you need them the most.
+ 🎯 **Personalized Experience** – Tailored offers, reminders, and healthcare insights for every user.
 
 ---
 
