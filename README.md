@@ -4,7 +4,7 @@
 💊 Medicore – Smart Pharmacy App
 
 **Medicore** is a next-generation smart pharmacy application that makes healthcare smarter, faster, and more accessible.  
-With **AI-powered features** like prescription scanning, medicine reminders, and personalized offers, Medicore goes beyond just online ordering it’s your **digital health companion**.
+With **AI-powered features** like prescription scanning, and medicine reminders, Medicore goes beyond just online ordering it’s your **digital health companion**.
 
 ---
 
@@ -21,9 +21,7 @@ With **AI-powered features** like prescription scanning, medicine reminders, and
 ## 🚀 Key Features  
 🛒 **Easy Online Ordering** – Browse, purchase, and track medicines seamlessly.  
 🤝 **Pharmacy Connectivity** – Connect with nearby pharmacies for quick and reliable service.  
-🤖 **AI-Powered Healthcare** – Prescription scanning, personalized recommendations, and smart medicine reminders.  
-🚨 **Emergency Button** – Get urgent medicines delivered when you need them the most.  
-🎯 **Personalized Experience** – Receive tailored offers, reminders, and healthcare insights designed for you.  
+🤖 **AI-Powered Healthcare** – Prescription scanning, and smart medicine reminders.  
 
 ---
 
@@ -40,7 +38,7 @@ With **AI-powered features** like prescription scanning, medicine reminders, and
 ## ✨ Why Medicore?
 
 Because healthcare should be **accessible, intelligent, and stress-free**.  
-Medicore combines the power of **AI** with the reliability of **trusted pharmacies**, ensuring better health management for everyone.
+Medicore combines the power of **AI** ensuring better health management for everyone.
 
 ---
 
