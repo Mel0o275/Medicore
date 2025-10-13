@@ -1,64 +1,70 @@
-<p align="center"> <img src="https://github.com/Mel0o275/Medicare/blob/main/assets/Medicare.jpg?raw=true" alt="Banner" width="100%" /> </p>
-💊 Medicore – Smart Pharmacy App
+<p align="center">   
+  <img src="https://github.com/Mel0o275/Medicare/blob/main/assets/Medicare.jpg?raw=true" alt="Banner" width="100%" /> 
+</p>  
 
-Medicore is a next-generation smart pharmacy application that makes healthcare smarter, faster, and more accessible.
+# 💊 Medicore – Smart Pharmacy App  
 
-With AI-powered features like prescription scanning and medicine reminders, Medicore goes beyond just online ordering – it’s your digital health companion.
+**Medicore** is a next-generation smart pharmacy application that makes healthcare smarter, faster, and more accessible.  
 
-👥 Team Members
+With **AI-powered features** like prescription scanning and medicine reminders, Medicore goes beyond just online ordering – it’s your **digital health companion**.  
 
-👩‍💻 Mai Bakry Ahmed Morsy
+---
 
-👩‍💻 Malak Hassan Abd Elmonem Hashem
+## 👥 Team Members
 
-👩‍💻 Rahma Magdy Fouad Abass
+- 👩‍💻 **Mai Bakry Ahmed Morsy**
+- 👩‍💻 **Malak Hassan Abd Elmonem Hashem**
+- 👩‍💻 **Rahma Magdy Fouad Abass** 
+- 👩‍💻 **Jolie Nixon Ezzat Tawfeek**
+- 👨‍💻 **Youssef Ashraf Ali Gamal El Deen Saleh**
 
-👩‍💻 Jolie Nixon Ezzat Tawfeek
+---
 
-👨‍💻 Youssef Ashraf Ali Gamal El Deen Saleh
+**🗓 Project Progress Overview**
 
-🗓 Project Progress Overview
-📅 Week 1 – Task Distribution
+**📅 Week 1 – Task Distribution**
+  Each team member contributed to building the core pages and features of the first Medicore release.
 
-🧠 Each team member contributed to building the core pages and features of the first Medicore release.
+👩‍💻 **Mai Bakry Ahmed Morsy** → Cart, Checkout, Wishlist and project setup, installation, and initial configuration.
 
-👩‍💻 Mai Bakry Ahmed Morsy → Cart, Checkout, Wishlist
+👩‍💻 **Malak Hassan Abd Elmonem Hashem** → Home, Profile, Questions
 
-🛠️ Also responsible for project setup, installation, and initial configuration.
+👩‍💻 **Jolie Nixon Ezzat Tawfeek** → Contact, Best Products, Delivery
 
-👩‍💻 Malak Hassan Abd Elmonem Hashem → Home, Profile, Questions
+👩‍💻 **Rahma Magdy Fouad Abass** → Login, Signup, Feedback
 
-👩‍💻 Jolie Nixon Ezzat Tawfeek → Contact, Best Products, Delivery
+👨‍💻 **Youssef Ashraf Ali Gamal El Deen Saleh** → About, Shop, Product Details
 
-👩‍💻 Rahma Magdy Fouad Abass → Login, Signup, Feedback
-
-👨‍💻 Youssef Ashraf Ali Gamal El Deen Saleh → About, Shop, Product Details
-
-✅ All components were connected and tested to ensure smooth navigation, consistent UI, and full functionality across all routes.
-
-🔄 Next Week (Week 2) – Upcoming Tasks
-
+**🔄 Next Week (Week 2) – Upcoming Tasks**  
 📌 To be updated after the next sprint planning meeting.
 
-🚀 Key Features
+---
 
-🛒 Easy Online Ordering – Browse, purchase, and track medicines seamlessly.
-🤝 Pharmacy Connectivity – Connect with nearby pharmacies for quick and reliable service.
-🤖 AI-Powered Healthcare – Prescription scanning and smart medicine reminders.
+## 🚀 Key Features  
 
-🎯 Project Goals
+🛒 **Easy Online Ordering** – Browse, purchase, and track medicines seamlessly.  
+🤝 **Pharmacy Connectivity** – Connect with nearby pharmacies for quick and reliable service.  
+🤖 **AI-Powered Healthcare** – Prescription scanning and smart medicine reminders.  
 
-✔ Simplify online medicine purchasing
-✔ Ensure timely access to urgent medicines
-✔ Provide AI-driven healthcare management
-✔ Build trust and reliability between customers and pharmacies
-✔ Enhance the overall healthcare experience
+---
 
-✨ Why Medicore?
+## 🎯 Project Goals  
 
-Because healthcare should be accessible, intelligent, and stress-free.
-Medicore combines the power of AI and modern technology to ensure better health management for everyone.
+✔ Simplify online medicine purchasing  
+✔ Ensure timely access to urgent medicines  
+✔ Provide AI-driven healthcare management  
+✔ Build trust and reliability between customers and pharmacies  
+✔ Enhance the overall healthcare experience  
 
-⚡ Tagline
+---
 
-Medicore: Your health, just a tap away.
+## ✨ Why Medicore?  
+
+Because healthcare should be **accessible, intelligent, and stress-free**.  
+Medicore combines the power of **AI** and modern technology to ensure better health management for everyone.  
+
+---
+
+## ⚡ Tagline
+
+**Medicore: Your health, just a tap away.**
