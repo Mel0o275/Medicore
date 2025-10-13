@@ -30,7 +30,6 @@ With **AI-powered features** like prescription scanning and medicine reminders, 
 👩‍💻 **Rahma Magdy Fouad Abass** → Login, Signup, Feedback
 👨‍💻 **Youssef Ashraf Ali Gamal El Deen Saleh** → About, Shop, Product Details
 
-
 **🔄 Next Week (Week 2) – Upcoming Tasks**  
 📌 To be updated after the next sprint planning meeting.
 
