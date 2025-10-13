@@ -10,13 +10,29 @@ With **AI-powered features** like prescription scanning and medicine reminders, 
 
 ---
 
-## 👥 Team Members & Assigned Roles  
+## 👥 Team Members
 
-- 👩‍💻 **Mai Bakry Ahmed Morsy** – **Backend Developer** (Responsible for server-side logic, APIs, and system integration using Node.js & Express.js)  
-- 👩‍💻 **Malak Hassan Abd Elmonem Hashem** – **Backend Developer** (Responsible for business logic, authentication, and backend services using Node.js & Express.js)  
-- 👩‍💻 **Rahma Magdy Fouad Abass** – **Frontend Developer** (Responsible for UI/UX design and client-side functionality using React.js)  
-- 👩‍💻 **Jolie Nixon Ezzat Tawfeek** – **Database Engineer** (Responsible for database design, management, and queries using MongoDB)  
-- 👨‍💻 **Youssef Ashraf Ali Gamal El Deen Saleh** – **Frontend Developer** (Responsible for building responsive interfaces and connecting frontend with APIs using React.js)  
+- 👩‍💻 **Mai Bakry Ahmed Morsy**
+- 👩‍💻 **Malak Hassan Abd Elmonem Hashem**
+- 👩‍💻 **Rahma Magdy Fouad Abass** 
+- 👩‍💻 **Jolie Nixon Ezzat Tawfeek**
+- 👨‍💻 **Youssef Ashraf Ali Gamal El Deen Saleh**
+
+---
+
+**🗓 Project Progress Overview**
+**📅 Week 1 – Task Distribution**
+  Each team member contributed to building the core pages and features of the first Medicore release.
+
+👩‍💻 **Mai Bakry Ahmed Morsy** → Cart, Checkout, Wishlist and project setup, installation, and initial configuration.
+👩‍💻 **Malak Hassan Abd Elmonem Hashem** → Home, Profile, Questions
+👩‍💻 **Jolie Nixon Ezzat Tawfeek** → Contact, Best Products, Delivery
+👩‍💻 **Rahma Magdy Fouad Abass** → Login, Signup, Feedback
+👨‍💻 **Youssef Ashraf Ali Gamal El Deen Saleh** → About, Shop, Product Details
+
+
+**🔄 Next Week (Week 2) – Upcoming Tasks**  
+📌 To be updated after the next sprint planning meeting.
 
 ---
 
