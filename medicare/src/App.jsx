@@ -7,7 +7,7 @@ import Contact from "./Pages/Contact/Contact";
 import Delivery from "./Pages/Delivery/Delivery";
 import Feedback from "./Pages/Feedback/Feedback";
 import Login from "./Pages/Login/Login";
-import ProductDetails from "./Pages/ProductDetails/ProductDetails";
+import ProductDetailsPage from "./Pages/ProductDetailsPage/ProductDetailsPage";
 import Profile from "./Pages/Profile/Profile";
 import Questions from "./Pages/Questions/Questions";
 import Shop from "./Pages/Shop/Shop";
@@ -16,32 +16,31 @@ import WishList from "./Pages/WishList/WishList";
 import Navbar from "./Components/Navbar/NAvbar";
 import Footer from "./Components/Footer/Footer";
 
-
 function App() {
   return (
     <>
       <Navbar />
-        <div className="m-20">
+      <div className="m-20">
         <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/bestproduct" element={<BestProducts />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/delivery" element={<Delivery />} />
-        <Route path="/feedback" element={<Feedback />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/productdetails" element={<ProductDetails />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/questions" element={<Questions />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/wishlist" element={<WishList />} />
-      </Routes>
-    </Router>
-        </div>
-    <Footer />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/bestproduct" element={<BestProducts />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/delivery" element={<Delivery />} />
+            <Route path="/feedback" element={<Feedback />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/productdetails" element={<ProductDetailsPage />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/questions" element={<Questions />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/wishlist" element={<WishList />} />
+          </Routes>
+        </Router>
+      </div>
+      <Footer />
     </>
   );
 }
