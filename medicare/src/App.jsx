@@ -20,6 +20,7 @@ import Shop from "./Pages/Shop/Shop";
 import Signup from "./Pages/Signup/Signup";
 import WishList from "./Pages/WishList/WishList";
 import Footer from "./Components/Footer/Footer";
+import Checkout from "./Pages/Checkout/Checkout";
 
 import NavbarPrimary from "./Components/Navbar/NavbarPrimary";
 import NavbarSecondary from "./Components/Navbar/NavbarSecondary";
@@ -67,7 +68,7 @@ function App() {
       <NavbarSecondary />
       <NavbarPrimary />
       <ThemeSwitcher />
-      <div className="m-20">
+      <div className="">
         <Routes>
           <Route path="/" element={<Navigate to="/Home" replace />} />
           <Route path="/Home" element={<Home />} />
@@ -90,6 +91,7 @@ function App() {
           <Route path="/shop" element={<Shop />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/wishlist" element={<WishList />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </div>
       <Footer />
