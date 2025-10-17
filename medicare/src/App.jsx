@@ -11,13 +11,13 @@ import BestProducts from "./Pages/BestProducts/BestProducts";
 import Cart from "./Pages/Cart/Cart";
 import Contact from "./Pages/Contact/Contact";
 import Delivery from "./Pages/Delivery/Delivery";
-import Feedback from "./Pages/Feedback/Feedback";
-import Login from "./Pages/Login/Login";
+import FeedbackPage from "./Pages/FeedBackPage/FeedbackPage";
+import SignInPage from "./Pages/SignInPage/SignInPage";
 import ProductDetailsPage from "./Pages/ProductDetailsPage/ProductDetailsPage";
 import Profile from "./Pages/Profile/Profile";
 import Questions from "./Pages/Questions/Questions";
 import Shop from "./Pages/Shop/Shop";
-import Signup from "./Pages/Signup/Signup";
+import SignUpPage from "./Pages/SignUpPage/SignUpPage";
 import WishList from "./Pages/WishList/WishList";
 import Footer from "./Components/Footer/Footer";
 import Checkout from "./Pages/Checkout/Checkout";
@@ -30,7 +30,7 @@ import PersonalTheme from "./Pages/ProfilePages/PersonalTheme";
 import PersonalInfo from "./Pages/ProfilePages/PersonalInfo";
 import PersonalSecurity from "./Pages/ProfilePages/PersonalSecurity";
 import PersonalNotifications from "./Pages/ProfilePages/PersonalNotifications";
-
+import ForgotPasswordPage from "./Pages/ForgotPasswordPage/ForgotPasswordPage";
 
 import LoadingScreenAnimation from "./Pages/LoadingScreenAnimation/LoadingScreenAnimation";
 /* -------------------------- Toast --------------------------- */
@@ -41,7 +41,6 @@ import { buildMuiTheme } from "./Themes/Theme";
 import useTheme from "./Store/useTheme";
 import { Box, ThemeProvider } from "@mui/material";
 
-
 const muiTheme = buildMuiTheme();
 
 function App() {
@@ -50,52 +49,53 @@ function App() {
 
   return (
     <ThemeProvider theme={muiTheme}>
-    <Router>
-      <LoadingScreenAnimation
-        isVisible={isLoading}
-        onFinish={() => setIsLoading(false)}
-      />
+      <Router>
+        <LoadingScreenAnimation
+          isVisible={isLoading}
+          onFinish={() => setIsLoading(false)}
+        />
 
-      <Toaster
-        position="top-right"
-        reverseOrder={false}
-        toastOptions={{
-          style: {
-            animation: "slideInRight 0.4s",
-          },
-        }}
-      />
-      <NavbarSecondary />
-      <NavbarPrimary />
-      <ThemeSwitcher />
-      <div className="">
-        <Routes>
-          <Route path="/" element={<Navigate to="/Home" replace />} />
-          <Route path="/Home" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/bestproduct" element={<BestProducts />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/delivery" element={<Delivery />} />
-          <Route path="/feedback" element={<Feedback />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/productdetails" element={<ProductDetailsPage />} />
-          <Route path="/Profile" element={<Profile />}>
-            <Route index element={<PersonalInfo />} />
-            <Route path="Info" element={<PersonalInfo />} />
-            <Route path="Security" element={<PersonalSecurity />} />
-            <Route path="Themes" element={<PersonalTheme />} />
-            <Route path="Notifications" element={<PersonalNotifications />} />
-          </Route>
-          <Route path="/questions" element={<Questions />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/wishlist" element={<WishList />} />
-          <Route path="/checkout" element={<Checkout />} />
-        </Routes>
-      </div>
-      <Footer />
-    </Router>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            style: {
+              animation: "slideInRight 0.4s",
+            },
+          }}
+        />
+        <NavbarSecondary />
+        <NavbarPrimary />
+        <ThemeSwitcher />
+        <div className="">
+          <Routes>
+            <Route path="/" element={<Navigate to="/Home" replace />} />
+            <Route path="/Home" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/bestproduct" element={<BestProducts />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/delivery" element={<Delivery />} />
+            <Route path="/feedback" element={<FeedbackPage />} />
+            <Route path="/login" element={<SignInPage />} />
+            <Route path="/productdetails" element={<ProductDetailsPage />} />
+            <Route path="/Profile" element={<Profile />}>
+              <Route index element={<PersonalInfo />} />
+              <Route path="Info" element={<PersonalInfo />} />
+              <Route path="Security" element={<PersonalSecurity />} />
+              <Route path="Themes" element={<PersonalTheme />} />
+              <Route path="Notifications" element={<PersonalNotifications />} />
+            </Route>
+            <Route path="/questions" element={<Questions />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/wishlist" element={<WishList />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
+          </Routes>
+        </div>
+        <Footer />
+      </Router>
     </ThemeProvider>
   );
 }
