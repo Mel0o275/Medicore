@@ -7,10 +7,10 @@ import {
 } from "react-router-dom";
 import Home from "./Pages/Home/Home";
 import About from "./Pages/About/About";
-import BestProducts from "./Pages/BestProducts/BestProducts";
+import BestSeller from './Pages/BestSeller/BestSeller.jsx';
+import ContactUs from './Pages/ContactUs/ContactUs.jsx';
+import DeliveryStatus from './Pages/DeliveryStatus/DeliveryStatus.jsx';
 import Cart from "./Pages/Cart/Cart";
-import Contact from "./Pages/Contact/Contact";
-import Delivery from "./Pages/Delivery/Delivery";
 import FeedbackPage from "./Pages/FeedBackPage/FeedbackPage";
 import SignInPage from "./Pages/SignInPage/SignInPage";
 import ProductDetailsPage from "./Pages/ProductDetailsPage/ProductDetailsPage";
@@ -39,9 +39,11 @@ import { Toaster } from "react-hot-toast";
 /* -------------------------- Theme --------------------------- */
 import { buildMuiTheme } from "./Themes/Theme";
 import useTheme from "./Store/useTheme";
-import { Box, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
+
 
 const muiTheme = buildMuiTheme();
+
 
 function App() {
   const { mode } = useTheme();
@@ -72,10 +74,10 @@ function App() {
             <Route path="/" element={<Navigate to="/Home" replace />} />
             <Route path="/Home" element={<Home />} />
             <Route path="/about" element={<About />} />
-            <Route path="/bestproduct" element={<BestProducts />} />
+            <Route path="/bestseller" element={<BestSeller />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/delivery" element={<Delivery />} />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="/delivery" element={<DeliveryStatus />} />
             <Route path="/feedback" element={<FeedbackPage />} />
             <Route path="/login" element={<SignInPage />} />
             <Route path="/productdetails" element={<ProductDetailsPage />} />
