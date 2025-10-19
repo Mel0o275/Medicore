@@ -46,10 +46,10 @@ const categories = [
 
 const elementsItems = [
   "about",
-  "Contact us",
+  "contact",
   "Blog",
   "Feedback",
-  "Delivery",
+  "delivery",
   "Questions",
 ];
 
@@ -57,7 +57,7 @@ const navItems = [
   "All Categories",
   "Home",
   "Shop",
-  "Top deals",
+  "bestseller",
   "Sales",
   "Elements",
 ];
