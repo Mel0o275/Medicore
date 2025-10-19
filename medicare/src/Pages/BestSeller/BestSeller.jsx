@@ -13,7 +13,6 @@ const popularProducts = [
     { id: 4, name: "Pharmassy Lumbar Sacro", imageUrl: '../../../public/Jolie/lumbarsacrosupportbelt.jpg', rating: 4, oldPrice: 20, newPrice: 18 },
 ];
 
-// تم تغيير اسم المكون من Product إلى ProductCard
 const ProductCard = ({ product }) => (
     <Card
         sx={{
