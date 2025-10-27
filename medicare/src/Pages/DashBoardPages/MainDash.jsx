@@ -1,4 +1,5 @@
 import React from "react";
+import useEditProduct from "../../Hooks/useEditProduct.js";
 import {
   Box,
   Typography,
@@ -26,6 +27,17 @@ import {
 import { products } from "../../Constants/NavPages.jsx";
 
 const MainDash = () => {
+  const {
+    p,
+    selectedProduct,
+    register,
+    handleSubmit,
+    onSubmit,
+    handleEdit,
+    errors,
+    setSelectedProduct,
+  } = useEditProduct();
+
   const productKeys = products.length > 0 ? Object.keys(products[0]) : [];
   const excludedKeys = ["id"];
   const tableColumns = productKeys.filter((key) => !excludedKeys.includes(key));
@@ -34,7 +46,6 @@ const MainDash = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const renderCellContent = (key, value) => {
-    // Handle images
     if (key === "images" && Array.isArray(value)) {
       return (
         <AvatarGroup
@@ -44,7 +55,7 @@ const MainDash = () => {
             "& .MuiAvatar-root": {
               width: 50,
               height: 50,
-              borderRadius: "10px", // 🔲 مربع الشكل
+              borderRadius: "10px",
               border: "2px solid #fff",
             },
           }}
@@ -56,10 +67,7 @@ const MainDash = () => {
       );
     }
 
-    // Handle arrays
     if (Array.isArray(value)) return value.join(", ");
-
-    // Handle long text
     if (typeof value === "string" && value.length > 40)
       return (
         <Tooltip title={value}>
@@ -75,7 +83,7 @@ const MainDash = () => {
 
   return (
     <Box sx={{ p: { xs: 2, md: 4 } }}>
-      {/* Header */}
+
       <Box
         sx={{
           display: "flex",
@@ -103,7 +111,7 @@ const MainDash = () => {
         </Button>
       </Box>
 
-      {/* Table */}
+
       <Paper
         elevation={4}
         sx={{
@@ -135,9 +143,10 @@ const MainDash = () => {
             </TableHead>
 
             <TableBody>
-              {products.map((product) => (
+
+              {p.map((prod) => (
                 <TableRow
-                  key={product.id}
+                  key={prod.id}
                   hover
                   sx={{
                     "&:hover": { backgroundColor: "#f9fafb" },
@@ -146,7 +155,7 @@ const MainDash = () => {
                 >
                   {tableColumns.map((key) => (
                     <TableCell key={key}>
-                      {renderCellContent(key, product[key])}
+                      {renderCellContent(key, prod[key])}
                     </TableCell>
                   ))}
                   <TableCell align="center">
@@ -164,7 +173,11 @@ const MainDash = () => {
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Edit">
-                        <IconButton color="warning" size="small">
+                        <IconButton
+                          color="warning"
+                          size="small"
+                          onClick={() => handleEdit(prod)}
+                        >
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
@@ -181,6 +194,60 @@ const MainDash = () => {
           </Table>
         </TableContainer>
       </Paper>
+
+
+      {selectedProduct && (
+        <div
+          style={{
+            background: "#f9f9f9",
+            border: "1px solid #ccc",
+            padding: "15px",
+            borderRadius: "10px",
+            width: "300px",
+            marginTop: "20px",
+          }}
+        >
+          <h3>Edit Product</h3>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <input type="hidden" {...register("id")} />
+
+            <p>
+              <strong>ID:</strong> {selectedProduct.id}
+            </p>
+
+            <div>
+              <input
+                {...register("title")}
+                placeholder="New title"
+                style={{ width: "100%", marginBottom: "8px" }}
+              />
+              {errors.title && (
+                <p style={{ color: "red" }}>{errors.title.message}</p>
+              )}
+            </div>
+
+            <div>
+              <input
+                {...register("price")}
+                placeholder="New price"
+                style={{ width: "100%", marginBottom: "8px" }}
+              />
+              {errors.price && (
+                <p style={{ color: "red" }}>{errors.price.message}</p>
+              )}
+            </div>
+
+            <button type="submit">💾 Save</button>
+            <button
+              type="button"
+              style={{ marginLeft: "10px" }}
+              onClick={() => setSelectedProduct(null)}
+            >
+              ❌ Cancel
+            </button>
+          </form>
+        </div>
+      )}
     </Box>
   );
 };
