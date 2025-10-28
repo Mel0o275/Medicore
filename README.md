@@ -1,6 +1,4 @@
-<p align="center">   
-  <img src="https://raw.githubusercontent.com/Mel0o275/Medicare/main/assets/Medicare.jpg" alt="Banner" width="100%" /> 
-</p>
+<p align="center"> <img src="https://github.com/Mel0o275/Medicare/blob/main/assets/Medicare.jpg?raw=true" alt="Banner" width="100%" /> </p>
 
 
 # 💊 Medicore – Smart Pharmacy App  
@@ -37,7 +35,7 @@ With **AI-powered features** like prescription scanning and medicine reminders, 
 👨‍💻 **Youssef Ashraf Ali Gamal El Deen Saleh** → About, Shop, Product Details
 
 **📅 Week 2 – Task Distribution**
-  Each team member contributed to building the core pages and features of the first Medicore release.
+  Each team member contributed to building the core pages and features of the second Medicore release.
 
 👩‍💻 **Mai Bakry Ahmed Morsy** → Edit Hook in Dashboard
 
