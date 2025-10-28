@@ -41,6 +41,7 @@ import {
 /* -------------------------- React-router-dom --------------------------- */
 
 import { Link } from "react-router-dom";
+import useAuthStore from "../../Store/useAuthStore.js";
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -87,6 +88,7 @@ export default function Navbar(props) {
   };
 
   const [openDrawer, setOpenDrawer] = useState(false);
+  const user = useAuthStore((state) => state.user);
 
   const toggleDrawer = (newOpen) => () => {
     setOpenDrawer(newOpen);
@@ -245,17 +247,28 @@ export default function Navbar(props) {
                   <AddShoppingCartIcon />
                 </Badge>
               </IconButton>
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-haspopup="true"
-                color="inherit"
-                component={Link}
-                to="/Profile"
-              >
-                <PersonIcon />
-              </IconButton>
+
+              {user ? (
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-haspopup="true"
+                  color="inherit"
+                  component={Link}
+                  to="/Profile"
+                >
+                  <PersonIcon />
+                </IconButton>
+              ) : (
+                <Button
+                  sx={{ color: "black", fontWeight: "600" }}
+                  component={Link}
+                  to="/login"
+                >
+                  Sign In
+                </Button>
+              )}
             </Box>
           </Grid>
         </Grid>
