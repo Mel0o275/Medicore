@@ -1,4 +1,6 @@
-<p align="center"> <img src="https://github.com/Mel0o275/Medicare/blob/main/assets/Medicare.jpg?raw=true" alt="Banner" width="100%" /> </p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Mel0o275/Medicare/main/assets/Medicare.jpg" alt="Medicore Banner" width="100%" />
+</p>
 
 
 # 💊 Medicore – Smart Pharmacy App  
