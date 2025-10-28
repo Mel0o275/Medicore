@@ -49,6 +49,7 @@ import { Toaster } from "react-hot-toast";
 import { buildMuiTheme } from "./Themes/Theme";
 import useTheme from "./Store/useTheme";
 import { ThemeProvider } from "@mui/material";
+import ProtectedRoute from "./Components/protectedRoute/ProtectedRoute.jsx";
 
 const muiTheme = buildMuiTheme();
 
@@ -88,12 +89,18 @@ function App() {
             <Route path="/feedback" element={<FeedbackPage />} />
             <Route path="/login" element={<SignInPage />} />
             <Route path="/productdetails" element={<ProductDetailsPage />} />
-            <Route path="/Profile" element={<Profile />}>
-              <Route index element={<PersonalInfo />} />
-              <Route path="Info" element={<PersonalInfo />} />
-              <Route path="Security" element={<PersonalSecurity />} />
-              <Route path="Themes" element={<PersonalTheme />} />
-              <Route path="Notifications" element={<PersonalNotifications />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/Profile" element={<Profile />}>
+                <Route index element={<PersonalInfo />} />
+                <Route path="Info" element={<PersonalInfo />} />
+                <Route path="Security" element={<PersonalSecurity />} />
+                <Route path="Themes" element={<PersonalTheme />} />
+                <Route
+                  path="Notifications"
+                  element={<PersonalNotifications />}
+                />
+              </Route>
+              <Route path="/checkout" element={<Checkout />} />
             </Route>
             <Route path="/DashBoard" element={<Dashboard />}>
               <Route index element={<MainDash />} />
@@ -106,7 +113,7 @@ function App() {
             <Route path="/shop" element={<Shop />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/wishlist" element={<WishList />} />
-            <Route path="/checkout" element={<Checkout />} />
+            {/* <Route path="/checkout" element={<Checkout />} /> */}
             <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
           </Routes>
         </div>
