@@ -2,6 +2,7 @@
   <img src="https://raw.githubusercontent.com/Mel0o275/Medicare/main/assets/Medicare.jpg" alt="Banner" width="100%" /> 
 </p>
 
+
 # 💊 Medicore – Smart Pharmacy App  
 
 **Medicore** is a next-generation smart pharmacy application that makes healthcare smarter, faster, and more accessible.  
@@ -35,7 +36,20 @@ With **AI-powered features** like prescription scanning and medicine reminders, 
 
 👨‍💻 **Youssef Ashraf Ali Gamal El Deen Saleh** → About, Shop, Product Details
 
-**🔄 Next Week (Week 2) – Upcoming Tasks**  
+**📅 Week 2 – Task Distribution**
+  Each team member contributed to building the core pages and features of the first Medicore release.
+
+👩‍💻 **Mai Bakry Ahmed Morsy** → Edit Hook in Dashboard
+
+👩‍💻 **Malak Hassan Abd Elmonem Hashem** → Dashboard Design
+
+👩‍💻 **Jolie Nixon Ezzat Tawfeek** → Add & Edit Product Modal Design
+
+👩‍💻 **Rahma Magdy Fouad Abass** → Protected Route & Delete Hook in Dashboard
+
+👨‍💻 **Youssef Ashraf Ali Gamal El Deen Saleh** → View Logic And Design in Dashboard
+
+**🔄 Next Week (Week 3) – Upcoming Tasks**  
 📌 To be updated after the next sprint planning meeting.
 
 ---
