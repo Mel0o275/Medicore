@@ -28,8 +28,35 @@ import { products } from "../../Constants/NavPages.jsx";
 import ViewProductModal from "./ViewProductModal.jsx";
 
 const MainDash = () => {
+  const [productList, setProductList] = useState(products);
+
+  const [toDelete, setToDelete] = useState(null);
+
+  function handleDeleteClick(product) {
+    setToDelete(product);
+  }
+
+  function confirmDelete() {
+    if (!toDelete) return;
+    setProductList((prev) => prev.filter((prod) => prod.id !== toDelete.id));
+    setToDelete(null);
+  }
+
+  function cancelDelete() {
+    setToDelete(null);
+  }
+
+  function handleUpdateProduct(updatedProduct) {
+    setProductList((prev) =>
+      prev.map((prod) =>
+        prod.id === updatedProduct.id ? { ...prod, ...updatedProduct } : prod
+      )
+    );
+  }
+  
+  
+
   const {
-    p,
     selectedProduct,
     register,
     handleSubmit,
@@ -37,7 +64,7 @@ const MainDash = () => {
     handleEdit,
     errors,
     setSelectedProduct,
-  } = useEditProduct();
+    } = useEditProduct(handleUpdateProduct);
   const [open, setOpen] = useState(false);
 
   const handleOpen = (product) => {
@@ -46,7 +73,7 @@ const MainDash = () => {
   };
   const handleClose = () => setOpen(false);
 
-  const productKeys = products.length > 0 ? Object.keys(products[0]) : [];
+  const productKeys = productList.length > 0 ? Object.keys(productList[0]) : [];
   const excludedKeys = ["id"];
   const tableColumns = productKeys.filter((key) => !excludedKeys.includes(key));
 
@@ -149,7 +176,7 @@ const MainDash = () => {
             </TableHead>
 
             <TableBody>
-              {p.map((prod) => (
+              {productList.map((prod) => (
                 <TableRow
                   key={prod.id}
                   hover
@@ -191,7 +218,7 @@ const MainDash = () => {
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Delete">
-                        <IconButton color="error" size="small">
+                        <IconButton color="error" size="small" onClick={() => handleDeleteClick(prod)}>
                           <DeleteIcon />
                         </IconButton>
                       </Tooltip>
@@ -261,7 +288,35 @@ const MainDash = () => {
         open={open}
         handleClose={handleClose}
       />
-    </Box>
+
+      {toDelete && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(0,0,0,0.4)',
+          }}
+        >
+          <div style={{ background: '#fff', padding: 20, borderRadius: 6, minWidth: 300 }}>
+            <p style={{ color: '#000' }}>Delete "{toDelete.title}"?</p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+              <button onClick={cancelDelete}>Cancel</button>
+              <button
+                onClick={confirmDelete}
+                style={{ background: '#e74c3c', color: '#fff', border: 'none', padding: '6px 10px' }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </Box >
   );
 };
 
