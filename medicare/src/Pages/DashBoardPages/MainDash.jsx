@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import useEditProduct from "../../Hooks/useEditProduct.js";
 import {
   Box,
@@ -25,6 +25,7 @@ import {
   Visibility as ViewIcon,
 } from "@mui/icons-material";
 import { products } from "../../Constants/NavPages.jsx";
+import ViewProductModal from "./ViewProductModal.jsx";
 
 const MainDash = () => {
   const {
@@ -37,6 +38,13 @@ const MainDash = () => {
     errors,
     setSelectedProduct,
   } = useEditProduct();
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = (product) => {
+    setSelectedProduct(product);
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
 
   const productKeys = products.length > 0 ? Object.keys(products[0]) : [];
   const excludedKeys = ["id"];
@@ -83,7 +91,6 @@ const MainDash = () => {
 
   return (
     <Box sx={{ p: { xs: 2, md: 4 } }}>
-
       <Box
         sx={{
           display: "flex",
@@ -110,7 +117,6 @@ const MainDash = () => {
           Add Product
         </Button>
       </Box>
-
 
       <Paper
         elevation={4}
@@ -143,7 +149,6 @@ const MainDash = () => {
             </TableHead>
 
             <TableBody>
-
               {p.map((prod) => (
                 <TableRow
                   key={prod.id}
@@ -168,7 +173,11 @@ const MainDash = () => {
                       }}
                     >
                       <Tooltip title="View">
-                        <IconButton color="info" size="small">
+                        <IconButton
+                          color="info"
+                          size="small"
+                          onClick={() => handleOpen(prod)}
+                        >
                           <ViewIcon />
                         </IconButton>
                       </Tooltip>
@@ -194,7 +203,6 @@ const MainDash = () => {
           </Table>
         </TableContainer>
       </Paper>
-
 
       {selectedProduct && (
         <div
@@ -248,6 +256,11 @@ const MainDash = () => {
           </form>
         </div>
       )}
+      <ViewProductModal
+        selectedProduct={selectedProduct}
+        open={open}
+        handleClose={handleClose}
+      />
     </Box>
   );
 };
