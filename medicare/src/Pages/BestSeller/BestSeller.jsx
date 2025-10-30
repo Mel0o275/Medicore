@@ -10,7 +10,7 @@ const popularProducts = [
     { id: 1, name: "Himalaya Baby Body Lotion", imageUrl: '../../../public/Jolie/blisswelness.jpg', rating: 5, oldPrice: 9.20, newPrice: 8 },
     { id: 2, name: "MCaffeine Moisturisation", imageUrl: '../../../public/Jolie/caffeine.jpg', rating: 5, oldPrice: 10.50, newPrice: 9 },
     { id: 3, name: "Liveasy Diabetic Protein", imageUrl: '../../../public/Jolie/liveasy.jpg', rating: 4, oldPrice: 5, newPrice: 4.50 },
-    { id: 4, name: "Pharmassy Lumbar Sacro", imageUrl: '../../../public/Jolie/lumbarsacrosupportbelt.jpg', rating: 4, oldPrice: 20, newPrice: 18 },
+    { id: 4, name: "Lumbar Sacro Belt", imageUrl: '../../../public/Jolie/lumbarsacrosupportbelt.jpg', rating: 4, oldPrice: 20, newPrice: 18 },
 ];
 
 const ProductCard = ({ product }) => (
