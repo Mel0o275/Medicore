@@ -17,6 +17,10 @@ import {
   Tooltip,
   useMediaQuery,
   useTheme,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import {
   Add as AddIcon,
@@ -26,11 +30,17 @@ import {
 } from "@mui/icons-material";
 import { products } from "../../Constants/NavPages.jsx";
 import ViewProductModal from "./ViewProductModal.jsx";
+import AddProductModal from "../../Components/AddProduct/AddProduct.jsx";
+import EditProductModal from "../../Components/EditProduct/EditProduct.jsx";
 
 const MainDash = () => {
   const [productList, setProductList] = useState(products);
-
   const [toDelete, setToDelete] = useState(null);
+  const [openViewModal, setOpenViewModal] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
+  
+  const [viewingProduct, setViewingProduct] = useState(null);
+  const [editingProduct, setEditingProduct] = useState(null);
 
   function handleDeleteClick(product) {
     setToDelete(product);
@@ -52,9 +62,28 @@ const MainDash = () => {
         prod.id === updatedProduct.id ? { ...prod, ...updatedProduct } : prod
       )
     );
+    setEditingProduct(null);
   }
-  
-  
+
+  function handleAddProduct(newProduct) {
+    console.log('Adding new product:', newProduct);
+    
+    const newId = productList.length > 0 ? Math.max(...productList.map(p => p.id)) + 1 : 1;
+    
+    const completeProduct = {
+      id: newId,
+      title: newProduct.title,
+      category: newProduct.category,
+      price: newProduct.price,
+      description: newProduct.description,
+      images: newProduct.images || [],
+    };
+    
+    setProductList(prev => [...prev, completeProduct]);
+    handleCloseAddModal();
+    
+    console.log('Product added successfully:', completeProduct);
+  }
 
   const {
     selectedProduct,
@@ -64,14 +93,30 @@ const MainDash = () => {
     handleEdit,
     errors,
     setSelectedProduct,
-    } = useEditProduct(handleUpdateProduct);
-  const [open, setOpen] = useState(false);
+  } = useEditProduct(handleUpdateProduct);
 
-  const handleOpen = (product) => {
-    setSelectedProduct(product);
-    setOpen(true);
+  const handleOpenViewModal = (product) => {
+    setViewingProduct(product);
+    setOpenViewModal(true);
   };
-  const handleClose = () => setOpen(false);
+
+  const handleCloseViewModal = () => {
+    setOpenViewModal(false);
+    setViewingProduct(null);
+  };
+
+  const handleOpenEditModal = (product) => {
+    setEditingProduct(product);
+    handleEdit(product);
+  };
+
+  const handleCloseEditModal = () => {
+    setEditingProduct(null);
+    setSelectedProduct(null);
+  };
+  
+  const handleOpenAddModal = () => setOpenAddModal(true);
+  const handleCloseAddModal = () => setOpenAddModal(false);
 
   const productKeys = productList.length > 0 ? Object.keys(productList[0]) : [];
   const excludedKeys = ["id"];
@@ -140,6 +185,7 @@ const MainDash = () => {
             px: 2.5,
             alignSelf: { xs: "stretch", sm: "auto" },
           }}
+          onClick={handleOpenAddModal}
         >
           Add Product
         </Button>
@@ -203,7 +249,7 @@ const MainDash = () => {
                         <IconButton
                           color="info"
                           size="small"
-                          onClick={() => handleOpen(prod)}
+                          onClick={() => handleOpenViewModal(prod)}
                         >
                           <ViewIcon />
                         </IconButton>
@@ -212,13 +258,17 @@ const MainDash = () => {
                         <IconButton
                           color="warning"
                           size="small"
-                          onClick={() => handleEdit(prod)}
+                          onClick={() => handleOpenEditModal(prod)}
                         >
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Delete">
-                        <IconButton color="error" size="small" onClick={() => handleDeleteClick(prod)}>
+                        <IconButton 
+                          color="error" 
+                          size="small" 
+                          onClick={() => handleDeleteClick(prod)}
+                        >
                           <DeleteIcon />
                         </IconButton>
                       </Tooltip>
@@ -231,92 +281,53 @@ const MainDash = () => {
         </TableContainer>
       </Paper>
 
-      {selectedProduct && (
-        <div
-          style={{
-            background: "#f9f9f9",
-            border: "1px solid #ccc",
-            padding: "15px",
-            borderRadius: "10px",
-            width: "300px",
-            marginTop: "20px",
-          }}
-        >
-          <h3>Edit Product</h3>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <input type="hidden" {...register("id")} />
-
-            <p>
-              <strong>ID:</strong> {selectedProduct.id}
-            </p>
-
-            <div>
-              <input
-                {...register("title")}
-                placeholder="New title"
-                style={{ width: "100%", marginBottom: "8px" }}
-              />
-              {errors.title && (
-                <p style={{ color: "red" }}>{errors.title.message}</p>
-              )}
-            </div>
-
-            <div>
-              <input
-                {...register("price")}
-                placeholder="New price"
-                style={{ width: "100%", marginBottom: "8px" }}
-              />
-              {errors.price && (
-                <p style={{ color: "red" }}>{errors.price.message}</p>
-              )}
-            </div>
-
-            <button type="submit">💾 Save</button>
-            <button
-              type="button"
-              style={{ marginLeft: "10px" }}
-              onClick={() => setSelectedProduct(null)}
-            >
-              ❌ Cancel
-            </button>
-          </form>
-        </div>
-      )}
-      <ViewProductModal
-        selectedProduct={selectedProduct}
-        open={open}
-        handleClose={handleClose}
+      {/* Edit Modal */}
+      <EditProductModal 
+        open={!!editingProduct}
+        handleClose={handleCloseEditModal}
+        selectedProduct={editingProduct}
+        register={register}
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+        errors={errors}
       />
 
-      {toDelete && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          style={{
-            position: 'fixed',
-            inset: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'rgba(0,0,0,0.4)',
-          }}
-        >
-          <div style={{ background: '#fff', padding: 20, borderRadius: 6, minWidth: 300 }}>
-            <p style={{ color: '#000' }}>Delete "{toDelete.title}"?</p>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-              <button onClick={cancelDelete}>Cancel</button>
-              <button
-                onClick={confirmDelete}
-                style={{ background: '#e74c3c', color: '#fff', border: 'none', padding: '6px 10px' }}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </Box >
+      {/* View Modal */}
+      <ViewProductModal
+        selectedProduct={viewingProduct}
+        open={openViewModal}
+        handleClose={handleCloseViewModal}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={!!toDelete}
+        onClose={cancelDelete}
+        aria-labelledby="delete-dialog-title"
+      >
+        <DialogTitle id="delete-dialog-title">
+          Confirm Delete
+        </DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to delete "{toDelete?.title || toDelete?.name}"?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={cancelDelete}>Cancel</Button>
+          <Button onClick={confirmDelete} color="error" variant="contained">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Add Product Modal */}
+      <AddProductModal 
+        open={openAddModal} 
+        handleClose={handleCloseAddModal}
+        onAddProduct={handleAddProduct}
+      />
+    </Box>
   );
 };
 
