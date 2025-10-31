@@ -88,7 +88,7 @@ function App() {
             <Route path="/delivery" element={<DeliveryStatus />} />
             <Route path="/feedback" element={<FeedbackPage />} />
             <Route path="/login" element={<SignInPage />} />
-            <Route path="/productdetails" element={<ProductDetailsPage />} />
+            <Route path="/shop/productdetails/:id" element={<ProductDetailsPage />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/Profile" element={<Profile />}>
                 <Route index element={<PersonalInfo />} />
