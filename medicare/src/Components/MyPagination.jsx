@@ -26,12 +26,17 @@ const theme = createTheme({
   },
 });
 
-export default function MyPagination() {
+export default function MyPagination({ count, page, onChange }) {
   return (
     <div className="self-center">
       <ThemeProvider theme={theme}>
         <Stack spacing={2}>
-          <Pagination count={10} color="primary" />
+          <Pagination
+            count={count}
+            page={page}
+            onChange={onChange}
+            color="primary"
+          />
         </Stack>
       </ThemeProvider>
     </div>

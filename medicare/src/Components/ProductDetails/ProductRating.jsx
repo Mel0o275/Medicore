@@ -1,10 +1,19 @@
 import { LinearProgress } from "@mui/material";
 import { MdOutlineStar } from "react-icons/md";
 
-function ProductRating() {
-  const totalRatings = 1;
-  const ratings = { 5: 0, 4: 1, 3: 0, 2: 0, 1: 0 };
-  const average = 4.0;
+function ProductRating({ reviews }) {
+  const totalRatings = reviews.length;
+
+  const ratings = reviews.reduce(
+    (acc, { rating }) => {
+      acc[rating] = (acc[rating] || 0) + 1;
+      return acc;
+    },
+    { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
+  );
+
+  const average =
+    reviews.reduce((sum, { rating }) => sum + rating, 0) / totalRatings;
   return (
     <div className="bg-gray-50 md:p-6 flex flex-col md:flex-row gap-6 items-center justify-center">
       <div className="text-center md:text-left w-full md:w-1/3">

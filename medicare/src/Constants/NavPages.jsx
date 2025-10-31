@@ -1,10 +1,17 @@
-
-import PersonIcon from '@mui/icons-material/Person';
-import LockIcon from '@mui/icons-material/Lock';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import LogoutIcon from '@mui/icons-material/Logout';
-import ColorLensIcon from '@mui/icons-material/ColorLens';
-
+import PersonIcon from "@mui/icons-material/Person";
+import LockIcon from "@mui/icons-material/Lock";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import LogoutIcon from "@mui/icons-material/Logout";
+import ColorLensIcon from "@mui/icons-material/ColorLens";
+import {
+  AiOutlineMessage,
+  AiOutlineUser,
+  AiOutlineCheckCircle,
+} from "react-icons/ai";
+import { FaShieldAlt, FaCoins, FaShippingFast } from "react-icons/fa";
+import img3 from "/20.jpg";
+import img4 from "/17.jpg";
+import img5 from "/24.jpg";
 const categories = [
   {
     title: "Medications",
@@ -305,7 +312,136 @@ const questionFaq = {
     ],
   ],
 };
+const stats = [
+  { value: "18+", label: "Years" },
+  { value: "200+", label: "Employee" },
+  { value: "85%", label: "Page Views" },
+  { value: "27+", label: "Awards" },
+];
+const aboutCards = [
+  {
+    icon: <AiOutlineCheckCircle className="text-5xl mx-auto text-[#00a297]" />,
+    title: "Submit a task",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus.",
+  },
+  {
+    icon: <AiOutlineMessage className="text-5xl mx-auto text-[#00a297]" />,
+    title: "Send message",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus.",
+  },
+  {
+    icon: <AiOutlineUser className="text-5xl mx-auto text-[#00a297]" />,
+    title: "Trusted experience",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus.",
+  },
+];
+const generalRows = [
+  { name: "Brand", info: "BUMTUM" },
+  { name: "Manufacturer", info: "Millennium Babycares Pvt. Ltd." },
+  {
+    name: "Manufacturer Address",
+    info: "Millennium Babycares Pvt. Ltd. Plot no. 111, Sector-2, Pithampur Industrial Area, Pithampur Dist. Dhar, Indore, Madhya Pradesh 454775",
+  },
+  { name: "Manufacturer Email", info: "demo@example.com" },
+  { name: "Sold By", info: "FAMILYCARE CONSUMER PRIVATE LIMITED" },
+  { name: "JioMart Customer Care Email", info: "demo@example.com" },
+  { name: "JioMart Customer Care Phone", info: "9876543210" },
+  { name: "Marketed By", info: "Familycare Consumer Pvt. Ltd." },
+  { name: "Included Components", info: "62pcs in a pack" },
+  { name: "Country of Origin", info: "India" },
+];
+const features = [
+  {
+    id: 1,
+    icon: <FaShieldAlt className="w-6 h-6 text-[#00a297]" />,
+    text: "101% Original",
+  },
+  {
+    id: 2,
+    icon: <FaCoins className="w-6 h-6 text-[#00a297]" />,
+    text: "Lowest Price",
+  },
+  {
+    id: 3,
+    icon: <FaShippingFast className="w-6 h-6 text-[#00a297]" />,
+    text: "Free Shipping",
+  },
+];
+const relatedProducts = [
+  {
+    id: 1,
+    name: "Omron HEM 7120 Fully Automatic",
+    price: 20,
+    stock: 5,
+    img: img3,
+  },
+  {
+    id: 2,
+    name: "Easycare Big Display Digital Blood",
+    price: 14.4,
+    stock: 12,
+    img: img4,
+  },
+  {
+    id: 3,
+    name: "Himalaya Baby Body Lotion 400 ml",
+    price: 6.5,
+    stock: 8,
+    img: img5,
+  },
+];
+const shopFilters = [
+  "Categories",
+  "Brands",
+  "Highlight",
+  "Price Filter",
+  "Average Rating",
+];
+const filterOptions = {
+  Categories: [
+    "Our Store",
+    "Baby Care",
+    "Beauty Care",
+    "Health Care",
+    "Personal Care",
+    "Skin Care",
+  ],
+  Brands: [
+    "Creative",
+    "Design",
+    "Gallery",
+    "Golden",
+    "Highlight",
+    "Modern",
+    "Nature",
+    "Sparker",
+  ],
+  Highlight: [
+    "All Products",
+    "Best Seller",
+    "New Arrivals",
+    "Sale",
+    "Hot Items",
+  ],
+  "Price Filter": ["All", "$0-$100", "$400-$500"],
+};
 
+const filterKeys = {
+  Categories: "categories",
+  Brands: "brands",
+  Highlight: "highlight",
+  "Price Filter": "price",
+  "Average Rating": "rating",
+};
+
+const productRows = [
+  { name: "Minimum Age", info: "20" },
+  { name: "Minimum Age UOM", info: "Month" },
+  { name: "Maximum Age", info: "36" },
+  { name: "Age Description", info: "Infant" },
+  { name: "Size", info: "L" },
+  { name: "Color", info: "White" },
+];
 const profileList = [
   { name: "Info", icon: <PersonIcon /> },
   { name: "Security", icon: <LockIcon /> },
@@ -324,4 +460,13 @@ export {
   banners,
   questionFaq,
   profileList,
+  stats,
+  aboutCards,
+  generalRows,
+  productRows,
+  features,
+  relatedProducts,
+  shopFilters,
+  filterOptions,
+  filterKeys,
 };

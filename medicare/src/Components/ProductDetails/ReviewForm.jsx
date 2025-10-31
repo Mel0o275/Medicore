@@ -80,7 +80,7 @@ export default function ReviewForm() {
           </label>
           <Rating
             value={rating}
-            onChange={(event, newValue) => setRating(newValue)}
+            onChange={(e, newValue) => setRating(newValue)}
             size="large"
           />
         </div>

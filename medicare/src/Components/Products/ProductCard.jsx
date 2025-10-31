@@ -2,45 +2,35 @@ import MyRating from "../MyRating";
 import { MdFavorite, MdRemoveRedEye } from "react-icons/md";
 
 import { NavLink } from "react-router-dom";
-const ProductCard = ({
-  product: {
-    id,
-    priceRange,
-    rating,
-    name,
-    images: { front, back },
-  },
-}) => {
+const ProductCard = ({ product: { id, price, title, images } }) => {
   return (
     <div className="w-full rounded-lg border border-stone-200 overflow-hidden group cursor-pointer shadow-sm hover:shadow-lg transition-shadow duration-300">
       <div className="relative h-40 sm:h-44 md:h-48">
         <img
-          src={front}
+          src={images[0]}
           alt="Front"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0"
         />
         <img
-          src={back}
+          src={images[1]}
           alt="Back"
           className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         />
 
         <div className="absolute flex flex-col right-[-40px] transition-all duration-300 group-hover:right-3 gap-2 top-3">
-          <MdFavorite className="text-black bg-gray-300 p-1.5 rounded-full transition-colors duration-500 hover:bg-[#00a297] hover:text-white" />
-          <MdRemoveRedEye className="text-black bg-gray-300 p-1.5 rounded-full transition-colors duration-500 hover:bg-[#00a297] hover:text-white" />
+          <MdFavorite className="text-black bg-gray-300 p-1.5 rounded-full transition-colors duration-500 hover:bg-[#00a297] hover:text-white text-3xl" />
+          <MdRemoveRedEye className="text-black bg-gray-300 p-1.5 rounded-full transition-colors duration-500 hover:bg-[#00a297] hover:text-white text-3xl" />
         </div>
       </div>
 
       <div className="p-3 flex flex-col justify-center">
         <h3 className="font-semibold mb-1 text-sm md:text-base line-clamp-2">
-          {name}
+          {title}
         </h3>
         <div className="py-4">
-          <MyRating value={rating} />
+          <MyRating value={4} />
         </div>
-        <p className="text-gray-700 text-sm md:text-base font-bold">
-          {priceRange}
-        </p>
+        <p className="text-gray-700 text-sm md:text-base font-bold">{price}</p>
         <div className="mt-2 flex justify-center items-center">
           <NavLink
             to={`/shop/productdetails/${id}`}
