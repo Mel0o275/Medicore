@@ -6,15 +6,9 @@ import MyImgGrid from "../../components/About/MyImgGrid";
 import MyAboutCardsContainer from "../../components/About/MyAboutCardsContainer";
 import { NavLink } from "react-router-dom";
 import ScrollButton from "../../components/ScrollButton";
+import { stats } from "../../Constants/NavPages";
 
 function About() {
-  const stats = [
-    { value: "18+", label: "Years" },
-    { value: "200+", label: "Employee" },
-    { value: "85%", label: "Page Views" },
-    { value: "27+", label: "Awards" },
-  ];
-
   return (
     <section className="bg-stone-100/50 pb-14">
       <ScrollButton />

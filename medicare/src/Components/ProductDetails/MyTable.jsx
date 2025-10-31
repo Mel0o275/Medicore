@@ -6,32 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { grey } from "@mui/material/colors";
-
-const generalRows = [
-  { name: "Brand", info: "BUMTUM" },
-  { name: "Manufacturer", info: "Millennium Babycares Pvt. Ltd." },
-  {
-    name: "Manufacturer Address",
-    info: "Millennium Babycares Pvt. Ltd. Plot no. 111, Sector-2, Pithampur Industrial Area, Pithampur Dist. Dhar, Indore, Madhya Pradesh 454775",
-  },
-  { name: "Manufacturer Email", info: "demo@example.com" },
-  { name: "Sold By", info: "FAMILYCARE CONSUMER PRIVATE LIMITED" },
-  { name: "JioMart Customer Care Email", info: "demo@example.com" },
-  { name: "JioMart Customer Care Phone", info: "9876543210" },
-  { name: "Marketed By", info: "Familycare Consumer Pvt. Ltd." },
-  { name: "Included Components", info: "62pcs in a pack" },
-  { name: "Country of Origin", info: "India" },
-];
-
-const productRows = [
-  { name: "Minimum Age", info: "20" },
-  { name: "Minimum Age UOM", info: "Month" },
-  { name: "Maximum Age", info: "36" },
-  { name: "Age Description", info: "Infant" },
-  { name: "Size", info: "L" },
-  { name: "Color", info: "White" },
-];
-
+import { generalRows, productRows } from "../../Constants/NavPages";
 export default function MyTable({ name }) {
   const BORDER_COLOR = grey[200];
   const TEXT_COLOR = grey[700];

@@ -23,7 +23,7 @@ function ScrollButton() {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-10 right-10 p-4 rounded-full text-[#00a297]  text-lg shadow-md hover:shadow-lg border-2 border-[#00a297] hover:bg-[#00a297]/20 transition-all duration-300"
+          className="fixed bottom-10 right-10 p-4 rounded-full text-[#00a297]  text-lg shadow-md hover:shadow-lg border-2 border-[#00a297] bg-stone-100 hover:bg-stone-200 transition-all duration-300"
         >
           <FaArrowUp />
         </button>
