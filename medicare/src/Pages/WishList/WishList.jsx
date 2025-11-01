@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Heart, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function WishList() {
     const [wishlist, setwishlist] = useState([
@@ -49,9 +50,9 @@ export default function WishList() {
                     <p className="text-sm text-gray-500 mb-4">
                         Start adding your favorite products.
                     </p>
-                    <button className="cursor-pointer px-6 py-2.5 bg-[#00A297] text-white rounded-xl font-medium hover:bg-[#00887F] shadow-md transition">
+                    <Link to='/Home'>                    <button className="cursor-pointer px-6 py-2.5 bg-[#00A297] text-white rounded-xl font-medium hover:bg-[#00887F] shadow-md transition">
                         Browse Products
-                    </button>
+                    </button></Link>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 gap-6">
