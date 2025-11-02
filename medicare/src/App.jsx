@@ -34,7 +34,6 @@ import ForgotPasswordPage from "./Pages/ForgotPasswordPage/ForgotPasswordPage";
 
 import LoadingScreenAnimation from "./Pages/LoadingScreenAnimation/LoadingScreenAnimation";
 
-
 import Dashboard from "./Pages/DashBoard";
 import MainDash from "./Pages/DashBoardPages/MainDash";
 import InventoryDash from "./Pages/DashBoardPages/InventoryDash";
@@ -56,6 +55,8 @@ const muiTheme = buildMuiTheme();
 function App() {
   const { mode } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
+
+  console.log("testing hesham");
 
   return (
     <ThemeProvider theme={muiTheme}>
@@ -88,7 +89,10 @@ function App() {
             <Route path="/delivery" element={<DeliveryStatus />} />
             <Route path="/feedback" element={<FeedbackPage />} />
             <Route path="/login" element={<SignInPage />} />
-            <Route path="/shop/productdetails/:id" element={<ProductDetailsPage />} />
+            <Route
+              path="/shop/productdetails/:id"
+              element={<ProductDetailsPage />}
+            />
             <Route element={<ProtectedRoute />}>
               <Route path="/Profile" element={<Profile />}>
                 <Route index element={<PersonalInfo />} />
