@@ -423,7 +423,7 @@ const filterOptions = {
     "Sale",
     "Hot Items",
   ],
-  "Price Filter": ["All", "$0-$100", "$400-$500"],
+  "Price Filter": ["All", "10L.E-100L.E", "400 L.E-500 L.E"],
 };
 
 const filterKeys = {

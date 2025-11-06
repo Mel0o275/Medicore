@@ -3,19 +3,12 @@ import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
-import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 export default function MySelectElement() {
-  const navigate = useNavigate();
-  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const sortValue = searchParams.get("sort") || "default";
-  const updateUrl = (newSearchParams) => {
-    const cleanParams = decodeURIComponent(newSearchParams.toString());
-    const newUrl = `${location.pathname}?${cleanParams}`;
-    setSearchParams(newSearchParams);
-    navigate(newUrl, { replace: true });
-  };
+
   const handleChange = (e) => {
     const newSort = e.target.value;
     const newSearchParams = new URLSearchParams(searchParams);
@@ -25,7 +18,7 @@ export default function MySelectElement() {
       newSearchParams.set("sort", newSort);
     }
     newSearchParams.set("page", 1);
-    updateUrl(newSearchParams);
+    setSearchParams(newSearchParams);
   };
 
   return (
@@ -63,10 +56,10 @@ export default function MySelectElement() {
           }}
         >
           <option value="default">Default Sorting</option>
-          <option value="rating-desc">Sort By Average Rating</option>
-          <option value="latest">Sort By Latest</option>
-          <option value="price-asc">Sort By Price: Low-High</option>
-          <option value="price-desc">Sort By Price: High-Low</option>
+          <option value="-rating">Sort By Average Rating</option>
+          <option value="-createdAt">Sort By Latest</option>
+          <option value="price">Sort By Price: Low-High</option>
+          <option value="-price">Sort By Price: High-Low</option>
         </NativeSelect>
       </FormControl>
     </Box>
