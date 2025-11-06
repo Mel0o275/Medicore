@@ -1,26 +1,15 @@
 import { useState } from "react";
 import MyRating from "../MyRating";
 import { filterOptions, filterKeys } from "../../Constants/NavPages";
-import { useNavigate, useLocation } from "react-router-dom";
 const MyCollapse = ({ title, searchParams, setSearchParams }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
   const items = filterOptions[title];
   const queryKey = filterKeys[title];
-
-  const updateUrl = (newSearchParams) => {
-    const cleanParams = decodeURIComponent(newSearchParams.toString());
-    const newUrl = `${location.pathname}?${cleanParams}`;
-    setSearchParams(newSearchParams);
-    navigate(newUrl, { replace: true });
-  };
 
   const handleCheckboxChange = (e, item) => {
     const value = item.toLowerCase().replace(/\s+/g, "-");
     const currentValue = searchParams.get(queryKey) || "";
     const currentValues = currentValue.split(",").filter((val) => Boolean(val));
-
     let newValues;
     if (e.target.checked) {
       newValues = currentValues.includes(value)
@@ -37,7 +26,7 @@ const MyCollapse = ({ title, searchParams, setSearchParams }) => {
       newSearchParams.delete(queryKey);
     }
 
-    updateUrl(newSearchParams);
+    setSearchParams(newSearchParams);
   };
 
   const handleClickFilter = (item) => {
@@ -50,7 +39,7 @@ const MyCollapse = ({ title, searchParams, setSearchParams }) => {
       newSearchParams.set(queryKey, value);
     }
 
-    updateUrl(newSearchParams);
+    setSearchParams(newSearchParams);
   };
 
   const handleRatingClick = (val) => {
@@ -60,7 +49,7 @@ const MyCollapse = ({ title, searchParams, setSearchParams }) => {
     } else {
       newSearchParams.set("rating", val);
     }
-    updateUrl(newSearchParams);
+    setSearchParams(newSearchParams);
   };
 
   const activeValue = searchParams.get(queryKey);

@@ -1,8 +1,10 @@
+import { useState } from "react";
 import MyRating from "../MyRating";
-import { MdFavorite, MdRemoveRedEye } from "react-icons/md";
+import { MdFavorite } from "react-icons/md";
 
 import { NavLink } from "react-router-dom";
 const ProductCard = ({ product: { id, price, title, images } }) => {
+  const [liked, setLiked] = useState(false);
   return (
     <div className="w-full rounded-lg border border-stone-200 overflow-hidden group cursor-pointer shadow-sm hover:shadow-lg transition-shadow duration-300">
       <div className="relative h-40 sm:h-44 md:h-48">
@@ -17,9 +19,17 @@ const ProductCard = ({ product: { id, price, title, images } }) => {
           className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         />
 
-        <div className="absolute flex flex-col right-[-40px] transition-all duration-300 group-hover:right-3 gap-2 top-3">
-          <MdFavorite className="text-black bg-gray-300 p-1.5 rounded-full transition-colors duration-500 hover:bg-[#00a297] hover:text-white text-3xl" />
-          <MdRemoveRedEye className="text-black bg-gray-300 p-1.5 rounded-full transition-colors duration-500 hover:bg-[#00a297] hover:text-white text-3xl" />
+        <div
+          className={`absolute  ${
+            liked ? "right-3 top-3" : "right-[-40px] group-hover:right-3 top-3"
+          } transition-all duration-300 `}
+        >
+          <MdFavorite
+            onClick={() => setLiked(!liked)}
+            className={`cursor-pointer text-3xl p-1.5 rounded-full transition-colors duration-500 
+        ${liked ? "bg-[#00a297] text-white" : "bg-gray-300 text-black"} 
+        hover:bg-[#00a297] hover:text-white`}
+          />
         </div>
       </div>
 
