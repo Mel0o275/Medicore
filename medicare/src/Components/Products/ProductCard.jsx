@@ -3,7 +3,7 @@ import MyRating from "../MyRating";
 import { MdFavorite } from "react-icons/md";
 
 import { NavLink } from "react-router-dom";
-const ProductCard = ({ product: { id, price, title, images } }) => {
+const ProductCard = ({ product: { id, price, title, images, ratings } }) => {
   const [liked, setLiked] = useState(false);
   return (
     <div className="w-full rounded-lg border border-stone-200 overflow-hidden group cursor-pointer shadow-sm hover:shadow-lg transition-shadow duration-300">
@@ -38,7 +38,7 @@ const ProductCard = ({ product: { id, price, title, images } }) => {
           {title}
         </h3>
         <div className="py-4">
-          <MyRating value={4} />
+          <MyRating value={ratings} />
         </div>
         <p className="text-gray-700 text-sm md:text-base font-bold">{price}</p>
         <div className="mt-2 flex justify-center items-center">
