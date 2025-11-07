@@ -64,16 +64,20 @@ function ProductDetailsPage() {
 
           <div className="flex-1 flex flex-col gap-4">
             <span className="bg-[#00a297] text-white w-max text-xs px-2 py-1 rounded-md">
-              -13
+              -13%
             </span>
             <p className="text-stone-400 font-semibold">
-              Brand: <span className="text-[#00a297]">productBrand</span>
+              Brand: <span className="text-[#00a297]">{product.brand}</span>
+            </p>
+            <p className="text-stone-400 font-semibold">
+              Category:{" "}
+              <span className="text-[#00a297]">{product.category}</span>
             </p>
             <h2 className="text-3xl font-semibold">{product.title}</h2>
 
             <div className="flex items-center w-full gap-10">
               <p className="text-2xl font-semibold">{product.price}</p>
-              <MyRating value={4} />
+              <MyRating value={product.ratings} />
             </div>
 
             <ul className="mt-4 space-y-1 text-gray-700">
