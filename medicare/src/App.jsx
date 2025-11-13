@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -49,12 +49,25 @@ import { buildMuiTheme } from "./Themes/Theme";
 import useTheme from "./Store/useTheme";
 import { ThemeProvider } from "@mui/material";
 import ProtectedRoute from "./Components/protectedRoute/ProtectedRoute.jsx";
-
+import axios from 'axios';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 const muiTheme = buildMuiTheme();
 
 function App() {
+  let query  = new QueryClient();
   const { mode } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
+
+  console.log("API URL:", import.meta.env.VITE_API_URL);
+
+
+  // async function getProducts() {
+  //   const API = import.meta.env.VITE_API_URL;
+  //   const {data} = await axios.get(`${API}/products`);
+  //   console.log(data.data);
+  // }
+
+  // useEffect(() => {getProducts()}, []);
 
   console.log("testing hesham");
 
@@ -79,6 +92,7 @@ function App() {
         <NavbarPrimary />
         <ThemeSwitcher />
         <div className="">
+          <QueryClientProvider client={query}> 
           <Routes>
             <Route path="/" element={<Navigate to="/Home" replace />} />
             <Route path="/Home" element={<Home />} />
@@ -120,6 +134,7 @@ function App() {
             {/* <Route path="/checkout" element={<Checkout />} /> */}
             <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
           </Routes>
+          </QueryClientProvider>
         </div>
         <Footer />
       </Router>
