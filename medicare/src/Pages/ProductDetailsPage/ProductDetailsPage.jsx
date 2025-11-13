@@ -30,9 +30,10 @@ function ProductDetailsPage() {
   const product = data?.data?.product;
   const products = useProductStore((state) => state.products);
 
-  const relatedProducts = products.filter(
-    (p) => p.category === product?.category && p._id !== product?._id
-  );
+  const relatedProducts =
+    products.filter(
+      (p) => p.category === product?.category && p._id !== product?._id
+    ) || [];
 
   const [openmodal, setOpenModal] = useState(false);
   const [quantity, setQuantity] = useState(1);

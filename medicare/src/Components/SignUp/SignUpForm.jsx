@@ -4,7 +4,8 @@ import { FaEye, FaEyeSlash, FaAt } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema } from "./SignUpSchema.jsx";
-
+import axios from "axios";
+import toast from "react-hot-toast";
 const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
