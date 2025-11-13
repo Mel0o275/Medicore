@@ -49,7 +49,21 @@ With **AI-powered features** like prescription scanning and medicine reminders, 
 
 👨‍💻 **Youssef Ashraf Ali Gamal El Deen Saleh** → View Logic And Design in Dashboard
 
-**🔄 Next Week (Week 3) – Upcoming Tasks**  
+**📅 Week 3 – Task Distribution**
+Each team member contributed to backend development and user operations for Medicore.
+
+👩‍💻 **Mai Bakry Ahmed Morsy** → Backend for Cart, Wishlist, and Checkout.
+
+👩‍💻 **Malak Hassan Abd Elmonem Hashem** →handled all user operations including edit profile, reset password, and profile managementز
+
+👨‍💻 **Youssef Ashraf Ali Gamal El Deen Saleh** → Backend for Product management (CRUD) and product logic.
+
+👩‍💻 **Rahma Magdy Fouad Abass** → Authentication system (login, signup, protected routes, etc.)
+
+👩‍💻 **Jolie Nixon Ezzat Tawfeek** → Backend for Orders (all order operations, management, and processing)
+
+
+**🔄 Next Week (Week 4) – Upcoming Tasks**  
 📌 To be updated after the next sprint planning meeting.
 
 ---
