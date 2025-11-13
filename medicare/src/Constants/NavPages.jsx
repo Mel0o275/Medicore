@@ -426,13 +426,7 @@ const relatedProducts = [
     img: img5,
   },
 ];
-const shopFilters = [
-  "Categories",
-  "Brands",
-  "Highlight",
-  "Price Filter",
-  "Average Rating",
-];
+const shopFilters = ["Categories", "Brands", "Price Filter", "Average Rating"];
 const filterOptions = {
   Categories: [
     "Mother and baby products",
@@ -459,20 +453,12 @@ const filterOptions = {
     "CarePlus",
     "CleanWell",
   ],
-  Highlight: [
-    "All Products",
-    "Best Seller",
-    "New Arrivals",
-    "Sale",
-    "Hot Items",
-  ],
   "Price Filter": ["All", "10L.E-100L.E", "400 L.E-500 L.E"],
 };
 
 const filterKeys = {
   Categories: "categories",
   Brands: "brands",
-  Highlight: "highlight",
   "Price Filter": "price",
   "Average Rating": "rating",
 };
