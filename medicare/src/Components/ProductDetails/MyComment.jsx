@@ -31,18 +31,6 @@ function MyComment({ review }) {
       <p variant="body2" className="text-gray-500 leading-relaxed">
         {review.review}
       </p>
-
-      <div className="flex gap-4 mt-2 mr-auto">
-        <TbThumbUpFilled
-          fontSize="medium"
-          className="hover:text-[#00a297] cursor-pointer"
-        />
-
-        <TbThumbDownFilled
-          fontSize="medium"
-          className="hover:text-[#00a297] cursor-pointer"
-        />
-      </div>
     </div>
   );
 }
