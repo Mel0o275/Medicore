@@ -68,6 +68,9 @@ HideOnScroll.propTypes = {
   window: PropTypes.func,
 };
 export default function Navbar(props) {
+  const slugs = categories.map((c) =>
+    c.title.toLowerCase().trim().replace(/\s+/g, "-")
+  );
   const [categoriesAnchor, setCategoriesAnchor] = useState(null);
   const [elementsAnchor, setElementsAnchor] = useState(null);
 
@@ -128,7 +131,7 @@ export default function Navbar(props) {
                         open={Boolean(categoriesAnchor)}
                         onClose={handleCategoriesClose}
                       >
-                        {categories.map((category) => (
+                        {categories.map((category, i) => (
                           <MenuItem
                             key={category.title}
                             onClick={handleCategoriesClose}
@@ -136,7 +139,7 @@ export default function Navbar(props) {
                             <Button
                               sx={{ color: "black", fontWeight: "600" }}
                               component={Link}
-                              to={`/${category.title}`}
+                              to={`/shop?categories=${slugs[i]}`}
                             >
                               {category.title}
                             </Button>

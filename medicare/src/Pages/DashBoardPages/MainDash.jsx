@@ -38,7 +38,7 @@ const MainDash = () => {
   const [toDelete, setToDelete] = useState(null);
   const [openViewModal, setOpenViewModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
-  
+
   const [viewingProduct, setViewingProduct] = useState(null);
   const [editingProduct, setEditingProduct] = useState(null);
 
@@ -66,10 +66,13 @@ const MainDash = () => {
   }
 
   function handleAddProduct(newProduct) {
-    console.log('Adding new product:', newProduct);
-    
-    const newId = productList.length > 0 ? Math.max(...productList.map(p => p.id)) + 1 : 1;
-    
+    console.log("Adding new product:", newProduct);
+
+    const newId =
+      productList.length > 0
+        ? Math.max(...productList.map((p) => p.id)) + 1
+        : 1;
+
     const completeProduct = {
       id: newId,
       title: newProduct.title,
@@ -78,11 +81,11 @@ const MainDash = () => {
       description: newProduct.description,
       images: newProduct.images || [],
     };
-    
-    setProductList(prev => [...prev, completeProduct]);
+
+    setProductList((prev) => [...prev, completeProduct]);
     handleCloseAddModal();
-    
-    console.log('Product added successfully:', completeProduct);
+
+    console.log("Product added successfully:", completeProduct);
   }
 
   const {
@@ -114,7 +117,7 @@ const MainDash = () => {
     setEditingProduct(null);
     setSelectedProduct(null);
   };
-  
+
   const handleOpenAddModal = () => setOpenAddModal(true);
   const handleCloseAddModal = () => setOpenAddModal(false);
 
@@ -264,9 +267,9 @@ const MainDash = () => {
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Delete">
-                        <IconButton 
-                          color="error" 
-                          size="small" 
+                        <IconButton
+                          color="error"
+                          size="small"
                           onClick={() => handleDeleteClick(prod)}
                         >
                           <DeleteIcon />
@@ -282,7 +285,7 @@ const MainDash = () => {
       </Paper>
 
       {/* Edit Modal */}
-      <EditProductModal 
+      <EditProductModal
         open={!!editingProduct}
         handleClose={handleCloseEditModal}
         selectedProduct={editingProduct}
@@ -305,12 +308,11 @@ const MainDash = () => {
         onClose={cancelDelete}
         aria-labelledby="delete-dialog-title"
       >
-        <DialogTitle id="delete-dialog-title">
-          Confirm Delete
-        </DialogTitle>
+        <DialogTitle id="delete-dialog-title">Confirm Delete</DialogTitle>
         <DialogContent>
           <Typography>
-            Are you sure you want to delete "{toDelete?.title || toDelete?.name}"?
+            Are you sure you want to delete "{toDelete?.title || toDelete?.name}
+            "?
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -322,8 +324,8 @@ const MainDash = () => {
       </Dialog>
 
       {/* Add Product Modal */}
-      <AddProductModal 
-        open={openAddModal} 
+      <AddProductModal
+        open={openAddModal}
         handleClose={handleCloseAddModal}
         onAddProduct={handleAddProduct}
       />

@@ -6,16 +6,37 @@ import MyRating from "../../components/MyRating";
 import MyTab from "../../components/Tab/MyTab";
 import ProductCard from "../../components/Products/ProductCard";
 import ScrollButton from "../../components/ScrollButton";
-import { features, products, reviews } from "../../Constants/NavPages";
+import { features, reviews } from "../../Constants/NavPages";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import ShareModal from "./ShareModal";
 import { FaRegEye } from "react-icons/fa";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import LoadingScreenAnimation from "../LoadingScreenAnimation/LoadingScreenAnimation";
+import { useProductStore } from "../../Store/useProductStore";
 function ProductDetailsPage() {
+  const { id } = useParams();
+
+  const fetchProduct = async () => {
+    const url = import.meta.env.VITE_API_URL;
+    const { data } = await axios.get(`${url}/products/${id}`);
+    return data;
+  };
+  const { data, isLoading } = useQuery({
+    queryKey: ["product", id],
+    queryFn: fetchProduct,
+  });
+  const product = data?.data?.product;
+  const products = useProductStore((state) => state.products);
+
+  const relatedProducts = products.filter(
+    (p) => p.category === product?.category && p._id !== product?._id
+  );
+
   const [openmodal, setOpenModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const { id } = useParams();
-  const product = products.find((p) => p.id === Number(id));
+
   const handleInc = () => {
     setQuantity((prev) => prev + 1);
   };
@@ -23,6 +44,7 @@ function ProductDetailsPage() {
     if (quantity > 1) setQuantity((prev) => prev - 1);
     else setQuantity(1);
   };
+  if (isLoading) return <LoadingScreenAnimation />;
   return (
     <section className="pb-14 bg-stone-100/50">
       <ScrollButton />
@@ -40,12 +62,12 @@ function ProductDetailsPage() {
           <div className="flex-1 flex flex-col gap-6">
             <div className="relative max-h-[55vh] group border-2 border-stone-200 rounded-md overflow-hidden flex-1">
               <img
-                src={product.images[0]}
+                src={product.images[0].url}
                 alt="Front"
                 className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-0"
               />
               <img
-                src={product.images[1]}
+                src={product.images[1].url}
                 alt="Back"
                 className="absolute inset-0 w-full h-full object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-500"
               />
@@ -78,7 +100,7 @@ function ProductDetailsPage() {
             <h2 className="text-3xl font-semibold">{product.title}</h2>
 
             <div className="flex items-center w-full gap-10">
-              <p className="text-2xl font-semibold">{product.price}</p>
+              <p className="text-2xl font-semibold">{product.price} L.E</p>
               <MyRating value={product.ratings} />
             </div>
 
@@ -129,14 +151,18 @@ function ProductDetailsPage() {
             productTitle={product.title}
           />
         </div>
-        <h3 className="text-xl mb-5 font-semibold">Related Products</h3>
-        <div className=" flex gap-3 overflow-x-auto hide-scrollbar">
-          {products.map((product, i) => (
-            <div className="w-full md:w-[30%]" key={i}>
-              <ProductCard key={i} product={product} />
+        {relatedProducts && relatedProducts.length != 0 && (
+          <>
+            <h3 className="text-xl mb-5 font-semibold">Related Products</h3>
+            <div className=" flex gap-3 overflow-x-auto hide-scrollbar">
+              {relatedProducts.map((product, i) => (
+                <div className="w-full md:w-[30%]" key={i}>
+                  <ProductCard key={i} product={product} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
       </div>
     </section>
   );

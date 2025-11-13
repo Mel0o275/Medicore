@@ -6,8 +6,10 @@ import MyPagination from "../../components/MyPagination";
 import ScrollButton from "../../components/ScrollButton";
 import { shopFilters } from "../../Constants/NavPages";
 import useShopFilters from "../../Hooks/useShopFilters";
+import { useProductStore } from "../../Store/useProductStore";
 
 function Shop() {
+  const data = useProductStore((state) => state.products);
   const {
     showFilters,
     setShowFilters,
@@ -21,7 +23,7 @@ function Shop() {
     end,
     handlePageChange,
     clearFilter,
-  } = useShopFilters();
+  } = useShopFilters(data);
 
   return (
     <section className="pb-14 bg-stone-100/50">
@@ -64,8 +66,8 @@ function Shop() {
           <div>
             <div className="flex items-center justify-between w-full mb-10">
               <p className="text-[#00a297]/80 font-medium pl-4">
-                Showing {start + 1}–{Math.min(end, products.length)} of{" "}
-                {products.length} results
+                Showing {products.length > 0 ? start + 1 : 0}–
+                {Math.min(end, products.length)} of {products.length} results
               </p>
               <MySelectElement />
             </div>
