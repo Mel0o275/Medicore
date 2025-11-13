@@ -6,10 +6,23 @@ import MyPagination from "../../components/MyPagination";
 import ScrollButton from "../../components/ScrollButton";
 import { shopFilters } from "../../Constants/NavPages";
 import useShopFilters from "../../Hooks/useShopFilters";
+import LoadingScreenAnimation from "../LoadingScreenAnimation/LoadingScreenAnimation";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { useProductStore } from "../../Store/useProductStore";
+const fetchProducts = async () => {
+  const url = import.meta.env.VITE_API_URL;
+  const { data } = await axios.get(`${url}/products`);
+  return data;
+};
 
 function Shop() {
-  const data = useProductStore((state) => state.products);
+  const { data, isLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: fetchProducts,
+  });
+  const setProducts = useProductStore((state) => state.setProducts);
+  setProducts(data?.data?.products);
   const {
     showFilters,
     setShowFilters,
@@ -23,8 +36,8 @@ function Shop() {
     end,
     handlePageChange,
     clearFilter,
-  } = useShopFilters(data);
-
+  } = useShopFilters(data?.data?.products);
+  if (isLoading) return <LoadingScreenAnimation />;
   return (
     <section className="pb-14 bg-stone-100/50">
       <ScrollButton />

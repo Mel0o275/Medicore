@@ -1,8 +1,6 @@
 /* -------------------------- React --------------------------- */
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-import { useProductStore } from "../../Store/useProductStore.js";
+
 /* -------------------------- MUI --------------------------- */
 import {
   Box,
@@ -27,27 +25,12 @@ import CategoriesSwipper from "../../Components/Swiper/CatagoriesSwiper";
 import Footer from "../../Components/Footer/Footer";
 import ProductsSwipper from "../../Components/Swiper/ProductsSwipper";
 import ProductsDiscount from "../../Components/ProductsDiscount";
-import LoadingScreenAnimation from "../LoadingScreenAnimation/LoadingScreenAnimation";
+
 /* -------------------------- Icons --------------------------- */
 /* -------------------------- Toast --------------------------- */
-const fetchProducts = async () => {
-  const url = import.meta.env.VITE_API_URL;
-  const { data } = await axios.get(`${url}/products`);
-  return data;
-};
 
 export default function Home() {
-  const setProducts = useProductStore((state) => state.setProducts);
-  const { data, isLoading } = useQuery({
-    queryKey: ["products"],
-    queryFn: fetchProducts,
-  });
   const [index, setIndex] = useState(0);
-  useEffect(() => {
-    if (data?.data?.products.length > 0) {
-      setProducts(data.data.products);
-    }
-  }, [data]);
 
   function MotionDiv({ img, mainText, secondText, buttonText, duration }) {
     return (
@@ -149,9 +132,7 @@ export default function Home() {
     }, 10000);
     return () => clearInterval(interval);
   }, []);
-  if (isLoading) {
-    return <LoadingScreenAnimation />;
-  }
+
   return (
     <>
       <Container sx={{ p: 2 }}>

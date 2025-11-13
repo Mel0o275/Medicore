@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useEditProduct from "../../Hooks/useEditProduct.js";
 import {
   Box,
@@ -28,13 +28,26 @@ import {
   Delete as DeleteIcon,
   Visibility as ViewIcon,
 } from "@mui/icons-material";
-import { products } from "../../Constants/NavPages.jsx";
 import ViewProductModal from "./ViewProductModal.jsx";
 import AddProductModal from "../../Components/AddProduct/AddProduct.jsx";
 import EditProductModal from "../../Components/EditProduct/EditProduct.jsx";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import LoadingScreenAnimation from "../LoadingScreenAnimation/LoadingScreenAnimation.jsx";
+const fetchProducts = async () => {
+  const url = import.meta.env.VITE_API_URL;
+  const { data } = await axios.get(`${url}/products`);
+  return data;
+};
 
 const MainDash = () => {
-  const [productList, setProductList] = useState(products);
+  const { data, isLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: fetchProducts,
+  });
+
+  const products = data?.data?.products;
+  const [productList, setProductList] = useState([]);
   const [toDelete, setToDelete] = useState(null);
   const [openViewModal, setOpenViewModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -89,7 +102,6 @@ const MainDash = () => {
   }
 
   const {
-    selectedProduct,
     register,
     handleSubmit,
     onSubmit,
@@ -121,9 +133,7 @@ const MainDash = () => {
   const handleOpenAddModal = () => setOpenAddModal(true);
   const handleCloseAddModal = () => setOpenAddModal(false);
 
-  const productKeys = productList.length > 0 ? Object.keys(productList[0]) : [];
-  const excludedKeys = ["id"];
-  const tableColumns = productKeys.filter((key) => !excludedKeys.includes(key));
+  const tableColumns = ["_id", "title", "createdAt", "updatedAt"];
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -163,7 +173,13 @@ const MainDash = () => {
 
   const formatColumnName = (key) =>
     key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ");
-
+  useEffect(
+    function () {
+      if (products && products.length > 0) setProductList(products);
+    },
+    [products]
+  );
+  if (isLoading) return <LoadingScreenAnimation />;
   return (
     <Box sx={{ p: { xs: 2, md: 4 } }}>
       <Box
