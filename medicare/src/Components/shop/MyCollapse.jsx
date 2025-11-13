@@ -1,16 +1,22 @@
 import { useState } from "react";
 import MyRating from "../MyRating";
 import { filterOptions, filterKeys } from "../../Constants/NavPages";
+
 const MyCollapse = ({ title, searchParams, setSearchParams }) => {
   const [isOpen, setIsOpen] = useState(true);
-  const items = filterOptions[title];
+  const items = filterOptions[title] || [];
   const queryKey = filterKeys[title];
+
+  const isMultiSelect = title === "Categories" || title === "Brands";
+  const isRating = title === "Average Rating";
+  const isPrice = title === "Price Filter";
 
   const handleCheckboxChange = (e, item) => {
     const value = item.toLowerCase().replace(/\s+/g, "-");
     const currentValue = searchParams.get(queryKey) || "";
-    const currentValues = currentValue.split(",").filter((val) => Boolean(val));
+    const currentValues = currentValue.split(",").filter(Boolean);
     let newValues;
+
     if (e.target.checked) {
       newValues = currentValues.includes(value)
         ? currentValues
@@ -29,28 +35,17 @@ const MyCollapse = ({ title, searchParams, setSearchParams }) => {
     setSearchParams(newSearchParams);
   };
 
-  const handleClickFilter = (item) => {
-    const value = item.toLowerCase().replace(/\s+/g, "-");
+  const handleSingleSelect = (value) => {
     const newSearchParams = new URLSearchParams(searchParams);
-
     if (newSearchParams.get(queryKey) === value) {
       newSearchParams.delete(queryKey);
     } else {
       newSearchParams.set(queryKey, value);
     }
-
     setSearchParams(newSearchParams);
   };
 
-  const handleRatingClick = (val) => {
-    const newSearchParams = new URLSearchParams(searchParams);
-    if (newSearchParams.get("rating") === val.toString()) {
-      newSearchParams.delete("rating");
-    } else {
-      newSearchParams.set("rating", val);
-    }
-    setSearchParams(newSearchParams);
-  };
+  const handleRatingClick = (val) => handleSingleSelect(val.toString());
 
   const activeValue = searchParams.get(queryKey);
 
@@ -73,49 +68,52 @@ const MyCollapse = ({ title, searchParams, setSearchParams }) => {
       >
         <div className="bg-white">
           <ul className="flex flex-col gap-4 p-4 pt-0">
-            {items &&
+            {isMultiSelect &&
               items.map((item, i) => {
                 const value = item.toLowerCase().replace(/\s+/g, "-");
                 const currentValue = searchParams.get(queryKey) || "";
                 const isChecked = currentValue.split(",").includes(value);
-                const isActive = activeValue === value;
 
                 return (
                   <li key={i} className="flex gap-2 items-center group">
-                    {title === "Categories" || title === "Brands" ? (
-                      <>
-                        <input
-                          type="checkbox"
-                          name={item}
-                          id={item}
-                          checked={isChecked}
-                          onChange={(e) => handleCheckboxChange(e, item)}
-                          className="w-4 h-4 border border-gray-400 rounded-none group-hover:ring-1 transition-all duration-300 cursor-pointer accent-[#00a297]"
-                        />
-                        <label
-                          htmlFor={item}
-                          className="group-hover:text-[#00a297] transition-all duration-300 cursor-pointer"
-                        >
-                          {item}
-                        </label>
-                      </>
-                    ) : (
-                      <p
-                        onClick={() => handleClickFilter(item)}
-                        className={`cursor-pointer transition-all duration-300 ${
-                          isActive
-                            ? "text-[#00a297] font-semibold"
-                            : "hover:text-[#00a297]"
-                        }`}
-                      >
-                        {item}
-                      </p>
-                    )}
+                    <input
+                      type="checkbox"
+                      name={item}
+                      id={item}
+                      checked={isChecked}
+                      onChange={(e) => handleCheckboxChange(e, item)}
+                      className="w-4 h-4 border border-gray-400 rounded-none group-hover:ring-1 transition-all duration-300 cursor-pointer accent-[#00a297]"
+                    />
+                    <label
+                      htmlFor={item}
+                      className="group-hover:text-[#00a297] transition-all duration-300 cursor-pointer"
+                    >
+                      {item}
+                    </label>
                   </li>
                 );
               })}
 
-            {title === "Average Rating" &&
+            {isPrice &&
+              items.map((item) => {
+                const value = item.toLowerCase().replace(/\s+/g, "-");
+                const active = activeValue === value;
+                return (
+                  <p
+                    key={value}
+                    onClick={() => handleSingleSelect(value)}
+                    className={`cursor-pointer transition-all duration-300 ${
+                      active
+                        ? "text-[#00a297] font-semibold"
+                        : "hover:text-[#00a297]"
+                    }`}
+                  >
+                    {item}
+                  </p>
+                );
+              })}
+
+            {isRating &&
               [5, 4, 3, 2, 1].map((val) => {
                 const active = searchParams.get("rating") === val.toString();
                 return (

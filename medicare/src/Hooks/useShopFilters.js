@@ -1,28 +1,44 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { products } from "../Constants/NavPages";
 
-export default function useShopFilters() {
+export default function useShopFilters(products = []) {
   const [showFilters, setShowFilters] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filtered, setFiltered] = useState(products);
+  const [filtered, setFiltered] = useState([]);
 
   const pageFromURL = parseInt(searchParams.get("page")) || 1;
   const sort = searchParams.get("sort") || "";
   const categories = searchParams.get("categories") || "";
   const brands = searchParams.get("brands") || "";
+  const price = searchParams.get("price") || "";
+  const rating = searchParams.get("rating") || "";
 
   const selectedCategories = categories
     .split(",")
-    .map((c) => c.trim().toLowerCase().split("-").join(" "))
+    .map((c) => c.trim().toLowerCase().replaceAll("-", " "))
     .filter(Boolean);
 
   const selectedBrands = brands
     .split(",")
-    .map((c) => c.trim().toLowerCase().split("-").join(" "))
+    .map((b) => b.trim().toLowerCase().replaceAll("-", " "))
     .filter(Boolean);
 
+  let selectedPrice = null;
+  if (price && price.toLowerCase() !== "all") {
+    const match = price.match(/(\d+)l\.e-(\d+)l\.e/i);
+    if (match) {
+      selectedPrice = {
+        min: parseInt(match[1], 10),
+        max: parseInt(match[2], 10),
+      };
+    }
+  }
+
+  const selectedRating = rating ? parseInt(rating, 10) : null;
+
   useEffect(() => {
+    if (!products) return setFiltered([]);
+
     let result = [...products];
 
     if (selectedCategories.length > 0) {
@@ -37,11 +53,38 @@ export default function useShopFilters() {
       );
     }
 
-    setFiltered(result);
-  }, [categories, brands]);
+    if (selectedPrice) {
+      result = result.filter(
+        (p) => p.price >= selectedPrice.min && p.price <= selectedPrice.max
+      );
+    }
 
-  const itemsPerPage = 16;
-  const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
+    if (selectedRating) {
+      result = result.filter((p) => Math.round(p.ratings) === selectedRating);
+    }
+
+    switch (sort) {
+      case "-rating":
+        result.sort((a, b) => b.ratings - a.ratings);
+        break;
+      case "-createdAt":
+        result.sort((a, b) => b.createdAt - a.createdAt);
+        break;
+      case "price":
+        result.sort((a, b) => a.price - b.price);
+        break;
+      case "-price":
+        result.sort((a, b) => b.price - a.price);
+        break;
+      default:
+        break;
+    }
+
+    setFiltered(result);
+  }, [products, categories, brands, sort, price, rating]);
+
+  const itemsPerPage = 12;
+  const totalPages = Math.max(Math.ceil(filtered.length / itemsPerPage), 1);
   const validPage = Math.min(Math.max(pageFromURL, 1), totalPages);
   const [page, setPage] = useState(validPage);
 
@@ -50,14 +93,13 @@ export default function useShopFilters() {
   const currentProducts = filtered.slice(start, end);
 
   useEffect(() => {
-    const totalPages = Math.ceil(filtered.length / itemsPerPage);
-    if (page > totalPages && totalPages > 0) {
+    if (page > totalPages) {
       setPage(1);
       const newParams = new URLSearchParams(searchParams);
       newParams.set("page", 1);
       setSearchParams(newParams);
     }
-  }, [filtered]);
+  }, [filtered, page, totalPages, searchParams, setSearchParams]);
 
   const handlePageChange = (e, value) => {
     setPage(value);

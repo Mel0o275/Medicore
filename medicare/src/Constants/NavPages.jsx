@@ -453,7 +453,7 @@ const filterOptions = {
     "CarePlus",
     "CleanWell",
   ],
-  "Price Filter": ["All", "10L.E-100L.E", "400 L.E-500 L.E"],
+  "Price Filter": ["All", "10L.E-15L.E", "15L.E-20L.E"],
 };
 
 const filterKeys = {

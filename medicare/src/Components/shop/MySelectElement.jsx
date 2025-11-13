@@ -11,14 +11,17 @@ export default function MySelectElement() {
 
   const handleChange = (e) => {
     const newSort = e.target.value;
-    const newSearchParams = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams);
+
     if (newSort === "default") {
-      newSearchParams.delete("sort");
+      params.delete("sort");
     } else {
-      newSearchParams.set("sort", newSort);
+      params.set("sort", newSort);
     }
-    newSearchParams.set("page", 1);
-    setSearchParams(newSearchParams);
+
+    params.set("page", 1);
+
+    setSearchParams(params);
   };
 
   return (

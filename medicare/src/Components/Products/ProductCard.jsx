@@ -3,18 +3,18 @@ import MyRating from "../MyRating";
 import { MdFavorite } from "react-icons/md";
 
 import { NavLink } from "react-router-dom";
-const ProductCard = ({ product: { id, price, title, images, ratings } }) => {
+const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
   const [liked, setLiked] = useState(false);
   return (
     <div className="w-full rounded-lg border border-stone-200 overflow-hidden group cursor-pointer shadow-sm hover:shadow-lg transition-shadow duration-300">
       <div className="relative h-40 sm:h-44 md:h-48">
         <img
-          src={images[0]}
+          src={images[0].url}
           alt="Front"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0"
         />
         <img
-          src={images[1]}
+          src={images[1].url}
           alt="Back"
           className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         />
@@ -40,10 +40,12 @@ const ProductCard = ({ product: { id, price, title, images, ratings } }) => {
         <div className="py-4">
           <MyRating value={ratings} />
         </div>
-        <p className="text-gray-700 text-sm md:text-base font-bold">{price}</p>
+        <p className="text-gray-700 text-sm md:text-base font-bold">
+          {price} L.E
+        </p>
         <div className="mt-2 flex justify-center items-center">
           <NavLink
-            to={`/shop/productdetails/${id}`}
+            to={`/shop/productdetails/${_id}`}
             onClick={() => window.scrollTo(0, 0)}
             className="px-3 py-1.5 bg-[#00a297] text-white text-sm rounded-md 
          transform transition-all duration-300 
