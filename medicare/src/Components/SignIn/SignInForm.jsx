@@ -31,7 +31,7 @@ const SignInForm = () => {
         method: "post",
         url: `${API_URL}/auth/login`,
         data: { email: data.email, password: data.password },
-        credintioals: "include",
+        credentials: "include",
       });
 
       if (res && (res.status === 200 || res.status === 201)) {
