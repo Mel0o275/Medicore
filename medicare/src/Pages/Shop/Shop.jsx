@@ -6,7 +6,7 @@ import MyPagination from "../../components/MyPagination";
 import ScrollButton from "../../components/ScrollButton";
 import { shopFilters } from "../../Constants/NavPages";
 import useShopFilters from "../../Hooks/useShopFilters";
-import LoadingScreenAnimation from "../LoadingScreenAnimation/LoadingScreenAnimation";
+import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useProductStore } from "../../Store/useProductStore";

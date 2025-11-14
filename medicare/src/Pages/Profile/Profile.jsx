@@ -23,6 +23,7 @@ import {
 /* --------------------------- "pages" -------------------------------- */
 import Logout from "../Logout/Logout.jsx";
 
+import DeleteProfile from "../ProfilePages/DeleteProfile.jsx";
 
 
 import { profileList } from "../../Constants/NavPages.jsx";
@@ -41,9 +42,9 @@ function Profile() {
     <Box sx={{ minHeight: "100vh", p: 2 }}>
       <Container>
         <Grid container spacing={4}>
-          {/* Logout */}
+         
           {open ? (
-            <Logout open={open} handleClose={handleClose}></Logout>
+            <DeleteProfile open={open} handleClose={handleClose}></DeleteProfile>
           ) : (
             <></>
           )}

@@ -32,13 +32,13 @@ import PersonalSecurity from "./Pages/ProfilePages/PersonalSecurity";
 import PersonalNotifications from "./Pages/ProfilePages/PersonalNotifications";
 import ForgotPasswordPage from "./Pages/ForgotPasswordPage/ForgotPasswordPage";
 
-import LoadingScreenAnimation from "./Pages/LoadingScreenAnimation/LoadingScreenAnimation";
+import LoadingScreenAnimation from "./Animations/LoadingScreenAnimation.jsx";
 
 import Dashboard from "./Pages/DashBoard";
 import MainDash from "./Pages/DashBoardPages/MainDash";
 import InventoryDash from "./Pages/DashBoardPages/InventoryDash";
 import OrdersDash from "./Pages/DashBoardPages/OrdersDash";
-import EmployeesDash from "./Pages/DashBoardPages/EmployeesDash";
+import UsersDash from "./Pages/DashBoardPages/UsersDash.jsx";
 import SettingsDash from "./Pages/DashBoardPages/SettingsDash";
 
 /* -------------------------- Toast --------------------------- */
@@ -50,6 +50,7 @@ import useTheme from "./Store/useTheme";
 import { ThemeProvider } from "@mui/material";
 import ProtectedRoute from "./Components/protectedRoute/ProtectedRoute.jsx";
 import axios from 'axios';
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 const muiTheme = buildMuiTheme();
 
@@ -124,7 +125,7 @@ function App() {
               <Route index element={<MainDash />} />
               <Route path="Inventory" element={<InventoryDash />} />
               <Route path="Orders" element={<OrdersDash />} />
-              <Route path="Employees" element={<EmployeesDash />} />
+              <Route path="Users" element={<UsersDash />} />
               <Route path="Settings" element={<SettingsDash />} />
             </Route>
             <Route path="/questions" element={<Questions />} />

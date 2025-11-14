@@ -33,7 +33,7 @@ import AddProductModal from "../../Components/AddProduct/AddProduct.jsx";
 import EditProductModal from "../../Components/EditProduct/EditProduct.jsx";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import LoadingScreenAnimation from "../LoadingScreenAnimation/LoadingScreenAnimation.jsx";
+import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation.jsx";
 const fetchProducts = async () => {
   const url = import.meta.env.VITE_API_URL;
   const { data } = await axios.get(`${url}/products`);

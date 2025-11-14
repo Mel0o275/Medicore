@@ -3,6 +3,8 @@ import LockIcon from "@mui/icons-material/Lock";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import {
   AiOutlineMessage,
   AiOutlineUser,
@@ -475,7 +477,7 @@ const profileList = [
   { name: "Info", icon: <PersonIcon /> },
   { name: "Security", icon: <LockIcon /> },
   { name: "Notifications", icon: <NotificationsIcon /> },
-  { name: "Logout", icon: <LogoutIcon /> },
+  { name: "Delete Profile", icon: <DeleteIcon /> },
   { name: "Themes", icon: <ColorLensIcon /> },
 ];
 

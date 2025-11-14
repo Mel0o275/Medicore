@@ -13,7 +13,7 @@ import ShareModal from "./ShareModal";
 import { FaRegEye } from "react-icons/fa";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import LoadingScreenAnimation from "../LoadingScreenAnimation/LoadingScreenAnimation";
+import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation";
 import { useProductStore } from "../../Store/useProductStore";
 function ProductDetailsPage() {
   const { id } = useParams();
