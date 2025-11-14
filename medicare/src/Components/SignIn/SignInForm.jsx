@@ -36,7 +36,7 @@ const SignInForm = () => {
 
       if (res && (res.status === 200 || res.status === 201)) {
         const user = res.data.user || res.data;
-        const token = res.data.token || res.data.jwt;
+        const token = res.data.token;
 
         // Persist to Zustand
         login(user, token);
