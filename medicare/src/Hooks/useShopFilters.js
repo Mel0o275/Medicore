@@ -12,29 +12,30 @@ export default function useShopFilters(products = []) {
   const brands = searchParams.get("brands") || "";
   const price = searchParams.get("price") || "";
   const rating = searchParams.get("rating") || "";
+  console.log(categories);
 
   const selectedCategories = categories
     .split(",")
     .map((c) => c.trim().toLowerCase().replaceAll("-", " "))
-    .filter(Boolean);
-
+    .filter((item) => item.trim() != "");
+  console.log(selectedCategories);
   const selectedBrands = brands
     .split(",")
     .map((b) => b.trim().toLowerCase().replaceAll("-", " "))
-    .filter(Boolean);
+    .filter((item) => item.trim() != "");
 
   let selectedPrice = null;
   if (price && price.toLowerCase() !== "all") {
     const match = price.match(/(\d+)l\.e-(\d+)l\.e/i);
     if (match) {
       selectedPrice = {
-        min: parseInt(match[1], 10),
-        max: parseInt(match[2], 10),
+        min: parseInt(match[1]),
+        max: parseInt(match[2]),
       };
     }
   }
 
-  const selectedRating = rating ? parseInt(rating, 10) : null;
+  const selectedRating = rating ? parseInt(rating) : null;
 
   useEffect(() => {
     if (!products) return setFiltered([]);
