@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 /* --------------------------- "MUI" -------------------------------- */
-
 import {
   Box,
   Grid,
@@ -12,11 +11,94 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
+/* --------------------------- "react-hook-form" -------------------------------- */
+import { useForm } from "react-hook-form";
+import { useUserMutations } from "../../Hooks/reactUser/useUserMutations";
+import ViewButtonLoader from "../../Components/Loades/ViewButtonLoader";
+import toast from "react-hot-toast";
 
 function PersonalSecurity() {
-  const [showOTPSection, setShowOTPSection] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isDirty, isValid },
+    watch,
+    reset,
+  } = useForm({
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
+    mode: "onChange", // Validation happens on change
+  });
+
+  // Watch password to compare with confirmPassword
+  const password = watch("password");
+
+  const { changePassMutation } = useUserMutations();
+  const onSubmit = (data) => {
+    console.log("Updated security data:", data);
+    // Excepected error because fields
+    changePassMutation.mutate(
+      { password: data.password },
+      {
+        onSuccess: () => {
+          reset();
+          console.log("Successfull changing password:");
+          toast.success(`User changed password successfully`);
+        },
+        onError: (error) => {
+          const serverMessage =
+            error?.response?.data?.message || "User doessn't changed password";
+
+          toast.error(serverMessage);
+        },
+      }
+    );
+  };
+
+  const handleCancel = () => {
+    reset();
+  };
+
+  const validatePassword = (value) => {
+    if (!value) return "Password is required";
+
+    const requirements = {
+      length: value.length >= 8,
+      uppercase: /[A-Z]/.test(value),
+      lowercase: /[a-z]/.test(value),
+      number: /[0-9]/.test(value),
+      specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(value),
+    };
+
+    if (!requirements.length)
+      return "Password must be at least 8 characters long";
+    if (!requirements.uppercase)
+      return "Password must contain at least one uppercase letter";
+    if (!requirements.lowercase)
+      return "Password must contain at least one lowercase letter";
+    if (!requirements.number)
+      return "Password must contain at least one number";
+    if (!requirements.specialChar)
+      return "Password must contain at least one special character";
+
+    return true;
+  };
+
+  const validateConfirmPassword = (value) => {
+    if (value !== password) {
+      return "Passwords do not match";
+    }
+    return true;
+  };
+
+  // Check if form can be submitted
+  const canSubmit = isDirty && isValid;
+
   return (
     <>
+      {changePassMutation.isPending && <ViewButtonLoader />}
       <Grid size={{ xs: 12, md: 9 }}>
         <Box sx={{ pb: 2 }}>
           <Typography variant="h4" className="text-white font-semibold">
@@ -29,193 +111,190 @@ function PersonalSecurity() {
 
         <Box>
           <div className="border-b border-gray-300 pb-12">
-            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-              <div className="sm:col-span-6">
-                <label
-                  htmlFor="current-password"
-                  className="block text-sm/6 font-medium"
-                >
-                  Current Password
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="current-password"
-                    name="current-password"
-                    type="password"
-                    autoComplete="current-password"
-                    className="block w-full rounded-md border border-gray-300 px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6"
-                  />
-                </div>
-              </div>
-
+            <form
+              id="security-form"
+              onSubmit={handleSubmit(onSubmit)}
+              className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
+            >
+              {/* New Password */}
               <div className="sm:col-span-3">
                 <label
-                  htmlFor="new-password"
-                  className="block text-sm/6 font-medium"
+                  htmlFor="password"
+                  className="block text-sm/6 font-medium text-white"
                 >
                   New Password
                 </label>
                 <div className="mt-2">
                   <input
-                    id="new-password"
-                    name="new-password"
+                    id="password"
                     type="password"
                     autoComplete="new-password"
-                    className="block w-full rounded-md border border-gray-300 px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6"
+                    className={`block w-full rounded-md border px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6 ${
+                      errors.password
+                        ? "border-red-500 bg-white text-gray-900"
+                        : "border-gray-300 bg-white text-gray-900"
+                    }`}
+                    {...register("password", {
+                      required: "New password is required",
+                      validate: validatePassword,
+                    })}
                   />
+                  {errors.password && (
+                    <span className="text-red-500 text-xs mt-1 block">
+                      {errors.password.message}
+                    </span>
+                  )}
                 </div>
               </div>
 
               {/* Confirm Password */}
               <div className="sm:col-span-3">
                 <label
-                  htmlFor="confirm-password"
-                  className="block text-sm/6 font-medium"
+                  htmlFor="confirmPassword"
+                  className="block text-sm/6 font-medium text-white"
                 >
                   Confirm New Password
                 </label>
                 <div className="mt-2">
                   <input
-                    id="confirm-password"
-                    name="confirm-password"
+                    id="confirmPassword"
                     type="password"
                     autoComplete="new-password"
-                    className="block w-full rounded-md border border-gray-300 px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6"
+                    className={`block w-full rounded-md border px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6 ${
+                      errors.confirmPassword
+                        ? "border-red-500 bg-white text-gray-900"
+                        : "border-gray-300 bg-white text-gray-900"
+                    }`}
+                    {...register("confirmPassword", {
+                      required: "Please confirm your password",
+                      validate: validateConfirmPassword,
+                    })}
                   />
+                  {errors.confirmPassword && (
+                    <span className="text-red-500 text-xs mt-1 block">
+                      {errors.confirmPassword.message}
+                    </span>
+                  )}
                 </div>
               </div>
 
+              {/* Password Requirements */}
               <div className="sm:col-span-6">
                 <div className="bg-gray-50 rounded-md p-4">
                   <h4 className="text-sm font-medium mb-2">
                     Password Requirements
                   </h4>
                   <ul className="text-sm text-gray-600 space-y-1">
-                    <li>• At least 8 characters long</li>
-                    <li>• Contains uppercase and lowercase letters</li>
-                    <li>
-                      • Includes at least one number and special character
+                    <li
+                      className={
+                        password?.length >= 8
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }
+                    >
+                      • At least 8 characters long{" "}
+                      {password?.length >= 8 && "✓"}
+                    </li>
+                    <li
+                      className={
+                        /[A-Z]/.test(password)
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }
+                    >
+                      • Contains uppercase letters{" "}
+                      {/[A-Z]/.test(password) && "✓"}
+                    </li>
+                    <li
+                      className={
+                        /[a-z]/.test(password)
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }
+                    >
+                      • Contains lowercase letters{" "}
+                      {/[a-z]/.test(password) && "✓"}
+                    </li>
+                    <li
+                      className={
+                        /[0-9]/.test(password)
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }
+                    >
+                      • Contains at least one number{" "}
+                      {/[0-9]/.test(password) && "✓"}
+                    </li>
+                    <li
+                      className={
+                        /[!@#$%^&*(),.?":{}|<>]/.test(password)
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }
+                    >
+                      • Contains special character{" "}
+                      {/[!@#$%^&*(),.?":{}|<>]/.test(password) && "✓"}
                     </li>
                   </ul>
                 </div>
               </div>
 
+              {/* Submit Buttons */}
               <div className="sm:col-span-6 mt-8">
-                <h3 className="text-lg font-medium mb-4">
-                  Two-Factor Authentication
-                </h3>
-
-                {/* OTP Enable/Disable */}
-                <div className="flex items-center justify-between py-4 border-b border-gray-200">
-                  <div>
-                    <h4 className="text-sm font-medium">
-                      Enable OTP Verification
-                    </h4>
-                    <p className="text-sm text-gray-500">
-                      Add an extra layer of security to your account
-                    </p>
-                  </div>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    gap: 2,
+                    alignItems: "center",
+                  }}
+                >
+                  <Button
+                    variant="outlined"
+                    onClick={handleCancel}
+                    type="button"
+                    sx={{
+                      color: "white",
+                      borderColor: "gray.500",
+                      "&:hover": {
+                        borderColor: "gray.300",
+                        backgroundColor: "rgba(255,255,255,0.1)",
+                      },
+                    }}
+                  >
+                    Cancel
+                  </Button>
                   <Button
                     variant="contained"
-                    size="small"
-                    onClick={() => setShowOTPSection(!showOTPSection)}
+                    type="submit"
+                    disabled={!canSubmit}
+                    sx={{
+                      backgroundColor: canSubmit ? "#1976d2" : "gray.600",
+                      "&:hover": {
+                        backgroundColor: canSubmit ? "#1565c0" : "gray.600",
+                      },
+                      "&:disabled": {
+                        backgroundColor: "gray.600",
+                        color: "gray.400",
+                      },
+                    }}
                   >
-                    {showOTPSection ? "Cancel" : "Enable"}
+                    Update Password
                   </Button>
-                </div>
+                </Box>
 
-                {showOTPSection && (
-                  <div className="mt-6 space-y-6 p-4 bg-gray-50 rounded-md">
-                    <div className="sm:col-span-6">
-                      <label
-                        htmlFor="otp-method"
-                        className="block text-sm/6 font-medium"
-                      >
-                        OTP Delivery Method
-                      </label>
-                      <div className="mt-2 grid grid-cols-1">
-                        <select
-                          id="otp-method"
-                          name="otp-method"
-                          defaultValue="email"
-                          className="col-start-1 row-start-1 w-full appearance-none rounded-md border border-gray-300 py-1.5 pr-8 pl-3 text-base outline-none focus:border-gray-500 sm:text-sm/6"
-                        >
-                          <option value="email">Email</option>
-                          <option value="sms">SMS</option>
-                          <option value="authenticator">
-                            Authenticator App
-                          </option>
-                        </select>
-                        <KeyboardArrowDownIcon
-                          aria-hidden="true"
-                          className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="sm:col-span-6">
-                      <label
-                        htmlFor="otp-code"
-                        className="block text-sm/6 font-medium"
-                      >
-                        Enter OTP Code
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="otp-code"
-                          name="otp-code"
-                          type="text"
-                          placeholder="Enter 6-digit code"
-                          maxLength={6}
-                          className="block w-full rounded-md border border-gray-300 px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6"
-                        />
-                      </div>
-                      <div className="mt-2 flex items-center gap-4">
-                        <Button variant="outlined" size="small">
-                          Verify OTP
-                        </Button>
-                        <Button
-                          variant="text"
-                          size="small"
-                          className="text-blue-600"
-                        >
-                          Resend Code
-                        </Button>
-                        <span className="text-sm text-gray-500">60s</span>
-                      </div>
-                    </div>
-
-                    <div className="sm:col-span-6 p-3 bg-yellow-50 rounded-md border border-yellow-200">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h4 className="text-sm font-medium text-yellow-800">
-                            Didn't receive the code?
-                          </h4>
-                          <p className="text-sm text-yellow-700">
-                            Check your spam folder or try another method
-                          </p>
-                        </div>
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          className="border-yellow-400 text-yellow-700"
-                        >
-                          Try Again
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
+                {/* Form Status Indicator */}
+                {!canSubmit && isDirty && (
+                  <Typography
+                    variant="caption"
+                    className="text-yellow-500 block mt-2 text-right"
+                  >
+                    Please fix validation errors to update password
+                  </Typography>
                 )}
               </div>
-            </div>
+            </form>
           </div>
-        </Box>
-
-        <Box
-          sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 4 }}
-        >
-          <Button variant="outlined">Cancel</Button>
-          <Button variant="contained">Update Password</Button>
         </Box>
       </Grid>
     </>

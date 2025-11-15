@@ -2,7 +2,9 @@ import { Cardio } from "ldrs/react";
 import "ldrs/react/Cardio.css";
 
 import React, { useEffect } from "react";
+/* ----------------------------- Motion ---------------------------- */
 import { motion, AnimatePresence } from "framer-motion";
+/* ----------------------------- MUI ---------------------------- */
 import { Box, Typography, useTheme } from "@mui/material";
 
 export default function LoadingScreenAnimation({ isVisible, onFinish }) {
