@@ -43,6 +43,8 @@ import {
 import { Link } from "react-router-dom";
 import useAuthStore from "../../Store/useAuthStore.js";
 
+import {CartContext} from "../../Context/cartContext.jsx"
+
 function HideOnScroll(props) {
   const { children, window } = props;
   // Note that you normally won't need to set the window ref as useScrollTrigger
@@ -73,6 +75,15 @@ export default function Navbar(props) {
   );
   const [categoriesAnchor, setCategoriesAnchor] = useState(null);
   const [elementsAnchor, setElementsAnchor] = useState(null);
+
+  //Mai
+
+  const {count : count} = React.useContext(CartContext);
+  console.log(count);
+
+  useEffect(() => {count})
+
+  //
 
   const handleCategoriesClick = (event) => {
     setCategoriesAnchor(event.currentTarget);
@@ -246,7 +257,7 @@ export default function Navbar(props) {
                 component={Link}
                 to="/cart"
               >
-                <Badge badgeContent={17} color="error">
+                <Badge badgeContent={count} color="error">
                   <AddShoppingCartIcon />
                 </Badge>
               </IconButton>
