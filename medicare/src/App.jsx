@@ -38,7 +38,7 @@ import Dashboard from "./Pages/DashBoard";
 import MainDash from "./Pages/DashBoardPages/MainDash";
 import InventoryDash from "./Pages/DashBoardPages/InventoryDash";
 import OrdersDash from "./Pages/DashBoardPages/OrdersDash";
-import EmployeesDash from "./Pages/DashBoardPages/EmployeesDash";
+import UsersDash from "./Pages/DashBoardPages/UsersDash.jsx";
 import SettingsDash from "./Pages/DashBoardPages/SettingsDash";
 
 /* -------------------------- Toast --------------------------- */

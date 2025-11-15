@@ -7,8 +7,8 @@ import MyTab from "../../components/Tab/MyTab";
 import ProductCard from "../../components/Products/ProductCard";
 import ScrollButton from "../../components/ScrollButton";
 import { features, reviews } from "../../Constants/NavPages";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useContext, useState } from "react";
 import ShareModal from "./ShareModal";
 import { FaRegEye } from "react-icons/fa";
 import axios from "axios";
@@ -16,6 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingScreenAnimation from "../LoadingScreenAnimation/LoadingScreenAnimation";
 function ProductDetailsPage() {
   const { id } = useParams();
+  console.log(id);
 
   const fetchProduct = async () => {
     const url = import.meta.env.VITE_API_URL;
@@ -31,13 +32,92 @@ function ProductDetailsPage() {
   const [openmodal, setOpenModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
-  const handleInc = () => {
-    setQuantity((prev) => prev + 1);
-  };
-  const handleDec = () => {
-    if (quantity > 1) setQuantity((prev) => prev - 1);
-    else setQuantity(1);
-  };
+  const {count : count, setCount : setCount} = useContext(CartContext);
+
+
+  const API = import.meta.env.VITE_API_URL;
+  console.log(API);
+  const [disabled, setdisabled] = useState(false)
+  const token = localStorage.getItem("token");
+  
+  const navigate = useNavigate();
+
+  // async function handleInc() {
+  //   // setQuantity((prev) => prev + 1);
+
+  //   if (!token?.trim()) {
+  //     navigate("/login");
+  //     return;
+  //   }
+
+  //   try {
+  //     const { data } = await axios.patch(`${API}/cart/${id}/+`, {}, {
+  //       headers: {
+  //         Authorization: token
+  //       }
+  //     })
+  //     console.log(1);
+  //     console.log(data.message);
+
+  //     if (data.message == 'success') {
+  //       setQuantity((prev) => prev + 1);
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+  // async function handleDec() {
+  //   // if (quantity > 1) setQuantity((prev) => prev - 1);
+  //   // else setQuantity(1);
+
+  //   if (!token?.trim()) {
+  //     navigate("/login");
+  //     return;
+  //   }
+
+  //   if (quantity <= 1) return;
+
+  //   try {
+  //     const { data } = await axios.patch(`${API}/cart/${id}/-`, {}, {
+  //       headers: { Authorization: token }
+  //     });
+  //     if (data.message === 'success') {
+  //       setQuantity(prev => prev - 1);
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+
+  // };
+
+  async function addToCart() {
+    if (!token?.trim()) {
+      navigate("/login");
+      return;
+    }
+    
+    try {
+      const { data } = await axios.post(`${API}/cart`,{
+        "_id": id
+      },{
+        headers : {
+          Authorization : token
+        }
+      })
+      console.log(1);
+      console.log(data);
+      if(data.products.length != -1) {
+        toast(`Product added to cart succsessfully✨`, {
+          position : 'top-center',
+          duration : 3000
+        })
+        setCount(count + 1);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  
   if (isLoading) return <LoadingScreenAnimation />;
   return (
     <section className="pb-14 bg-stone-100/50">
@@ -105,25 +185,10 @@ function ProductDetailsPage() {
                 {product.visits} people visited this page
               </p>
             </div>
-            <div className="flex justify-center gap-5 my-2">
-              <button
-                className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
-                onClick={() => handleDec()}
-              >
-                <FaCircleMinus />
-              </button>
-              <span className="font-bold border border-1 rounded-full p-1 px-2">
-                {quantity}
-              </span>
-              <button
-                className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
-                onClick={() => handleInc()}
-              >
-                <FaCirclePlus />
-              </button>
-            </div>
             <div className="flex gap-5">
-              <button className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row">
+              <button
+              onClick={addToCart}
+              className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row">
                 <FaCartPlus /> <span>Add To Cart</span>
               </button>
               <button className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row">

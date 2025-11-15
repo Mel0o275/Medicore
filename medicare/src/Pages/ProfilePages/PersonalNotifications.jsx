@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 /* --------------------------- "Icons" -------------------------------- */
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import SecurityIcon from "@mui/icons-material/Security";
@@ -8,7 +8,8 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ClearAllIcon from "@mui/icons-material/ClearAll";
 /* --------------------------- "MUI" -------------------------------- */
 
 import {
@@ -21,6 +22,93 @@ import {
 } from "@mui/material";
 
 function PersonalNotifications() {
+  // This would eventually come from your database/state
+  const notifications = [
+    {
+      id: 1,
+      type: "success",
+      title: "Order Successful",
+      message: "Your order #ORD-12345 has been confirmed and is being processed.",
+      time: "2 hours ago",
+      icon: CheckCircleOutlineIcon,
+      color: "green"
+    },
+    {
+      id: 2,
+      type: "info",
+      title: "New Sign In",
+      message: "New sign-in detected from Chrome on Windows.",
+      time: "5 hours ago",
+      icon: SecurityIcon,
+      color: "blue"
+    },
+    {
+      id: 3,
+      type: "info",
+      title: "Account Updated",
+      message: "Your profile information has been successfully updated.",
+      time: "1 day ago",
+      icon: AccountCircleIcon,
+      color: "purple"
+    },
+    {
+      id: 4,
+      type: "info",
+      title: "Logged Out",
+      message: "You have been logged out from your mobile device.",
+      time: "2 days ago",
+      icon: LogoutIcon,
+      color: "gray"
+    },
+    {
+      id: 5,
+      type: "success",
+      title: "Delivery Successful",
+      message: "Your order #ORD-12345 has been delivered successfully.",
+      time: "3 days ago",
+      icon: LocalShippingIcon,
+      color: "green"
+    },
+    {
+      id: 6,
+      type: "error",
+      title: "Order Canceled",
+      message: "Your order #ORD-12346 has been canceled as requested.",
+      time: "1 week ago",
+      icon: CancelIcon,
+      color: "red"
+    },
+    {
+      id: 7,
+      type: "success",
+      title: "Payment Successful",
+      message: "Payment of $149.99 for order #ORD-12345 was successful.",
+      time: "1 week ago",
+      icon: CreditCardIcon,
+      color: "green"
+    },
+    {
+      id: 8,
+      type: "warning",
+      title: "Low Stock Alert",
+      message: 'Product "Wireless Headphones" is running low on stock.',
+      time: "2 weeks ago",
+      icon: WarningAmberIcon,
+      color: "yellow"
+    }
+  ];
+
+  // Placeholder functions for future functionality
+  const handleClearAll = () => {
+    console.log("Clear all notifications clicked");
+    // Add your clear all functionality here later
+  };
+
+  const handleDeleteNotification = (id) => {
+    console.log(`Delete notification with id: ${id}`);
+    // Add your delete functionality here later
+  };
+
   return (
     <>
       <Grid size={{ xs: 12, md: 9 }}>
@@ -31,6 +119,26 @@ function PersonalNotifications() {
           <Typography variant="body2" className="text-gray-400 mt-1">
             Your recent notifications and alerts.
           </Typography>
+        </Box>
+
+        {/* Clear All Button */}
+        <Box sx={{ mb: 2, display: "flex", justifyContent: "flex-end" }}>
+          <Button
+            variant="outlined"
+            startIcon={<ClearAllIcon />}
+            onClick={handleClearAll}
+            sx={{
+              color: "#6b7280",
+              borderColor: "#6b7280",
+              "&:hover": {
+                backgroundColor: "#374151",
+                borderColor: "#9ca3af",
+                color: "white"
+              }
+            }}
+          >
+            Clear All Notifications
+          </Button>
         </Box>
 
         <Box
@@ -57,166 +165,89 @@ function PersonalNotifications() {
             },
           }}
         >
-          {/* I wil be such as array of messages and loop of theme form the data base */}
-          <div className="border border-green-200 bg-green-50 rounded-lg p-4">
-            <div className="flex items-start justify-between">
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <CheckCircleOutlineIcon className="w-5 h-5 text-green-600" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-medium text-green-800">
-                    Order Successful
-                  </h4>
-                  <p className="text-sm text-green-700 mt-1">
-                    Your order #ORD-12345 has been confirmed and is being
-                    processed.
-                  </p>
-                  <p className="text-xs text-green-600 mt-1">2 hours ago</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          {notifications.map((notification) => {
+            const IconComponent = notification.icon;
+            const colorClasses = {
+              green: "border-green-200 bg-green-50",
+              blue: "border-blue-200 bg-blue-50",
+              purple: "border-purple-200 bg-purple-50",
+              gray: "border-gray-200 bg-gray-50",
+              red: "border-red-200 bg-red-50",
+              yellow: "border-yellow-200 bg-yellow-50"
+            };
+            const textClasses = {
+              green: "text-green-800",
+              blue: "text-blue-800",
+              purple: "text-purple-800",
+              gray: "text-gray-800",
+              red: "text-red-800",
+              yellow: "text-yellow-800"
+            };
+            const iconBgClasses = {
+              green: "bg-green-100 text-green-600",
+              blue: "bg-blue-100 text-blue-600",
+              purple: "bg-purple-100 text-purple-600",
+              gray: "bg-gray-100 text-gray-600",
+              red: "bg-red-100 text-red-600",
+              yellow: "bg-yellow-100 text-yellow-600"
+            };
 
-          <div className="border border-blue-200 bg-blue-50 rounded-lg p-4">
-            <div className="flex items-start justify-between">
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <SecurityIcon className="w-5 h-5 text-blue-600" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-medium text-blue-800">
-                    New Sign In
-                  </h4>
-                  <p className="text-sm text-blue-700 mt-1">
-                    New sign-in detected from Chrome on Windows.
-                  </p>
-                  <p className="text-xs text-blue-600 mt-1">5 hours ago</p>
-                </div>
-              </div>
-            
-            </div>
-          </div>
-
-          <div className="border border-purple-200 bg-purple-50 rounded-lg p-4">
-            <div className="flex items-start justify-between">
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <AccountCircleIcon className="w-5 h-5 text-purple-600" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-medium text-purple-800">
-                    Account Updated
-                  </h4>
-                  <p className="text-sm text-purple-700 mt-1">
-                    Your profile information has been successfully updated.
-                  </p>
-                  <p className="text-xs text-purple-600 mt-1">1 day ago</p>
-                </div>
-              </div>
-             
-            </div>
-          </div>
-
-          <div className="border border-gray-200 bg-gray-50 rounded-lg p-4">
-            <div className="flex items-start justify-between">
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <LogoutIcon className="w-5 h-5 text-gray-600" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-medium text-gray-800">
-                    Logged Out
-                  </h4>
-                  <p className="text-sm text-gray-700 mt-1">
-                    You have been logged out from your mobile device.
-                  </p>
-                  <p className="text-xs text-gray-600 mt-1">2 days ago</p>
+            return (
+              <div 
+                key={notification.id} 
+                className={`border rounded-lg p-4 ${colorClasses[notification.color]}`}
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start space-x-3 flex-1">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${iconBgClasses[notification.color]}`}>
+                      <IconComponent className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className={`text-sm font-medium ${textClasses[notification.color]}`}>
+                        {notification.title}
+                      </h4>
+                      <p className={`text-sm mt-1 ${
+                        notification.color === 'green' ? 'text-green-700' :
+                        notification.color === 'blue' ? 'text-blue-700' :
+                        notification.color === 'purple' ? 'text-purple-700' :
+                        notification.color === 'gray' ? 'text-gray-700' :
+                        notification.color === 'red' ? 'text-red-700' :
+                        'text-yellow-700'
+                      }`}>
+                        {notification.message}
+                      </p>
+                      <p className={`text-xs mt-1 ${
+                        notification.color === 'green' ? 'text-green-600' :
+                        notification.color === 'blue' ? 'text-blue-600' :
+                        notification.color === 'purple' ? 'text-purple-600' :
+                        notification.color === 'gray' ? 'text-gray-600' :
+                        notification.color === 'red' ? 'text-red-600' :
+                        'text-yellow-600'
+                      }`}>
+                        {notification.time}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Delete Button for individual notification */}
+                  <IconButton
+                    onClick={() => handleDeleteNotification(notification.id)}
+                    sx={{
+                      ml: 1,
+                      color: '#6b7280',
+                      '&:hover': {
+                        backgroundColor: '#ef4444',
+                        color: 'white'
+                      }
+                    }}
+                    size="small"
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
                 </div>
               </div>
-             
-            </div>
-          </div>
-
-          <div className="border border-green-200 bg-green-50 rounded-lg p-4">
-            <div className="flex items-start justify-between">
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <LocalShippingIcon className="w-5 h-5 text-green-600" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-medium text-green-800">
-                    Delivery Successful
-                  </h4>
-                  <p className="text-sm text-green-700 mt-1">
-                    Your order #ORD-12345 has been delivered successfully.
-                  </p>
-                  <p className="text-xs text-green-600 mt-1">3 days ago</p>
-                </div>
-              </div>
-             
-            </div>
-          </div>
-
-          <div className="border border-red-200 bg-red-50 rounded-lg p-4">
-            <div className="flex items-start justify-between">
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <CancelIcon className="w-5 h-5 text-red-600" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-medium text-red-800">
-                    Order Canceled
-                  </h4>
-                  <p className="text-sm text-red-700 mt-1">
-                    Your order #ORD-12346 has been canceled as requested.
-                  </p>
-                  <p className="text-xs text-red-600 mt-1">1 week ago</p>
-                </div>
-              </div>
-            
-            </div>
-          </div>
-
-          <div className="border border-green-200 bg-green-50 rounded-lg p-4">
-            <div className="flex items-start justify-between">
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <CreditCardIcon className="w-5 h-5 text-green-600" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-medium text-green-800">
-                    Payment Successful
-                  </h4>
-                  <p className="text-sm text-green-700 mt-1">
-                    Payment of $149.99 for order #ORD-12345 was successful.
-                  </p>
-                  <p className="text-xs text-green-600 mt-1">1 week ago</p>
-                </div>
-              </div>
-             
-            </div>
-          </div>
-
-          <div className="border border-yellow-200 bg-yellow-50 rounded-lg p-4">
-            <div className="flex items-start justify-between">
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <WarningAmberIcon className="w-5 h-5 text-yellow-600" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-medium text-yellow-800">
-                    Low Stock Alert
-                  </h4>
-                  <p className="text-sm text-yellow-700 mt-1">
-                    Product "Wireless Headphones" is running low on stock.
-                  </p>
-                  <p className="text-xs text-yellow-600 mt-1">2 weeks ago</p>
-                </div>
-              </div>
-             
-            </div>
-          </div>
+            );
+          })}
         </Box>
       </Grid>
     </>
