@@ -1,27 +1,14 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
-import { useSearchParams } from "react-router-dom";
+import useSearchStore from "../../Store/useSearchStore";
 
 export default function MySelectElement() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const sortValue = searchParams.get("sort") || "default";
-
+  const sort = useSearchStore((state) => state.sort);
+  const setSort = useSearchStore((state) => state.setSort);
   const handleChange = (e) => {
-    const newSort = e.target.value;
-    const params = new URLSearchParams(searchParams);
-
-    if (newSort === "default") {
-      params.delete("sort");
-    } else {
-      params.set("sort", newSort);
-    }
-
-    params.set("page", 1);
-
-    setSearchParams(params);
+    setSort(e.target.value);
   };
 
   return (
@@ -41,6 +28,7 @@ export default function MySelectElement() {
         <InputLabel
           variant="standard"
           htmlFor="sort-native"
+          shrink={true}
           sx={{
             color: "#00a297",
             "&.Mui-focused": { color: "#00a297" },
@@ -51,15 +39,15 @@ export default function MySelectElement() {
 
         <NativeSelect
           id="sort-native"
-          value={sortValue}
+          value={sort}
           onChange={handleChange}
           inputProps={{
             name: "sort",
             id: "uncontrolled-native",
           }}
         >
-          <option value="default">Default Sorting</option>
-          <option value="-rating">Sort By Average Rating</option>
+          <option value="">Default Sorting</option>
+          <option value="-ratings">Sort By Average Rating</option>
           <option value="-createdAt">Sort By Latest</option>
           <option value="price">Sort By Price: Low-High</option>
           <option value="-price">Sort By Price: High-Low</option>

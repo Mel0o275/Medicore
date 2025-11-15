@@ -31,6 +31,7 @@ import {
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import useSearchStore from "../Store/useSearchStore";
 
 const drawerWidth = 280;
 
@@ -140,7 +141,7 @@ const menuItems = [
 const Dashboard = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
+  const setQuery = useSearchStore((state) => state.setQuery);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -152,8 +153,8 @@ const Dashboard = () => {
     navigate(path);
   };
 
-  const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
+  const handleSearch = (e) => {
+    setQuery(e.target.value);
   };
 
   // Check if menu item is active
@@ -271,7 +272,6 @@ const Dashboard = () => {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
-              value={searchQuery}
               onChange={handleSearch}
             />
           </Search>

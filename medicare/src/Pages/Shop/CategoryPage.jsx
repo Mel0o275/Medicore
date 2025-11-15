@@ -1,21 +1,22 @@
 import PageTitle from "../../components/PageTitle";
-import MyCollapse from "../../components/shop/MyCollapse";
 import MySelectElement from "../../components/shop/MySelectElement";
 import ProductsContainer from "../../components/Products/ProductsContainer";
 import MyPagination from "../../components/MyPagination";
 import ScrollButton from "../../components/ScrollButton";
-import { shopFilters } from "../../Constants/NavPages";
-import { GiMedicines } from "react-icons/gi";
 import useShopFilters from "../../Hooks/useShopFilters";
 import LoadingScreenAnimation from "../LoadingScreenAnimation/LoadingScreenAnimation";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { GiMedicines } from "react-icons/gi";
 import useSearchStore from "../../Store/useSearchStore";
-import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 const accent = "#00a297";
-function Shop() {
+function CategoryPage() {
   const page = useSearchStore((state) => state.page);
   const setPage = useSearchStore((state) => state.setPage);
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get("category");
   const { filters, clearAll } = useShopFilters();
   const fetchProducts = async () => {
     const url = import.meta.env.VITE_API_URL;
@@ -38,7 +39,6 @@ function Shop() {
   const end = start + itemsPerPage;
   const currentProducts = data?.data?.products.slice(start, end) || [];
 
-  const [showFilters, setShowFilters] = useState(true);
   const handlePageChange = (e, value) => {
     setPage(value);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -52,38 +52,10 @@ function Shop() {
   return (
     <section className="pb-14 bg-stone-100/50">
       <ScrollButton />
-      <PageTitle title="shop" />
-      <div className="w-max mb-5 mt-14 mx-8 md:mx-24 flex gap-5 ">
-        <>
-          <button
-            className="w-max bg-[#00a297] text-white rounded-md px-6 text-lg cursor-pointer "
-            onClick={() => setShowFilters((prev) => !prev)}
-          >
-            {showFilters ? "Hide Filters" : "Show Filters"}
-          </button>
-          <button
-            onClick={() => clearAll()}
-            className="w-max bg-red-500 text-white rounded-md px-6 text-lg cursor-pointer "
-          >
-            Clear Filters
-          </button>
-        </>
-      </div>
+      <PageTitle title={category} />
 
-      <div className="mx-8 md:mx-24 flex flex-col gap-5 md:gap-0 md:grid grid-cols-5">
-        {showFilters && (
-          <div className="flex flex-col gap-5 w-full border-r-stone-200 md:border-r-2 md:pr-4">
-            {shopFilters.map((title, index) => (
-              <MyCollapse key={index} title={title} />
-            ))}
-          </div>
-        )}
-
-        <div
-          className={`${
-            showFilters ? "col-span-4" : "col-span-5"
-          } flex flex-col justify-between gap-10`}
-        >
+      <div className="mx-8 md:mx-24 flex flex-col gap-5 md:gap-0 md:grid grid-cols-5 mt-10">
+        <div className={`${"col-span-5"} flex flex-col justify-between gap-10`}>
           <div>
             <div className="flex items-center justify-between w-full mb-10">
               <p className="text-[#00a297]/80 font-medium pl-4">
@@ -93,6 +65,7 @@ function Shop() {
               </p>
               <MySelectElement />
             </div>
+
             {currentProducts.length > 0 && (
               <div className="pl-4">
                 <ProductsContainer products={currentProducts} />
@@ -124,10 +97,6 @@ function Shop() {
                 >
                   No Products Found
                 </h2>
-
-                <p className="text-sm text-gray-700 max-w-md">
-                  Try changing filters or search for something else.
-                </p>
               </div>
             )}
           </div>
@@ -143,4 +112,4 @@ function Shop() {
   );
 }
 
-export default Shop;
+export default CategoryPage;
