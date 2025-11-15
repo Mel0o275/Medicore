@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useEditProduct from "../../Hooks/useEditProduct.js";
 import {
   Box,
@@ -13,7 +13,6 @@ import {
   Button,
   IconButton,
   Avatar,
-  AvatarGroup,
   Tooltip,
   useMediaQuery,
   useTheme,
@@ -33,21 +32,24 @@ import AddProductModal from "../../Components/AddProduct/AddProduct.jsx";
 import EditProductModal from "../../Components/EditProduct/EditProduct.jsx";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation.jsx";
-const fetchProducts = async () => {
-  const url = import.meta.env.VITE_API_URL;
-  const { data } = await axios.get(`${url}/products`);
-  return data;
-};
+import LoadingScreenAnimation from "../LoadingScreenAnimation/LoadingScreenAnimation.jsx";
+import useShopFilters from "../../Hooks/useShopFilters.js";
 
 const MainDash = () => {
+  const { filters } = useShopFilters();
+  const fetchProducts = async () => {
+    const url = import.meta.env.VITE_API_URL;
+    const { data } = await axios.get(
+      `${url}/products${filters ? `?${filters}` : ""}`
+    );
+    return data;
+  };
   const { data, isLoading } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["products", filters],
     queryFn: fetchProducts,
   });
 
   const products = data?.data?.products;
-  const [productList, setProductList] = useState([]);
   const [toDelete, setToDelete] = useState(null);
   const [openViewModal, setOpenViewModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -61,7 +63,6 @@ const MainDash = () => {
 
   function confirmDelete() {
     if (!toDelete) return;
-    setProductList((prev) => prev.filter((prod) => prod.id !== toDelete.id));
     setToDelete(null);
   }
 
@@ -70,35 +71,24 @@ const MainDash = () => {
   }
 
   function handleUpdateProduct(updatedProduct) {
-    setProductList((prev) =>
-      prev.map((prod) =>
-        prod.id === updatedProduct.id ? { ...prod, ...updatedProduct } : prod
-      )
-    );
     setEditingProduct(null);
   }
 
   function handleAddProduct(newProduct) {
     console.log("Adding new product:", newProduct);
 
-    const newId =
-      productList.length > 0
-        ? Math.max(...productList.map((p) => p.id)) + 1
-        : 1;
+    // const completeProduct = {
+    //   id: newId,
+    //   title: newProduct.title,
+    //   category: newProduct.category,
+    //   price: newProduct.price,
+    //   description: newProduct.description,
+    //   images: newProduct.images || [],
+    // };
 
-    const completeProduct = {
-      id: newId,
-      title: newProduct.title,
-      category: newProduct.category,
-      price: newProduct.price,
-      description: newProduct.description,
-      images: newProduct.images || [],
-    };
-
-    setProductList((prev) => [...prev, completeProduct]);
     handleCloseAddModal();
 
-    console.log("Product added successfully:", completeProduct);
+    // console.log("Product added successfully:", completeProduct);
   }
 
   const {
@@ -133,34 +123,27 @@ const MainDash = () => {
   const handleOpenAddModal = () => setOpenAddModal(true);
   const handleCloseAddModal = () => setOpenAddModal(false);
 
-  const tableColumns = ["_id", "title", "createdAt", "updatedAt"];
+  const tableColumns = ["_id", "images", "title", "createdAt", "updatedAt"];
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const renderCellContent = (key, value) => {
-    if (key === "images" && Array.isArray(value)) {
+    if (key === "images" && Array.isArray(value) && value.length > 0) {
       return (
-        <AvatarGroup
-          max={isSmallScreen ? 2 : 4}
+        <Avatar
+          src={value[0].url}
+          alt="Image 1"
           sx={{
-            justifyContent: "center",
-            "& .MuiAvatar-root": {
-              width: 50,
-              height: 50,
-              borderRadius: "10px",
-              border: "2px solid #fff",
-            },
+            width: 50,
+            height: 50,
+            borderRadius: "10px",
+            border: "2px solid #fff",
           }}
-        >
-          {value.map((image, index) => (
-            <Avatar key={index} src={image} alt={`Image ${index + 1}`} />
-          ))}
-        </AvatarGroup>
+        />
       );
     }
 
-    if (Array.isArray(value)) return value.join(", ");
     if (typeof value === "string" && value.length > 40)
       return (
         <Tooltip title={value}>
@@ -173,12 +156,7 @@ const MainDash = () => {
 
   const formatColumnName = (key) =>
     key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ");
-  useEffect(
-    function () {
-      if (products && products.length > 0) setProductList(products);
-    },
-    [products]
-  );
+
   if (isLoading) return <LoadingScreenAnimation />;
   return (
     <Box sx={{ p: { xs: 2, md: 4 } }}>
@@ -222,9 +200,9 @@ const MainDash = () => {
           <Table sx={{ minWidth: 700 }}>
             <TableHead>
               <TableRow sx={{ backgroundColor: "#f4f6f8" }}>
-                {tableColumns.map((key) => (
+                {tableColumns.map((key, i) => (
                   <TableCell
-                    key={key}
+                    key={i}
                     sx={{
                       fontWeight: "bold",
                       color: "#333",
@@ -241,17 +219,17 @@ const MainDash = () => {
             </TableHead>
 
             <TableBody>
-              {productList.map((prod) => (
+              {products.map((prod) => (
                 <TableRow
-                  key={prod.id}
+                  key={prod._id}
                   hover
                   sx={{
                     "&:hover": { backgroundColor: "#f9fafb" },
                     transition: "0.2s",
                   }}
                 >
-                  {tableColumns.map((key) => (
-                    <TableCell key={key}>
+                  {tableColumns.map((key, j) => (
+                    <TableCell key={`${prod._id}-${key}`}>
                       {renderCellContent(key, prod[key])}
                     </TableCell>
                   ))}

@@ -1,5 +1,3 @@
-import React, { useState , useEffect } from "react";
-
 /* -------------------------- Icons --------------------------- */
 import SearchIcon from "@mui/icons-material/Search";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
@@ -11,7 +9,8 @@ import { Box, AppBar, Toolbar, Typography, InputBase } from "@mui/material";
 /* -------------------------- Material/Styles --------------------------- */
 
 import { styled, alpha } from "@mui/material/styles";
-import SearchDialog from "../Dialogs/SearchDialog";
+import useSearchStore from "../../Store/useSearchStore";
+import { useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -56,21 +55,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function NavbarSecondary() {
-  const [search, setSearch] = useState(false);
- 
-  
-  const handleSearchClick = () => {
-    setSearch(true);
+  const setQuery = useSearchStore((state) => state.setQuery);
+  const navigate = useNavigate();
+  const handleKeyDown = (e) => {
+    if (e.key == "Enter") {
+      if (e.target.value.length > 3) {
+        navigate("/shop");
+      }
+    }
   };
   return (
     <Box sx={{ flexGrow: 1, overflowX: "hidden" }}>
-      <SearchDialog
-        open={search}
-        onClose={() => {
-        
-          setSearch(false);
-        }}
-      />
       <AppBar position="static" sx={{ color: "black" }}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <Box
@@ -112,13 +107,15 @@ export default function NavbarSecondary() {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
-              onClick={handleSearchClick}
+              onKeyDown={handleKeyDown}
+              onChange={(e) => {
+                setQuery(e.target.value);
+              }}
             />
           </Search>
 
           <Box
             sx={{
-              display: "flex",
               display: { xs: "none", md: "flex" },
               alignItems: "center",
               gap: 1,
