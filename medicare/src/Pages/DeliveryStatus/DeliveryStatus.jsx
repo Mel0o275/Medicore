@@ -65,7 +65,7 @@ const DeliveryStatus = () => {
                   <Grid item xs={8}>
                     <Stack direction="row" spacing={2} alignItems="center">
                       <Avatar
-                        src="/Jolie/default-product.jpg"
+                        src="/Jolie/blisswelness.jpg"
                         alt={firstItem.productName}
                         sx={{
                           width: 56,
