@@ -34,7 +34,7 @@ const DeliveryStatus = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    fetch("https://medicore-backend.vercel.app/api/orders") 
+    fetch("https://medicore-backend.vercel.app/api/v1/orders") 
       .then((data) => setOrders(data))
       .catch((err) => console.error("Error in fetching orders:", err));
   }, []);
