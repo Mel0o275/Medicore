@@ -4,8 +4,11 @@ import { FaEye, FaEyeSlash, FaAt } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema } from "./SignUpSchema.jsx";
-import axios from "axios";
 import toast from "react-hot-toast";
+
+// axios
+import axios from "axios";
+
 const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -298,7 +301,7 @@ const SignUpForm = () => {
           <div className="text-center text-sm text-gray-600 mt-6 pt-6 border-t border-gray-100">
             Already have an account?{" "}
             <a
-              href="/signin"
+              href="/login"
               className="text-main hover:text-main-hover font-medium transition-colors underline"
             >
               Sign in
