@@ -11,7 +11,6 @@ import toast from "react-hot-toast";
 
 const SignInForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [authError, setAuthError] = useState(null);
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
 
@@ -31,7 +30,6 @@ const SignInForm = () => {
         method: "post",
         url: `${API_URL}/auth/login`,
         data: { email: data.email, password: data.password },
-        credentials: "include",
       });
 
       if (res && (res.status === 200 || res.status === 201)) {
@@ -149,10 +147,7 @@ const SignInForm = () => {
               </Link>
             </div>
           </div>
-          {/* Authentication error */}
-          {authError && (
-            <p className="mt-1 text-sm text-red-600 text-center">{authError}</p>
-          )}
+          {/* authentication errors shown via toast */}
 
           {/* Submit button */}
           <button
