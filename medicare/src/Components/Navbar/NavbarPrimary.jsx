@@ -2,7 +2,7 @@ import * as React from "react";
 
 /* -------------------------- React --------------------------- */
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 /* -------------------------- MUI --------------------------- */
 
 import {
@@ -11,8 +11,6 @@ import {
   Grid,
   useScrollTrigger,
   Slide,
-  Container,
-  Toolbar,
   Box,
   AppBar,
   Typography,
@@ -29,7 +27,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import MedicationIcon from "@mui/icons-material/Medication";
+
 import DrawerNav from "./DrawerNav";
 
 /* -------------------------- Constant --------------------------- */
@@ -42,6 +40,8 @@ import {
 
 import { Link } from "react-router-dom";
 import useAuthStore from "../../Store/useAuthStore.js";
+
+import {CartContext} from "../../Context/cartContext.jsx"
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -68,11 +68,17 @@ HideOnScroll.propTypes = {
   window: PropTypes.func,
 };
 export default function Navbar(props) {
-  const slugs = categories.map((c) =>
-    c.title.toLowerCase().trim().replace(/\s+/g, "-")
-  );
   const [categoriesAnchor, setCategoriesAnchor] = useState(null);
   const [elementsAnchor, setElementsAnchor] = useState(null);
+
+  //Mai
+
+  const {count : count} = React.useContext(CartContext);
+  console.log(count);
+
+  useEffect(() => {count})
+
+  //
 
   const handleCategoriesClick = (event) => {
     setCategoriesAnchor(event.currentTarget);
@@ -131,7 +137,7 @@ export default function Navbar(props) {
                         open={Boolean(categoriesAnchor)}
                         onClose={handleCategoriesClose}
                       >
-                        {categories.map((category, i) => (
+                        {categories.map((category) => (
                           <MenuItem
                             key={category.title}
                             onClick={handleCategoriesClose}
@@ -139,7 +145,7 @@ export default function Navbar(props) {
                             <Button
                               sx={{ color: "black", fontWeight: "600" }}
                               component={Link}
-                              to={`/shop?categories=${slugs[i]}`}
+                              to={`/category?category=${category.title}`}
                             >
                               {category.title}
                             </Button>
@@ -246,7 +252,7 @@ export default function Navbar(props) {
                 component={Link}
                 to="/cart"
               >
-                <Badge badgeContent={17} color="error">
+                <Badge badgeContent={count} color="error">
                   <AddShoppingCartIcon />
                 </Badge>
               </IconButton>

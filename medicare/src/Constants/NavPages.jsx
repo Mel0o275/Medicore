@@ -428,7 +428,7 @@ const relatedProducts = [
     img: img5,
   },
 ];
-const shopFilters = ["Categories", "Brands", "Price Filter", "Average Rating"];
+const shopFilters = ["Categories", "Brands", "Price Filter"];
 const filterOptions = {
   Categories: [
     "Mother and baby products",
@@ -462,7 +462,6 @@ const filterKeys = {
   Categories: "categories",
   Brands: "brands",
   "Price Filter": "price",
-  "Average Rating": "rating",
 };
 
 const productRows = [

@@ -32,8 +32,8 @@ import PersonalSecurity from "./Pages/ProfilePages/PersonalSecurity";
 import PersonalNotifications from "./Pages/ProfilePages/PersonalNotifications";
 import ForgotPasswordPage from "./Pages/ForgotPasswordPage/ForgotPasswordPage";
 
-import LoadingScreenAnimation from "./Animations/LoadingScreenAnimation.jsx";
-
+import LoadingScreenAnimation from "./Pages/LoadingScreenAnimation/LoadingScreenAnimation";
+import CategoryPage from "./Pages/Shop/CategoryPage.jsx";
 import Dashboard from "./Pages/DashBoard";
 import MainDash from "./Pages/DashBoardPages/MainDash";
 import InventoryDash from "./Pages/DashBoardPages/InventoryDash";
@@ -49,18 +49,16 @@ import { buildMuiTheme } from "./Themes/Theme";
 import useTheme from "./Store/useTheme";
 import { ThemeProvider } from "@mui/material";
 import ProtectedRoute from "./Components/protectedRoute/ProtectedRoute.jsx";
-import axios from 'axios';
-
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import axios from "axios";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const muiTheme = buildMuiTheme();
 
 function App() {
-  let query  = new QueryClient();
+  let query = new QueryClient();
   const { mode } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
 
   console.log("API URL:", import.meta.env.VITE_API_URL);
-
 
   // async function getProducts() {
   //   const API = import.meta.env.VITE_API_URL;
@@ -93,48 +91,49 @@ function App() {
         <NavbarPrimary />
         <ThemeSwitcher />
         <div className="">
-          <QueryClientProvider client={query}> 
-          <Routes>
-            <Route path="/" element={<Navigate to="/Home" replace />} />
-            <Route path="/Home" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/bestseller" element={<BestSeller />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/contact" element={<ContactUs />} />
-            <Route path="/delivery" element={<DeliveryStatus />} />
-            <Route path="/feedback" element={<FeedbackPage />} />
-            <Route path="/login" element={<SignInPage />} />
-            <Route
-              path="/shop/productdetails/:id"
-              element={<ProductDetailsPage />}
-            />
-            <Route element={<ProtectedRoute />}>
-              <Route path="/Profile" element={<Profile />}>
-                <Route index element={<PersonalInfo />} />
-                <Route path="Info" element={<PersonalInfo />} />
-                <Route path="Security" element={<PersonalSecurity />} />
-                <Route path="Themes" element={<PersonalTheme />} />
-                <Route
-                  path="Notifications"
-                  element={<PersonalNotifications />}
-                />
+          <QueryClientProvider client={query}>
+            <Routes>
+              <Route path="/" element={<Navigate to="/Home" replace />} />
+              <Route path="/Home" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/bestseller" element={<BestSeller />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/delivery" element={<DeliveryStatus />} />
+              <Route path="/feedback" element={<FeedbackPage />} />
+              <Route path="/login" element={<SignInPage />} />
+              <Route
+                path="/shop/productdetails/:id"
+                element={<ProductDetailsPage />}
+              />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/Profile" element={<Profile />}>
+                  <Route index element={<PersonalInfo />} />
+                  <Route path="Info" element={<PersonalInfo />} />
+                  <Route path="Security" element={<PersonalSecurity />} />
+                  <Route path="Themes" element={<PersonalTheme />} />
+                  <Route
+                    path="Notifications"
+                    element={<PersonalNotifications />}
+                  />
+                </Route>
+                <Route path="/checkout" element={<Checkout />} />
               </Route>
-              <Route path="/checkout" element={<Checkout />} />
-            </Route>
-            <Route path="/DashBoard" element={<Dashboard />}>
-              <Route index element={<MainDash />} />
-              <Route path="Inventory" element={<InventoryDash />} />
-              <Route path="Orders" element={<OrdersDash />} />
-              <Route path="Users" element={<UsersDash />} />
-              <Route path="Settings" element={<SettingsDash />} />
-            </Route>
-            <Route path="/questions" element={<Questions />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/wishlist" element={<WishList />} />
-            {/* <Route path="/checkout" element={<Checkout />} /> */}
-            <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
-          </Routes>
+              <Route path="/DashBoard" element={<Dashboard />}>
+                <Route index element={<MainDash />} />
+                <Route path="Inventory" element={<InventoryDash />} />
+                <Route path="Orders" element={<OrdersDash />} />
+                <Route path="Employees" element={<EmployeesDash />} />
+                <Route path="Settings" element={<SettingsDash />} />
+              </Route>
+              <Route path="/questions" element={<Questions />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/category" element={<CategoryPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/wishlist" element={<WishList />} />
+              {/* <Route path="/checkout" element={<Checkout />} /> */}
+              <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
+            </Routes>
           </QueryClientProvider>
         </div>
         <Footer />
