@@ -479,6 +479,7 @@ const profileList = [
   { name: "Notifications", icon: <NotificationsIcon /> },
   { name: "Delete Profile", icon: <DeleteIcon /> },
   { name: "Themes", icon: <ColorLensIcon /> },
+  { name: "Logout", icon: <LogoutIcon /> },
 ];
 
 export {

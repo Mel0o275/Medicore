@@ -1,17 +1,11 @@
-import React from 'react'
+import React from "react";
 import { useSpring, animated } from "@react-spring/web";
 
 /* --------------------------- "MUI" -------------------------------- */
-import PropTypes from 'prop-types';
-import {
-  Box,
- 
-  Typography,
- 
-  Button,
-  Backdrop,
-  Modal
-} from "@mui/material";
+import PropTypes from "prop-types";
+import { Box, Typography, Button, Backdrop, Modal } from "@mui/material";
+import useAuthStore from "../../Store/useAuthStore";
+import { useNavigate } from "react-router-dom";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const {
@@ -55,20 +49,29 @@ Fade.propTypes = {
 };
 
 const modalStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: { xs: '90%', sm: 400 },
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: { xs: "90%", sm: 400 },
   maxWidth: 400,
-  bgcolor: 'background.paper',
+  bgcolor: "background.paper",
   borderRadius: 2,
-  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)",
   p: 4,
-  outline: 'none'
+  outline: "none",
 };
 
 function Logout({ open, handleClose }) {
+  const navigate = useNavigate();
+
+  const logout = useAuthStore((state) => state.logout);
+  const handleLogout = () => {
+    logout();
+
+    navigate("/login");
+  };
+
   return (
     <>
       <Modal
@@ -81,71 +84,74 @@ function Logout({ open, handleClose }) {
         slotProps={{
           backdrop: {
             style: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
             },
           },
         }}
       >
         <Fade in={open}>
           <Box sx={modalStyle}>
-            <Box sx={{ textAlign: 'center', mb: 3 }}>
-              <Typography 
-                id="logout-modal-title" 
-                variant="h5" 
+            <Box sx={{ textAlign: "center", mb: 3 }}>
+              <Typography
+                id="logout-modal-title"
+                variant="h5"
                 component="h2"
-                sx={{ 
+                sx={{
                   fontWeight: 600,
-                  color: 'text.primary',
-                  mb: 1
+                  color: "text.primary",
+                  mb: 1,
                 }}
               >
                 Logout Confirmation
               </Typography>
-              <Typography 
-                id="logout-modal-description" 
-                sx={{ 
+              <Typography
+                id="logout-modal-description"
+                sx={{
                   mt: 2,
-                  color: 'text.secondary',
-                  fontSize: '0.95rem',
-                  lineHeight: 1.5
+                  color: "text.secondary",
+                  fontSize: "0.95rem",
+                  lineHeight: 1.5,
                 }}
               >
-                Are you sure you want to logout? You will need to sign in again to access your account.
+                Are you sure you want to logout? You will need to sign in again
+                to access your account.
               </Typography>
             </Box>
-            
-            <Box sx={{ 
-              display: 'flex', 
-              gap: 2, 
-              justifyContent: 'center',
-              mt: 3
-            }}>
-              <Button 
-                variant="outlined" 
+
+            <Box
+              sx={{
+                display: "flex",
+                gap: 2,
+                justifyContent: "center",
+                mt: 3,
+              }}
+            >
+              <Button
+                variant="outlined"
                 onClick={handleClose}
                 sx={{
                   px: 4,
                   py: 1,
-                  borderColor: 'grey.300',
-                  color: 'text.primary',
-                  '&:hover': {
-                    borderColor: 'grey.400',
-                    backgroundColor: 'grey.50'
-                  }
+                  borderColor: "grey.300",
+                  color: "text.primary",
+                  "&:hover": {
+                    borderColor: "grey.400",
+                    backgroundColor: "grey.50",
+                  },
                 }}
               >
                 Cancel
               </Button>
-              <Button 
-                variant="contained" 
-                onClick={handleClose}
+              <Button
+                variant="contained"
+                onClick={handleLogout}
                 sx={{
                   px: 4,
                   py: 1,
-                  backgroundColor: 'error.main',
-                  '&:hover': {
-                    backgroundColor: 'error.dark'
-                  }
+                  backgroundColor: "error.main",
+                  "&:hover": {
+                    backgroundColor: "error.dark",
+                  },
                 }}
               >
                 Logout
@@ -155,7 +161,7 @@ function Logout({ open, handleClose }) {
         </Fade>
       </Modal>
     </>
-  )
+  );
 }
 
-export default Logout
+export default Logout;

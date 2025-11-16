@@ -12,19 +12,16 @@ import {
   ListItemText,
   ListItemIcon,
   Typography,
- 
 } from "@mui/material";
 
 /* --------------------------- "Icons" -------------------------------- */
 
 /* --------------------------- "Constants" -------------------------------- */
 
-
 /* --------------------------- "pages" -------------------------------- */
 import Logout from "../Logout/Logout.jsx";
 
 import DeleteProfile from "../ProfilePages/DeleteProfile.jsx";
-
 
 import { profileList } from "../../Constants/NavPages.jsx";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -38,13 +35,28 @@ function Profile() {
   }
   const handleClose = () => setOpen(false);
 
+  // Logout
+  const [openLogout, setOpenLogout] = useState(false);
+  const handleCloseLogout = () => setOpenLogout(false);
+
+  function handleOpenLogout() {
+    setOpenLogout(true);
+  }
+
   return (
     <Box sx={{ minHeight: "100vh", p: 2 }}>
       <Container>
         <Grid container spacing={4}>
-         
+          {openLogout ? (
+            <Logout open={openLogout} handleClose={handleCloseLogout}></Logout>
+          ) : (
+            <></>
+          )}
           {open ? (
-            <DeleteProfile open={open} handleClose={handleClose}></DeleteProfile>
+            <DeleteProfile
+              open={open}
+              handleClose={handleClose}
+            ></DeleteProfile>
           ) : (
             <></>
           )}
@@ -101,8 +113,10 @@ function Profile() {
                         justifyContent: { xs: "center", md: "flex-start" },
                       }}
                       onClick={() => {
-                        if (item.name != "Logout") navigate(item.name);
-                        else {
+                        if (item.name != "Delete Profile") {
+                          if (item.name != "Logout") navigate(item.name);
+                          else handleOpenLogout();
+                        } else {
                           handleOpen();
                         }
                       }}
