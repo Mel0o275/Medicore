@@ -4,7 +4,7 @@ import ProductsContainer from "../../components/Products/ProductsContainer";
 import MyPagination from "../../components/MyPagination";
 import ScrollButton from "../../components/ScrollButton";
 import useShopFilters from "../../Hooks/useShopFilters";
-import LoadingScreenAnimation from "../LoadingScreenAnimation/LoadingScreenAnimation";
+// import LoadingScreenAnimation from "../LoadingScreenAnimation/LoadingScreenAnimation";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { GiMedicines } from "react-icons/gi";
