@@ -1,6 +1,5 @@
 import PageTitle from "../../components/PageTitle";
 import { FaCartPlus, FaShareAlt } from "react-icons/fa";
-import { FaCircleMinus, FaCirclePlus } from "react-icons/fa6";
 import { MdFavorite } from "react-icons/md";
 import MyRating from "../../components/MyRating";
 import MyTab from "../../components/Tab/MyTab";
@@ -14,7 +13,6 @@ import { FaRegEye } from "react-icons/fa";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation";
-import { useProductStore } from "../../Store/useProductStore";
 import toast from "react-hot-toast";
 import { CartContext } from "../../Context/cartContext";
 function ProductDetailsPage() {
@@ -33,13 +31,7 @@ function ProductDetailsPage() {
     refetchOnReconnect: false,
   });
   const product = data?.data?.product;
-  const products = useProductStore((state) => state.products);
-
-  const relatedProducts =
-    products.filter(
-      (p) => p.category === product?.category && p._id !== product?._id
-    ) || [];
-
+  const relatedProducts = data?.data?.relatedProducts;
   const [openmodal, setOpenModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
