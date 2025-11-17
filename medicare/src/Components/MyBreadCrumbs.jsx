@@ -2,9 +2,8 @@ import Typography from "@mui/material/Typography";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useLocation } from "react-router-dom";
 
-export default function MyBreadCrumbs({ lastName }) {
+export default function MyBreadCrumbs() {
   const location = useLocation();
-
   const pathnames = location.pathname.split("/").filter((x) => x);
   const formatLabel = (text) =>
     text.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
@@ -14,7 +13,7 @@ export default function MyBreadCrumbs({ lastName }) {
       <Breadcrumbs aria-label="breadcrumb">
         {pathnames.map((value, index) => {
           const isLast = index === pathnames.length - 1;
-          const label = isLast && lastName ? lastName : formatLabel(value);
+          const label = formatLabel(value);
 
           return (
             <Typography

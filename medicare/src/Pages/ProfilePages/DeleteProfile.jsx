@@ -71,6 +71,10 @@ function DeleteProfile({ open, handleClose }) {
     // console.log("Deleting user profile...");
 
 
+      // const { user } = useAuthStore();
+      // console.log( user.data.id);
+
+    // From the rahma
     const userId = localStorage.getItem("id");
     deleteUserMutation.mutate(userId, {
       onSuccess: () => {
@@ -81,11 +85,14 @@ function DeleteProfile({ open, handleClose }) {
         // window.location.href = "/login";
       },
       onError: (error) => {
+       
+
+        // console.error("Delete failed:", error);
         const serverMessage =
-          error?.response?.data?.message || "Something went wrong";
+          error?.response?.data?.message || "User doessn't deleted";
 
         toast.error(serverMessage);
-        toast.error(`User doessn't deleted `);
+
       },
     });
   };

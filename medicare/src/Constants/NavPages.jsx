@@ -3,7 +3,18 @@ import LockIcon from "@mui/icons-material/Lock";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
-import DeleteIcon from "@mui/icons-material/Delete";
+
+import DeleteIcon from '@mui/icons-material/Delete';
+
+import {
+  AiOutlineMessage,
+  AiOutlineUser,
+  AiOutlineCheckCircle,
+} from "react-icons/ai";
+import { FaShieldAlt, FaCoins, FaShippingFast } from "react-icons/fa";
+import img3 from "/20.jpg";
+import img4 from "/17.jpg";
+import img5 from "/24.jpg";
 
 const categories = [
   {
@@ -96,6 +107,9 @@ const products = [
     images: ["/public/images/Products/1.jpg", "/public/images/Products/2.png"],
     desc: "Fast pain reliever for headache and body pain + Vitamin C to boost immunity and energy",
     price: "$12.99",
+    category: "Medications",
+    brand: "PharmaPlus",
+    ratings: 4.6,
   },
   {
     id: 2,
@@ -103,6 +117,9 @@ const products = [
     images: ["/public/images/Products/3.jpg", "/public/images/Products/4.jpg"],
     desc: "Calcium supplement for strong bones + Moisturizing cream for dry and sensitive skin",
     price: "$15.50",
+    category: "Vitamins",
+    brand: "BioCare",
+    ratings: 4.4,
   },
   {
     id: 3,
@@ -110,6 +127,9 @@ const products = [
     images: ["/public/images/Products/5.jpg", "/public/images/Products/6.jpg"],
     desc: "Cough syrup to ease dry cough + Antacid for quick relief from heartburn",
     price: "$9.99",
+    category: "Medications",
+    brand: "HealthCo",
+    ratings: 4.2,
   },
   {
     id: 4,
@@ -117,6 +137,9 @@ const products = [
     images: ["/public/images/Products/7.jpg", "/public/images/Products/8.jpg"],
     desc: "Nasal drops for cold relief + Mouthwash to fight bacteria and refresh breath",
     price: "$11.25",
+    category: "Daily hygiene products",
+    brand: "PureLine",
+    ratings: 4.5,
   },
   {
     id: 5,
@@ -124,6 +147,9 @@ const products = [
     images: ["/public/images/Products/9.jpg", "/public/images/Products/10.jpg"],
     desc: "Anti-dandruff shampoo for healthy scalp + Vitamin D for bone strength and immunity",
     price: "$18.40",
+    category: "Hair care products",
+    brand: "NatureEssence",
+    ratings: 4.7,
   },
   {
     id: 6,
@@ -134,6 +160,9 @@ const products = [
     ],
     desc: "Pain relief gel for muscles and joints + Allergy tablets for sneezing and itching",
     price: "$13.70",
+    category: "Medications",
+    brand: "Relaxa",
+    ratings: 4.3,
   },
   {
     id: 7,
@@ -144,6 +173,9 @@ const products = [
     ],
     desc: "Sunscreen cream for UV protection + Omega 3 capsules for heart health",
     price: "$21.99",
+    category: "Skin care products",
+    brand: "SunWell",
+    ratings: 4.8,
   },
   {
     id: 8,
@@ -154,6 +186,9 @@ const products = [
     ],
     desc: "Kids syrup to reduce fever + Antiseptic solution for wound cleaning",
     price: "$10.50",
+    category: "Mother and baby products",
+    brand: "BabySafe",
+    ratings: 4.6,
   },
   {
     id: 9,
@@ -164,6 +199,9 @@ const products = [
     ],
     desc: "Zinc supplement for immunity + Healing ointment for burns and cuts",
     price: "$14.20",
+    category: "Medical supplies",
+    brand: "HealFast",
+    ratings: 4.4,
   },
   {
     id: 10,
@@ -174,6 +212,9 @@ const products = [
     ],
     desc: "Iron tablets for anemia + Face wash for oily and acne-prone skin",
     price: "$16.80",
+    category: "Skin care products",
+    brand: "GlowMed",
+    ratings: 4.5,
   },
   {
     id: 11,
@@ -184,6 +225,9 @@ const products = [
     ],
     desc: "Gentle laxative syrup for digestion + Eye drops for hydration and comfort",
     price: "$12.30",
+    category: "Medications",
+    brand: "CarePlus",
+    ratings: 4.2,
   },
   {
     id: 12,
@@ -194,6 +238,9 @@ const products = [
     ],
     desc: "Probiotics for gut health + Hand sanitizer to kill germs quickly",
     price: "$8.99",
+    category: "Daily hygiene products",
+    brand: "CleanWell",
+    ratings: 4.6,
   },
 ];
 
@@ -305,7 +352,128 @@ const questionFaq = {
     ],
   ],
 };
+const stats = [
+  { value: "18+", label: "Years" },
+  { value: "200+", label: "Employee" },
+  { value: "85%", label: "Page Views" },
+  { value: "27+", label: "Awards" },
+];
+const aboutCards = [
+  {
+    icon: <AiOutlineCheckCircle className="text-5xl mx-auto text-[#00a297]" />,
+    title: "Submit a task",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus.",
+  },
+  {
+    icon: <AiOutlineMessage className="text-5xl mx-auto text-[#00a297]" />,
+    title: "Send message",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus.",
+  },
+  {
+    icon: <AiOutlineUser className="text-5xl mx-auto text-[#00a297]" />,
+    title: "Trusted experience",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus.",
+  },
+];
+const generalRows = [
+  { name: "Brand", info: "BUMTUM" },
+  { name: "Manufacturer", info: "Millennium Babycares Pvt. Ltd." },
+  {
+    name: "Manufacturer Address",
+    info: "Millennium Babycares Pvt. Ltd. Plot no. 111, Sector-2, Pithampur Industrial Area, Pithampur Dist. Dhar, Indore, Madhya Pradesh 454775",
+  },
+  { name: "Manufacturer Email", info: "demo@example.com" },
+  { name: "Sold By", info: "FAMILYCARE CONSUMER PRIVATE LIMITED" },
+  { name: "JioMart Customer Care Email", info: "demo@example.com" },
+  { name: "JioMart Customer Care Phone", info: "9876543210" },
+  { name: "Marketed By", info: "Familycare Consumer Pvt. Ltd." },
+  { name: "Included Components", info: "62pcs in a pack" },
+  { name: "Country of Origin", info: "India" },
+];
+const features = [
+  {
+    id: 1,
+    icon: <FaShieldAlt className="w-6 h-6 text-[#00a297]" />,
+    text: "101% Original",
+  },
+  {
+    id: 2,
+    icon: <FaCoins className="w-6 h-6 text-[#00a297]" />,
+    text: "Lowest Price",
+  },
+  {
+    id: 3,
+    icon: <FaShippingFast className="w-6 h-6 text-[#00a297]" />,
+    text: "Free Shipping",
+  },
+];
+const relatedProducts = [
+  {
+    id: 1,
+    name: "Omron HEM 7120 Fully Automatic",
+    price: 20,
+    stock: 5,
+    img: img3,
+  },
+  {
+    id: 2,
+    name: "Easycare Big Display Digital Blood",
+    price: 14.4,
+    stock: 12,
+    img: img4,
+  },
+  {
+    id: 3,
+    name: "Himalaya Baby Body Lotion 400 ml",
+    price: 6.5,
+    stock: 8,
+    img: img5,
+  },
+];
+const shopFilters = ["Categories", "Brands", "Price Filter"];
+const filterOptions = {
+  Categories: [
+    "Mother and baby products",
+    "Pet supplies",
+    "Medical supplies",
+    "Daily hygiene products",
+    "Makeup and accessories",
+    "Vitamins",
+    "Medications",
+    "Hair care products",
+    "Skin care products",
+  ],
+  Brands: [
+    "PharmaPlus",
+    "BioCare",
+    "HealthCo",
+    "PureLine",
+    "NatureEssence",
+    "Relaxa",
+    "SunWell",
+    "BabySafe",
+    "HealFast",
+    "GlowMed",
+    "CarePlus",
+    "CleanWell",
+  ],
+  "Price Filter": ["All", "10L.E-15L.E", "15L.E-20L.E"],
+};
 
+const filterKeys = {
+  Categories: "categories",
+  Brands: "brands",
+  "Price Filter": "price",
+};
+
+const productRows = [
+  { name: "Minimum Age", info: "20" },
+  { name: "Minimum Age UOM", info: "Month" },
+  { name: "Maximum Age", info: "36" },
+  { name: "Age Description", info: "Infant" },
+  { name: "Size", info: "L" },
+  { name: "Color", info: "White" },
+];
 const profileList = [
   { name: "Info", icon: <PersonIcon /> },
   { name: "Security", icon: <LockIcon /> },
@@ -324,4 +492,13 @@ export {
   banners,
   questionFaq,
   profileList,
+  stats,
+  aboutCards,
+  generalRows,
+  productRows,
+  features,
+  relatedProducts,
+  shopFilters,
+  filterOptions,
+  filterKeys,
 };

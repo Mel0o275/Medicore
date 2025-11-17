@@ -2,7 +2,7 @@ import * as React from "react";
 
 /* -------------------------- React --------------------------- */
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 /* -------------------------- MUI --------------------------- */
 
 import {
@@ -11,8 +11,6 @@ import {
   Grid,
   useScrollTrigger,
   Slide,
-  Container,
-  Toolbar,
   Box,
   AppBar,
   Typography,
@@ -29,7 +27,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import MedicationIcon from "@mui/icons-material/Medication";
+
 import DrawerNav from "./DrawerNav";
 
 /* -------------------------- Constant --------------------------- */
@@ -41,6 +39,9 @@ import {
 /* -------------------------- React-router-dom --------------------------- */
 
 import { Link } from "react-router-dom";
+import useAuthStore from "../../Store/useAuthStore.js";
+
+import {CartContext} from "../../Context/cartContext.jsx"
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -70,6 +71,15 @@ export default function Navbar(props) {
   const [categoriesAnchor, setCategoriesAnchor] = useState(null);
   const [elementsAnchor, setElementsAnchor] = useState(null);
 
+  //Mai
+
+  const {count : count} = React.useContext(CartContext);
+  console.log(count);
+
+  React.useEffect(() => {count})
+
+  //
+
   const handleCategoriesClick = (event) => {
     setCategoriesAnchor(event.currentTarget);
   };
@@ -87,6 +97,7 @@ export default function Navbar(props) {
   };
 
   const [openDrawer, setOpenDrawer] = useState(false);
+  const user = useAuthStore((state) => state.user);
 
   const toggleDrawer = (newOpen) => () => {
     setOpenDrawer(newOpen);
@@ -134,7 +145,7 @@ export default function Navbar(props) {
                             <Button
                               sx={{ color: "black", fontWeight: "600" }}
                               component={Link}
-                              to={`/${category.title}`}
+                              to={`/category?category=${category.title}`}
                             >
                               {category.title}
                             </Button>
@@ -241,21 +252,32 @@ export default function Navbar(props) {
                 component={Link}
                 to="/cart"
               >
-                <Badge badgeContent={17} color="error">
+                <Badge badgeContent={count} color="error">
                   <AddShoppingCartIcon />
                 </Badge>
               </IconButton>
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-haspopup="true"
-                color="inherit"
-                component={Link}
-                to="/Profile"
-              >
-                <PersonIcon />
-              </IconButton>
+
+              {user ? (
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-haspopup="true"
+                  color="inherit"
+                  component={Link}
+                  to="/Profile"
+                >
+                  <PersonIcon />
+                </IconButton>
+              ) : (
+                <Button
+                  sx={{ color: "black", fontWeight: "600" }}
+                  component={Link}
+                  to="/login"
+                >
+                  Sign In
+                </Button>
+              )}
             </Box>
           </Grid>
         </Grid>

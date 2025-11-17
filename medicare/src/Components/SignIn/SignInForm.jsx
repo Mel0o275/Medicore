@@ -1,19 +1,55 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash, FaAt } from "react-icons/fa";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import signInSchema from "./SignInSchema.jsx";
+import useAuthStore from "../../Store/useAuthStore.js";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const SignInForm = () => {
-  const [user, setUser] = useState({
-    showPassword: false,
-    email: "",
-    password: "",
-    isSubmitting: false,
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(signInSchema),
+    defaultValues: { email: "", password: "", rememberMe: false },
   });
 
-  const { showPassword, email, password, isSubmitting } = user;
+  const API_URL = import.meta.env.VITE_API_URL;
+  const onSubmit = async (data) => {
+    try {
+      const res = await axios({
+        method: "post",
+        url: `${API_URL}/auth/login`,
+        data: { email: data.email, password: data.password },
+      });
 
-  const onSubmit = () => {
-    setUser((prev) => ({ ...prev, isSubmitting: true }));
+      if (res && (res.status === 200 || res.status === 201)) {
+        const user = res.data.user || res.data;
+        const token = res.data.token;
+
+        // Persist to Zustand
+        login(user, token);
+
+        // Show success message then navigate
+        toast.success("Signed in successfully. ");
+        navigate("/Profile");
+      } else {
+        const respMsg = "Unable to sign in. Please try again.";
+        toast.error(respMsg);
+      }
+    } catch (err) {
+      console.log("Sign-in error:", err.message);
+      toast.error("Incorrect email or password. Please try again");
+    }
   };
 
   return (
@@ -24,7 +60,11 @@ const SignInForm = () => {
           <p className="text-gray-600 mt-2">Sign in to your account</p>
         </div>
 
-        <form onSubmit={onSubmit} className="space-y-6">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-6"
+          noValidate
+        >
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -34,16 +74,22 @@ const SignInForm = () => {
               <input
                 type="email"
                 placeholder="Enter your email address"
-                className={`w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-main focus:border-main transition-all duration-200`}
-                value={email}
-                onChange={(e) =>
-                  setUser((prev) => ({ ...prev, email: e.target.value }))
-                }
+                {...register("email")}
+                className={`w-full px-4 py-3 bg-gray-50 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
+                  errors.email
+                    ? "border-red-500 focus:ring-red-200"
+                    : "border border-gray-300 focus:ring-main focus:border-main"
+                }`}
               />
               <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                 <FaAt className="h-5 w-5" />
               </span>
             </div>
+            {errors.email && (
+              <p className="mt-1 text-sm text-red-600">
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           {/* Password */}
@@ -53,22 +99,18 @@ const SignInForm = () => {
             </label>
             <div className="relative">
               <input
+                {...register("password")}
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
-                className={`w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#00a297] focus:border-[#00a297] transition-all duration-200`}
-                value={password}
-                onChange={(e) =>
-                  setUser((prev) => ({ ...prev, password: e.target.value }))
-                }
+                className={`w-full px-4 py-3 bg-gray-50 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition-all duration-200 ${
+                  errors.password
+                    ? "border-red-500 focus:ring-red-200"
+                    : "border border-gray-300 focus:ring-[#00a297] focus:border-[#00a297]"
+                }`}
               />
               <span
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors"
-                onClick={() =>
-                  setUser((prev) => ({
-                    ...prev,
-                    showPassword: !prev.showPassword,
-                  }))
-                }
+                onClick={() => setShowPassword((s) => !s)}
               >
                 {showPassword ? (
                   <FaEyeSlash className="h-5 w-5" />
@@ -77,6 +119,11 @@ const SignInForm = () => {
                 )}
               </span>
             </div>
+            {errors.password && (
+              <p className="mt-1 text-sm text-red-600">
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           {/* Remember & Forgot (responsive) */}
@@ -85,7 +132,8 @@ const SignInForm = () => {
               <input
                 id="remember"
                 type="checkbox"
-                className="h-4 w-4 text-main bg-white border-gray-300 rounded focus:ring-2 focus:ring-main"
+                {...register("rememberMe")}
+                className="h-4 w-4 accent-main bg-white border-gray-300 rounded focus:ring-2 focus:ring-main"
               />
               <span className="ml-2">Remember me</span>
             </label>
@@ -99,6 +147,7 @@ const SignInForm = () => {
               </Link>
             </div>
           </div>
+          {/* authentication errors shown via toast */}
 
           {/* Submit button */}
           <button

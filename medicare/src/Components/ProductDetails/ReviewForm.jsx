@@ -1,12 +1,6 @@
 import { useState } from "react";
-import {
-  Rating,
-  TextField,
-  Checkbox,
-  FormControlLabel,
-  createTheme,
-  ThemeProvider,
-} from "@mui/material";
+import toast, { Toaster } from "react-hot-toast";
+import { Rating, TextField, createTheme, ThemeProvider } from "@mui/material";
 const theme = createTheme({
   components: {
     MuiTextField: {
@@ -44,27 +38,33 @@ export default function ReviewForm() {
   const [formData, setFormData] = useState({
     title: "",
     review: "",
-    name: "",
-    email: "",
-    remember: false,
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log({ rating, ...formData });
-    alert("Review submitted!");
+    toast.success("Review submitted", {
+      position: "top-center",
+    });
+
+    setFormData({
+      title: "",
+      review: "",
+    });
+    setRating(0);
   };
 
   return (
     <ThemeProvider theme={theme}>
+      <Toaster />
       <form
         onSubmit={handleSubmit}
         className=" p-6 bg-white shadow border border-gray-200"
@@ -80,7 +80,7 @@ export default function ReviewForm() {
           </label>
           <Rating
             value={rating}
-            onChange={(event, newValue) => setRating(newValue)}
+            onChange={(e, newValue) => setRating(newValue)}
             size="large"
           />
         </div>
@@ -110,43 +110,6 @@ export default function ReviewForm() {
           />
         </div>
 
-        <div className="mb-4">
-          <TextField
-            label="Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            fullWidth
-            variant="outlined"
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <TextField
-            label="Email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            fullWidth
-            variant="outlined"
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <FormControlLabel
-            control={
-              <Checkbox
-                name="remember"
-                checked={formData.remember}
-                onChange={handleChange}
-                color="primary"
-              />
-            }
-            label="Save my name, email, and website in this browser for the next time I comment."
-          />
-        </div>
         <button
           type="submit"
           className=" bg-[#00a297] text-white rounded-md px-6 py-1 text-lg cursor-pointer"

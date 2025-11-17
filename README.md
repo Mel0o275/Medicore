@@ -1,6 +1,7 @@
-<p align="center">   
-  <img src="https://github.com/Mel0o275/Medicare/blob/main/assets/Medicare.jpg?raw=true" alt="Banner" width="100%" /> 
-</p>  
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Mel0o275/Medicare/main/assets/Banner.jpg" alt="Medicore Banner" width="100%" />
+</p>
+
 
 # 💊 Medicore – Smart Pharmacy App  
 
@@ -35,7 +36,34 @@ With **AI-powered features** like prescription scanning and medicine reminders, 
 
 👨‍💻 **Youssef Ashraf Ali Gamal El Deen Saleh** → About, Shop, Product Details
 
-**🔄 Next Week (Week 2) – Upcoming Tasks**  
+**📅 Week 2 – Task Distribution**
+  Each team member contributed to building the core pages and features of the second Medicore release.
+
+👩‍💻 **Mai Bakry Ahmed Morsy** → Edit Hook in Dashboard
+
+👩‍💻 **Malak Hassan Abd Elmonem Hashem** → Dashboard Design
+
+👩‍💻 **Jolie Nixon Ezzat Tawfeek** → Add & Edit Product Modal Design
+
+👩‍💻 **Rahma Magdy Fouad Abass** → Protected Route & Delete Hook in Dashboard
+
+👨‍💻 **Youssef Ashraf Ali Gamal El Deen Saleh** → View Logic And Design in Dashboard
+
+**📅 Week 3 – Task Distribution**
+Each team member contributed to backend development and user operations for Medicore.
+
+👩‍💻 **Mai Bakry Ahmed Morsy** → Backend for Cart, Wishlist, and Checkout.
+
+👩‍💻 **Malak Hassan Abd Elmonem Hashem** →handled all user operations including edit profile, reset password, and profile managementز
+
+👨‍💻 **Youssef Ashraf Ali Gamal El Deen Saleh** → Backend for Product management (CRUD) and product logic.
+
+👩‍💻 **Rahma Magdy Fouad Abass** → Authentication system (login, signup, protected routes, etc.)
+
+👩‍💻 **Jolie Nixon Ezzat Tawfeek** → Backend for Orders (all order operations, management, and processing)
+
+
+**🔄 Next Week (Week 4) – Upcoming Tasks**  
 📌 To be updated after the next sprint planning meeting.
 
 ---

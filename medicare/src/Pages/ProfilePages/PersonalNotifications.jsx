@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React , {useState} from "react";
 /* --------------------------- "Icons" -------------------------------- */
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import SecurityIcon from "@mui/icons-material/Security";
@@ -10,9 +10,12 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ClearAllIcon from "@mui/icons-material/ClearAll";
+
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+
+
 /* --------------------------- "MUI" -------------------------------- */
 
 import {
@@ -33,6 +36,7 @@ import toast from "react-hot-toast";
 import ViewButtonLoader from "../../Components/Loades/ViewButtonLoader";
 
 function PersonalNotifications() {
+
   const [page, setPage] = useState(1);
   const limit = 10;
 
@@ -121,7 +125,7 @@ function PersonalNotifications() {
     });
 
     console.log("Clear all notifications clicked");
-  };
+  }
 
   const handleDeleteNotification = (id) => {
     console.log(`Delete notification with id: ${id}`);
@@ -162,6 +166,7 @@ function PersonalNotifications() {
     );
   }
 
+
   return (
     <>
       <Grid size={{ xs: 12, md: 9 }}>
@@ -197,6 +202,26 @@ function PersonalNotifications() {
           </Button>
         </Box>
 
+        {/* Clear All Button */}
+        <Box sx={{ mb: 2, display: "flex", justifyContent: "flex-end" }}>
+          <Button
+            variant="outlined"
+            startIcon={<ClearAllIcon />}
+            onClick={handleClearAll}
+            sx={{
+              color: "#6b7280",
+              borderColor: "#6b7280",
+              "&:hover": {
+                backgroundColor: "#374151",
+                borderColor: "#9ca3af",
+                color: "white"
+              }
+            }}
+          >
+            Clear All Notifications
+          </Button>
+        </Box>
+
         <Box
           className="space-y-4"
           sx={{
@@ -221,6 +246,7 @@ function PersonalNotifications() {
             },
           }}
         >
+{/* <<<<<<< HEAD */}
           {notifications.length === 0 ? (
             <Box textAlign="center" py={4}>
               <Typography variant="body1" className="text-gray-500">
@@ -343,6 +369,7 @@ function PersonalNotifications() {
               );
             })
           )}
+
         </Box>
 
         {/* <Box
@@ -390,5 +417,6 @@ function PersonalNotifications() {
     </>
   );
 }
+
 
 export default PersonalNotifications;

@@ -1,110 +1,153 @@
-import * as React from "react";
 import PageTitle from "../../components/PageTitle";
-import {
-  FaCartPlus,
-  FaShareAlt,
-  FaShieldAlt,
-  FaCoins,
-  FaShippingFast,
-} from "react-icons/fa";
+import { FaCartPlus, FaShareAlt } from "react-icons/fa";
 import { MdFavorite } from "react-icons/md";
-import img1 from "/1.jpg";
-import img2 from "/2.jpg";
-import img3 from "/20.jpg";
-import img4 from "/17.jpg";
-import img5 from "/24.jpg";
 import MyRating from "../../components/MyRating";
 import MyTab from "../../components/Tab/MyTab";
 import ProductCard from "../../components/Products/ProductCard";
 import ScrollButton from "../../components/ScrollButton";
-
+import { features, reviews } from "../../Constants/NavPages";
+import { useNavigate, useParams } from "react-router-dom";
+import { useContext, useState } from "react";
+import ShareModal from "./ShareModal";
+import { FaRegEye } from "react-icons/fa";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation";
+import toast from "react-hot-toast";
+import { CartContext } from "../../Context/cartContext";
 function ProductDetailsPage() {
-  const [quantities, setQuantities] = React.useState({});
+  const { id } = useParams();
+  console.log(id);
 
-  const product = {
-    id: 1,
-    name: "Bella Baby Happy Diapers Large, 48 Count",
-    brand: "Golden",
-    discount: "-13%",
-    priceRange: "$8 – $20",
-    rating: 4,
-    description: [
-      "Tourniquet made of strong elastic strap with a simple plastic lock.",
-      "One hand can implement the hemostatic device.",
-      "Light weight, sleek, classy, solid.",
-    ],
-    images: {
-      front: img1,
-      back: img2,
-    },
-    relatedProducts: [
-      {
-        id: 1,
-        name: "Omron HEM 7120 Fully Automatic",
-        price: 20,
-        stock: 5,
-        img: img3,
-      },
-      {
-        id: 2,
-        name: "Easycare Big Display Digital Blood",
-        price: 14.4,
-        stock: 12,
-        img: img4,
-      },
-      {
-        id: 3,
-        name: "Himalaya Baby Body Lotion 400 ml",
-        price: 6.5,
-        stock: 8,
-        img: img5,
-      },
-    ],
+  const fetchProduct = async () => {
+    const url = import.meta.env.VITE_API_URL;
+    const { data } = await axios.get(`${url}/products/${id}`);
+    return data;
   };
+  const { data, isLoading } = useQuery({
+    queryKey: ["product", id],
+    queryFn: fetchProduct,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+  const product = data?.data?.product;
+  const relatedProducts = data?.data?.relatedProducts;
+  const [openmodal, setOpenModal] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
-  const features = [
-    {
-      id: 1,
-      icon: <FaShieldAlt className="w-6 h-6 text-[#00a297]" />,
-      text: "101% Original",
-    },
-    {
-      id: 2,
-      icon: <FaCoins className="w-6 h-6 text-[#00a297]" />,
-      text: "Lowest Price",
-    },
-    {
-      id: 3,
-      icon: <FaShippingFast className="w-6 h-6 text-[#00a297]" />,
-      text: "Free Shipping",
-    },
-  ];
+  const { count: count, setCount: setCount } = useContext(CartContext);
 
-  const increment = (id) =>
-    setQuantities((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+  const API = import.meta.env.VITE_API_URL;
+  console.log(API);
+  const [disabled, setdisabled] = useState(false);
+  const token = localStorage.getItem("token");
 
-  const decrement = (id) =>
-    setQuantities((prev) => ({
-      ...prev,
-      [id]: Math.max(0, (prev[id] || 0) - 1),
-    }));
+  const navigate = useNavigate();
 
+  // async function handleInc() {
+  //   // setQuantity((prev) => prev + 1);
+
+  //   if (!token?.trim()) {
+  //     navigate("/login");
+  //     return;
+  //   }
+
+  //   try {
+  //     const { data } = await axios.patch(`${API}/cart/${id}/+`, {}, {
+  //       headers: {
+  //         Authorization: token
+  //       }
+  //     })
+  //     console.log(1);
+  //     console.log(data.message);
+
+  //     if (data.message == 'success') {
+  //       setQuantity((prev) => prev + 1);
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+  // async function handleDec() {
+  //   // if (quantity > 1) setQuantity((prev) => prev - 1);
+  //   // else setQuantity(1);
+
+  //   if (!token?.trim()) {
+  //     navigate("/login");
+  //     return;
+  //   }
+
+  //   if (quantity <= 1) return;
+
+  //   try {
+  //     const { data } = await axios.patch(`${API}/cart/${id}/-`, {}, {
+  //       headers: { Authorization: token }
+  //     });
+  //     if (data.message === 'success') {
+  //       setQuantity(prev => prev - 1);
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+
+  // };
+
+  async function addToCart() {
+    if (!token?.trim()) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const { data } = await axios.post(
+        `${API}/cart`,
+        {
+          _id: id,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      console.log(1);
+      console.log(data);
+      if (data.products.length != -1) {
+        toast(`Product added to cart succsessfully✨`, {
+          position: "top-center",
+          duration: 3000,
+        });
+        setCount(count + 1);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  if (isLoading) return <LoadingScreenAnimation />;
   return (
     <section className="pb-14 bg-stone-100/50">
       <ScrollButton />
+      {openmodal && (
+        <ShareModal
+          open={openmodal}
+          handleClose={() => setOpenModal(false)}
+          shareUrl={window.location.href}
+        />
+      )}
       <PageTitle title="Product Detail" />
 
       <div className="mx-8 md:mx-24">
         <div className="flex flex-col md:flex-row gap-8 items-stretch mt-14">
           <div className="flex-1 flex flex-col gap-6">
-            <div className="relative min-h-[50vh] group border-2 border-stone-200 rounded-md overflow-hidden flex-1">
+            <div className="relative max-h-[55vh] group border-2 border-stone-200 rounded-md overflow-hidden flex-1">
               <img
-                src={product.images.front}
+                src={product.images[0].url}
                 alt="Front"
                 className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-0"
               />
               <img
-                src={product.images.back}
+                src={product.images[1].url}
                 alt="Back"
                 className="absolute inset-0 w-full h-full object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-500"
               />
@@ -125,77 +168,67 @@ function ProductDetailsPage() {
 
           <div className="flex-1 flex flex-col gap-4">
             <span className="bg-[#00a297] text-white w-max text-xs px-2 py-1 rounded-md">
-              {product.discount}
+              -13%
             </span>
             <p className="text-stone-400 font-semibold">
               Brand: <span className="text-[#00a297]">{product.brand}</span>
             </p>
-            <h2 className="text-3xl font-semibold">{product.name}</h2>
+            <p className="text-stone-400 font-semibold">
+              Category:{" "}
+              <span className="text-[#00a297]">{product.category}</span>
+            </p>
+            <h2 className="text-3xl font-semibold">{product.title}</h2>
 
             <div className="flex items-center w-full gap-10">
-              <p className="text-2xl font-semibold">{product.priceRange}</p>
-              <MyRating value={product.rating} />
+              <p className="text-2xl font-semibold">{product.price} L.E</p>
+              <MyRating value={product.ratings} />
             </div>
 
-            <ul className="mt-4 space-y-1 text-gray-700">
-              {product.description.map((el, i) => (
-                <li key={i}>{el}</li>
-              ))}
-            </ul>
-
-            <div className="my-6 space-y-4">
-              {product.relatedProducts.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex justify-between items-center border p-3 rounded-lg shadow-sm"
-                >
-                  <div className="flex gap-4">
-                    <img src={item.img} className="w-[5em]" />
-                    <div className="font-semibold">
-                      <p className="font-medium">{item.name}</p>
-                      <p className="text-stone-500">${item.price}</p>
-                      <span className="text-[#00a297] text-sm">
-                        {item.stock} in stock
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center border rounded-lg">
-                    <button onClick={() => decrement(item.id)} className="p-2">
-                      -
-                    </button>
-                    <span className="px-4">{quantities[item.id] || 0}</span>
-                    <button onClick={() => increment(item.id)} className="p-2">
-                      +
-                    </button>
-                  </div>
-                </div>
-              ))}
+            <div className="mt-4 space-y-1 text-gray-500 text-xl">
+              <p>{product.desc}.</p>
+              <p className="flex items-center gap-3 pt-4">
+                <FaRegEye className=" text-xl text-[#00a297]" />{" "}
+                {product.visits} people visited this page
+              </p>
             </div>
-
             <div className="flex gap-5">
-              <button className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row">
+              <button
+                onClick={addToCart}
+                className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
+              >
                 <FaCartPlus /> <span>Add To Cart</span>
               </button>
               <button className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row">
                 <MdFavorite /> <span>Add To Wishlist</span>
               </button>
-              <button className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row">
+              <button
+                className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
+                onClick={() => setOpenModal(true)}
+              >
                 <FaShareAlt /> <span>Share</span>
               </button>
             </div>
           </div>
         </div>
         <div className="mt-8 mb-10">
-          <MyTab page="details" />
+          <MyTab
+            page="details"
+            reviews={reviews}
+            productTitle={product.title}
+          />
         </div>
-        <h3 className="text-xl mb-5 font-semibold">Related Products</h3>
-        <div className=" flex gap-3 overflow-x-auto hide-scrollbar">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div className="w-full md:w-[30%]" key={i}>
-              <ProductCard key={i} product={product} />
+        {relatedProducts && relatedProducts.length != 0 && (
+          <>
+            <h3 className="text-xl mb-5 font-semibold">Related Products</h3>
+            <div className=" flex gap-3 overflow-x-auto hide-scrollbar">
+              {relatedProducts.map((product, i) => (
+                <div className="w-full md:w-[30%]" key={i}>
+                  <ProductCard key={i} product={product} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
       </div>
     </section>
   );

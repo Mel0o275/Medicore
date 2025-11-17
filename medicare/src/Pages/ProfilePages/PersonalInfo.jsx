@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 /* --------------------------- "Icons" -------------------------------- */
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 /* --------------------------- "React query User" -------------------------------- */
 
 import { useUserMutations } from "../../Hooks/reactUser/useUserMutations";
+
 /* --------------------------- "Zustand" -------------------------------- */
 
 /* --------------------------- "Components" -------------------------------- */
@@ -27,9 +28,12 @@ import ViewButtonLoader from "../../Components/Loades/ViewButtonLoader";
 import toast from "react-hot-toast";
 import { useUser } from "../../Hooks/reactUser/useUserSelected";
 
+import useAuthStore from "../../Store/useAuthStore";
+
 function PersonalInfo() {
   const [selectedImg, setSelectedImg] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+
   
   const { handleImageUpload } = useHandleImageUpload();
 
@@ -37,6 +41,8 @@ function PersonalInfo() {
 
   const { updateDataMutation, uploadAvatarMutation } = useUserMutations();
 
+
+  // From rahma
   const {
     data: userDate,
     isLoading,
@@ -64,19 +70,30 @@ function PersonalInfo() {
   });
 
   
+ 
+  const { user } = useAuthStore();
+  // console.log( user.data.id);
+
+  useEffect(() => {
+    localStorage.setItem("token", user.data.token);
+  });
+  // const { data: userDate, isLoading, isError } = useUser(user.data.id);
+
+ 
+
   const onSubmit = (data) => {
     console.log("Updated data:", data);
 
-   
+
     updateDataMutation.mutate(data, {
       onSuccess: () => {
         setIsEditing(false);
         toast.success(`User Updated data successfully`);
       },
       onError: (error) => {
-        console.error("Error changing info:", error);
+
         const serverMessage =
-          error?.response?.data?.message || "Something went wrong";
+          error?.response?.data?.message || "User doesn't Updated data";
 
         toast.error(serverMessage);
       },
@@ -84,6 +101,7 @@ function PersonalInfo() {
   };
 
   const handleCancelEdit = () => {
+
    
     reset({
     
@@ -94,6 +112,7 @@ function PersonalInfo() {
       phoneNumber: userDate?.phoneNumber ?? "000000000000",
       dateOfBirth: userDate?.dateOfBirth ?? "1990-01-01",
       gender: userDate?.gender ?? "male",
+
     });
     setIsEditing(false);
   };
@@ -108,7 +127,6 @@ function PersonalInfo() {
 
 
   const handleUpdateData = async () => {
-   
     const isValid = await trigger();
 
     if (isValid) {
@@ -116,7 +134,6 @@ function PersonalInfo() {
     }
   };
 
-  
 
   return (
     <>

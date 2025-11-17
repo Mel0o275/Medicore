@@ -25,6 +25,7 @@ export const useHandleImageUpload = () => {
 
           toast.error(serverMessage);
           // toast.error("Failed to upload image ");
+
         },
       });
     };
@@ -32,3 +33,9 @@ export const useHandleImageUpload = () => {
 
   return { handleImageUpload };
 };
+
+  
+
+ 
+
+

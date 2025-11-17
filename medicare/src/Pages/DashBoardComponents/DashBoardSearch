@@ -1,10 +1,19 @@
 import { styled } from "@mui/material/styles";
 /* --------------------------- MUI ---------------------------- */
-import { InputBase, alpha } from "@mui/material";
+
+import {
+
+  InputBase,
+ 
+  alpha,
+} from "@mui/material";
+
 
 const drawerWidth = 280;
 
-const Search = styled("div")(({ theme }) => ({
+
+ const Search = styled("div")(({ theme }) => ({
+
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -19,7 +28,9 @@ const Search = styled("div")(({ theme }) => ({
   },
 }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
+
+
+ const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: "100%",
   position: "absolute",
@@ -28,6 +39,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
 }));
+
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
@@ -49,9 +61,12 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
-    marginTop: theme.spacing(10), // علشان الـ AppBar
+    marginTop: theme.spacing(10), 
 
-    overflow: "auto", // Change from overflowY to overflow
+    overflow: "auto", 
+
+
+    
 
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
@@ -65,6 +80,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
       }),
       marginLeft: 0,
     }),
+
     
     display: "flex",
     flexDirection: "column",
@@ -72,3 +88,5 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
 );
 
 export { Search, SearchIconWrapper, StyledInputBase, Main, drawerWidth };
+
+ 
