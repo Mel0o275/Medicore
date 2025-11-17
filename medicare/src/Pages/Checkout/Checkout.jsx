@@ -1,95 +1,94 @@
-import React from "react";
+//Checkout
+
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import axios from "axios";
+import { CartContext } from "../../Context/cartContext";
 
 
 export default function Checkout() {
 
     const schema = z.object({
-        name : z.string().min(3, "Name Must Be At Least 3 Characters"),
-        email : z.string("Invalid Email Address").min(5, "Email Must Be At Least 5 Characters").email("Invalid Email Address"),
-        phone : z.string().min(10, "Phone Number Must Be At Least 10 Digits").regex(/^[0-9]+$/, "Phone Number Must Contain Only Digits"),
-        city : z.string().min(2, "City Must Be At Least 2 Characters"),
-        address : z.string().min(5, "Address Must Be At Least 5 Characters")
+        details: z.string().min(5, "Address Must Be At Least 5 Characters"),
+        phone: z.string().min(10, "Phone Number Must Be At Least 10 Digits").regex(/^[0-9]+$/, "Phone Number Must Contain Only Digits"),
+        city: z.string().min(2, "City Must Be At Least 2 Characters"),
+        payment: z.enum(["cash", "card"])
     })
 
     const form = useForm({
         defaultValues: {
-            name : "",
-            email : "",
-            phone : "",
-            city : "",
-            address : ""
+            details: "",
+            phone: "",
+            city: "",
+            payment: "cash"
         },
-        resolver : zodResolver(schema)
+        resolver: zodResolver(schema)
     })
 
-    const { register, handleSubmit, formState : {errors} } = form;
+    const { register, handleSubmit, formState: { errors } } = form;
 
-    function onsubmit(values) {
-        console.log(values);
+    const API = import.meta.env.VITE_API_URL;
+    console.log(API);
+    const token = localStorage.getItem("token");
+    const { count, setCount, getUserCart, setCartItems } = useContext(CartContext);
+    const [loading, setLoading] = useState(false);
+
+
+    async function onsubmit(values) {
+        try {
+            setLoading(true);
+    
+            let { data } = await axios.post(`${API}/checkout`, values, {
+                headers: { Authorization: token }
+            });
+    
+            if (data.status === "success") {
+    
+                let res = await axios.delete(`${API}/cart`, {
+                    headers: { Authorization: token }
+                });
+    
+                setCartItems([]);
+                setCount(0);
+                await getUserCart();
+    
+                window.location.href = "/Home";
+            }
+    
+        } catch (err) {
+            console.log("Checkout Error:", err.response?.data || err);
+    
+        } finally {
+            setLoading(false);
+        }
     }
+    
 
 
 
     return (
         <form onSubmit={handleSubmit(onsubmit)}>
-            <div className="max-w-5xl mx-auto mt-8 p-6">    
+            <div className="max-w-5xl mx-auto mt-8 p-6">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2 space-y-6">
                         <div className="p-6 bg-white rounded-2xl shadow-md">
                             <h2 className="text-lg font-semibold text-gray-800 mb-4">
                                 Customer Information
                             </h2>
-    
+
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="flex flex-col">
-                                    <input
-                                        type="text"
-                                        placeholder="Full Name"
-                                        {...register("name")}
-                                        className={`px-4 py-2 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 outline-none ${
-                                            errors.name
-                                                ? "border-2 border-[#FFD166] focus:ring-[#FFD166]"
-                                                : "focus:ring-[#00A297]"
-                                        }`}
-                                    />
-                                    {errors.name && (
-                                        <p className="mt-2 text-[#8B6E00] bg-[#FFF9E6] border border-[#FFD166] rounded-lg px-3 py-1 text-sm">
-                                            ⚠️ {errors.name.message}
-                                        </p>
-                                    )}
-                                </div>
-    
-                                <div className="flex flex-col">
-                                    <input
-                                        type="email"
-                                        placeholder="Email Address"
-                                        {...register("email")}
-                                        className={`px-4 py-2 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 outline-none ${
-                                            errors.email
-                                                ? "border-2 border-[#FFD166] focus:ring-[#FFD166]"
-                                                : "focus:ring-[#00A297]"
-                                        }`}
-                                    />
-                                    {errors.email && (
-                                        <p className="mt-2 text-[#8B6E00] bg-[#FFF9E6] border border-[#FFD166] rounded-lg px-3 py-1 text-sm">
-                                            ⚠️ {errors.email.message}
-                                        </p>
-                                    )}
-                                </div>
-    
+
                                 <div className="flex flex-col">
                                     <input
                                         type="tel"
                                         placeholder="Phone Number"
                                         {...register("phone")}
-                                        className={`px-4 py-2 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 outline-none ${
-                                            errors.phone
-                                                ? "border-2 border-[#FFD166] focus:ring-[#FFD166]"
-                                                : "focus:ring-[#00A297]"
-                                        }`}
+                                        className={`px-4 py-2 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 outline-none ${errors.phone
+                                            ? "border-2 border-[#FFD166] focus:ring-[#FFD166]"
+                                            : "focus:ring-[#00A297]"
+                                            }`}
                                     />
                                     {errors.phone && (
                                         <p className="mt-2 text-[#8B6E00] bg-[#FFF9E6] border border-[#FFD166] rounded-lg px-3 py-1 text-sm">
@@ -97,17 +96,16 @@ export default function Checkout() {
                                         </p>
                                     )}
                                 </div>
-    
+
                                 <div className="flex flex-col">
                                     <input
                                         type="text"
                                         placeholder="City"
                                         {...register("city")}
-                                        className={`px-4 py-2 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 outline-none ${
-                                            errors.city
-                                                ? "border-2 border-[#FFD166] focus:ring-[#FFD166]"
-                                                : "focus:ring-[#00A297]"
-                                        }`}
+                                        className={`px-4 py-2 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 outline-none ${errors.city
+                                            ? "border-2 border-[#FFD166] focus:ring-[#FFD166]"
+                                            : "focus:ring-[#00A297]"
+                                            }`}
                                     />
                                     {errors.city && (
                                         <p className="mt-2 text-[#8B6E00] bg-[#FFF9E6] border border-[#FFD166] rounded-lg px-3 py-1 text-sm">
@@ -115,27 +113,26 @@ export default function Checkout() {
                                         </p>
                                     )}
                                 </div>
-    
+
                                 <div className="flex flex-col col-span-2">
                                     <textarea
                                         rows={3}
                                         placeholder="Delivery Address"
-                                        {...register("address")}
-                                        className={`px-4 py-2 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 outline-none resize-none ${
-                                            errors.address
-                                                ? "border-2 border-[#FFD166] focus:ring-[#FFD166]"
-                                                : "focus:ring-[#00A297]"
-                                        }`}
+                                        {...register("details")}
+                                        className={`px-4 py-2 rounded-xl bg-gray-100 focus:bg-white focus:ring-2 outline-none resize-none ${errors.details
+                                            ? "border-2 border-[#FFD166] focus:ring-[#FFD166]"
+                                            : "focus:ring-[#00A297]"
+                                            }`}
                                     ></textarea>
-                                    {errors.address && (
+                                    {errors.details && (
                                         <p className="mt-2 text-[#8B6E00] bg-[#FFF9E6] border border-[#FFD166] rounded-lg px-3 py-1 text-sm">
-                                            ⚠️ {errors.address.message}
+                                            ⚠️ {errors.details.message}
                                         </p>
                                     )}
                                 </div>
                             </div>
                         </div>
-    
+
                         <div className="p-6 bg-white rounded-2xl shadow-md">
                             <h2 className="text-lg font-semibold text-gray-800 mb-4">
                                 Payment Method
@@ -144,28 +141,27 @@ export default function Checkout() {
                                 <label className="flex items-center gap-2 cursor-pointer">
                                     <input
                                         type="radio"
-                                        name="payment"
+                                        value="cash"
+                                        {...register("payment")}
                                         defaultChecked
                                         className="accent-[#00A297]"
                                     />
-                                    <span className="text-gray-700">
-                                        Cash on Delivery
-                                    </span>
+                                    <span>Cash on Delivery</span>
                                 </label>
+
                                 <label className="flex items-center gap-2 cursor-pointer">
                                     <input
                                         type="radio"
-                                        name="payment"
+                                        value="card"
+                                        {...register("payment")}
                                         className="accent-[#00A297]"
                                     />
-                                    <span className="text-gray-700">
-                                        Credit / Debit Card
-                                    </span>
+                                    <span>Credit / Debit Card</span>
                                 </label>
                             </div>
                         </div>
                     </div>
-    
+
                     <div className="p-4 bg-white rounded-2xl shadow-md h-fit">
                         <h2 className="text-lg font-semibold text-gray-800 mb-3">
                             Order Summary
@@ -194,12 +190,15 @@ export default function Checkout() {
                                 <span>90 EGP</span>
                             </div>
                         </div>
-    
+
                         <button
-                            className="cursor-pointer w-full mt-4 px-6 py-2.5 rounded-xl bg-[#00A297] text-white text-lg font-medium hover:bg-[#00887F] shadow-md transition"
+                            disabled={loading}
+                            className={`cursor-pointer w-full mt-4 px-6 py-2.5 rounded-xl text-white text-lg font-medium shadow-md transition 
+        ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-[#00A297] hover:bg-[#00887F]"}`}
                         >
-                            Place Order
+                            {loading ? "Processing..." : "Place Order"}
                         </button>
+
                     </div>
                 </div>
             </div>
