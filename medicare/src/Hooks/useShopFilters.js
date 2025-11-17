@@ -5,9 +5,9 @@ import { useEffect } from "react";
 export default function useShopFilters() {
   const [searchParams] = useSearchParams();
   let query = useSearchStore((state) => state.query);
-  let setPage = useSearchStore((state) => state.setPage);
   const category = useSearchStore((state) => state.category);
   const setCategory = useSearchStore((state) => state.setCategory);
+  const setPage = useSearchStore((state) => state.setPage);
   let categoryquery = searchParams.get("category") || "";
   useEffect(() => {
     if (categoryquery && categoryquery !== category) {
@@ -22,6 +22,7 @@ export default function useShopFilters() {
   const clearBrand = useSearchStore((state) => state.clearBrand);
   const clearSort = useSearchStore((state) => state.clearSort);
   const clearPrice = useSearchStore((state) => state.clearPrice);
+  const clearQuery = useSearchStore((state) => state.clearQuery);
 
   let filters = "";
   const [min, max] = price.split("-");
@@ -59,12 +60,15 @@ export default function useShopFilters() {
     filters = filters.slice(0, -1);
   }
   const clearAll = () => {
-    filters = "";
-    clearBrand();
-    clearCategory();
-    clearPrice();
-    clearSort();
-    setPage(1);
+    if (filters !== "") {
+      filters = "";
+      clearBrand();
+      clearCategory();
+      clearPrice();
+      clearSort();
+      clearQuery();
+      setPage(1);
+    }
   };
   return { filters, clearAll };
 }

@@ -46,8 +46,14 @@ function Shop() {
   useEffect(() => {
     return () => {
       clearAll();
+      setPage(1);
     };
   }, []);
+  useEffect(() => {
+    if (page > totalPages) {
+      setPage(1);
+    }
+  }, [totalPages, page, setPage]);
   if (isLoading) return <LoadingScreenAnimation />;
   return (
     <section className="pb-14 bg-stone-100/50">

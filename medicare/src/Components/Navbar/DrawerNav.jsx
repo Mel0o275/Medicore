@@ -88,7 +88,7 @@ export default function DrawerNav({ open, toggleDrawer }) {
                     <Button
                       key={index}
                       component={Link}
-                      to={`/${category.title}`}
+                      to={`/category?category=${category.title}`}
                       onClick={toggleDrawer}
                       sx={{
                         color: "text.primary",
