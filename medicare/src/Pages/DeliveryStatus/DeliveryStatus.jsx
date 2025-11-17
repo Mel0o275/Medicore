@@ -17,7 +17,7 @@ import PendingIcon from "@mui/icons-material/Pending";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 
 const PRIMARY_COLOR = "#00a297";
-const BASE_URL = import.meta.env.VITE_API_URL; // من .env
+const BASE_URL = import.meta.env.VITE_API_URL; 
 
 const getStatusProps = (status) => {
   switch (status) {
@@ -41,7 +41,7 @@ const DeliveryStatus = ({ token }) => {
   const [totalPrice, setTotalPrice] = useState("");
 
   const config = {
-    headers: { Authorization: `Bearer ${token}` }, // JWT
+    headers: { Authorization: `Bearer ${token}` },
   };
 
   const fetchOrders = () => {
