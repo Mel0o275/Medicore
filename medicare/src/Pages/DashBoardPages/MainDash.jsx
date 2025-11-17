@@ -32,7 +32,7 @@ import AddProductModal from "../../Components/AddProduct/AddProduct.jsx";
 import EditProductModal from "../../Components/EditProduct/EditProduct.jsx";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import LoadingScreenAnimation from "../LoadingScreenAnimation/LoadingScreenAnimation.jsx";
+import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation.jsx";
 import useShopFilters from "../../Hooks/useShopFilters.js";
 
 const MainDash = () => {
