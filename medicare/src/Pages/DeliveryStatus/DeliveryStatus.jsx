@@ -104,17 +104,17 @@ const DeliveryStatus = ({ token }) => {
 
       <Stack direction="row" spacing={2} mb={4}>
         <TextField
-          label="Customer's Name : "
+          label="Customer's Name"
           value={customerName}
           onChange={(e) => setCustomerName(e.target.value)}
         />
         <TextField
-          label="Product's Name : "
+          label="Product's Name"
           value={productName}
           onChange={(e) => setProductName(e.target.value)}
         />
         <TextField
-          label="Total Price : "
+          label="Total Price"
           type="number"
           value={totalPrice}
           onChange={(e) => setTotalPrice(e.target.value)}
@@ -178,28 +178,20 @@ const DeliveryStatus = ({ token }) => {
                         }}
                       >
                         <StatusIcon fontSize="small" sx={{ mr: 0.5 }} />
-                        <Typography
-                          variant="body2"
-                          fontWeight="bold"
-                          sx={{ ml: 0.5 }}
-                        >
+                        <Typography variant="body2" fontWeight="bold" sx={{ ml: 0.5 }}>
                           {item.status}
                         </Typography>
                       </Box>
 
                       <Typography variant="caption" color="text.secondary">
-                        Delivery Date:{" "}
-                        {new Date(item.createdAt).toLocaleDateString()}
+                        Delivery Date: {new Date(item.createdAt).toLocaleDateString()}
                       </Typography>
 
                       <Typography variant="caption" color="text.secondary">
                         Receiving Order Time:{" "}
                         <span
                           style={{
-                            color:
-                              item.status === "Order is delivered"
-                                ? PRIMARY_COLOR
-                                : "gray",
+                            color: item.status === "Order is delivered" ? PRIMARY_COLOR : "gray",
                             fontWeight: "bold",
                           }}
                         >
@@ -212,9 +204,7 @@ const DeliveryStatus = ({ token }) => {
                           <Button
                             size="small"
                             variant="outlined"
-                            onClick={() =>
-                              updateOrderStatus(item._id, "Order is delivered")
-                            }
+                            onClick={() => updateOrderStatus(item._id, "Order is delivered")}
                           >
                             Delivered
                           </Button>
