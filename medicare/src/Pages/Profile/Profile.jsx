@@ -12,18 +12,15 @@ import {
   ListItemText,
   ListItemIcon,
   Typography,
- 
 } from "@mui/material";
 
 /* --------------------------- "Icons" -------------------------------- */
 
 /* --------------------------- "Constants" -------------------------------- */
 
-
 /* --------------------------- "pages" -------------------------------- */
 import Logout from "../Logout/Logout.jsx";
-
-
+import DeleteProfile from "../ProfilePages/DeleteProfile.jsx";
 
 import { profileList } from "../../Constants/NavPages.jsx";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -32,6 +29,13 @@ function Profile() {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
+  const [openLogout, setOpenLogout] = useState(false);
+
+  function handleOpenLogout() {
+    setOpenLogout(true);
+  }
+  const handleCloseLogout = () => setOpenLogout(false);
+
   function handleOpen() {
     setOpen(true);
   }
@@ -43,7 +47,12 @@ function Profile() {
         <Grid container spacing={4}>
           {/* Logout */}
           {open ? (
-            <Logout open={open} handleClose={handleClose}></Logout>
+            <DeleteProfile
+              open={open}
+              handleClose={handleClose}
+            ></DeleteProfile>
+          ) : openLogout ? (
+            <Logout open={openLogout} handleClose={handleCloseLogout}></Logout>
           ) : (
             <></>
           )}
@@ -100,8 +109,13 @@ function Profile() {
                         justifyContent: { xs: "center", md: "flex-start" },
                       }}
                       onClick={() => {
-                        if (item.name != "Logout") navigate(item.name);
-                        else {
+                        if (item.name != "Delete Profile") {
+                          if (item.name != "Logout") {
+                            navigate(item.name);
+                          } else {
+                            handleOpenLogout();
+                          }
+                        } else {
                           handleOpen();
                         }
                       }}

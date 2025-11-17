@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 /* --------------------------- "MUI" -------------------------------- */
-
 import {
   Box,
   Grid,
@@ -12,27 +11,118 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
+/* --------------------------- "Function Controller" -------------------------------- */
+import { useHandleImageUpload } from "../../FunctionControler/ImageUpload";
+/* --------------------------- "react-hook-form" -------------------------------- */
+
+import { useForm } from "react-hook-form";
+/* --------------------------- "React query User" -------------------------------- */
+
+import { useUserMutations } from "../../Hooks/reactUser/useUserMutations";
+/* --------------------------- "Zustand" -------------------------------- */
+
+/* --------------------------- "Components" -------------------------------- */
+
+import ViewButtonLoader from "../../Components/Loades/ViewButtonLoader";
+import toast from "react-hot-toast";
+import { useUser } from "../../Hooks/reactUser/useUserSelected";
 
 function PersonalInfo() {
   const [selectedImg, setSelectedImg] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  
+  const { handleImageUpload } = useHandleImageUpload();
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  // React query
 
-    const reader = new FileReader();
+  const { updateDataMutation, uploadAvatarMutation } = useUserMutations();
 
-    reader.readAsDataURL(file);
+  const {
+    data: userDate,
+    isLoading,
+    isError,
+  } = useUser(localStorage.getItem("id"));
+  
+  // console.log(userDate);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    trigger,
+  } = useForm({
+    defaultValues: {
+    
 
-    reader.onload = async () => {
-      const base64Image = reader.result;
-      setSelectedImg(base64Image);
+      firstName: userDate?.firstName ?? "John",
+      secondName: userDate?.secondName ?? "Doe",
+      email: userDate?.email ?? "john.doe@example.com",
+      phoneNumber: userDate?.phoneNumber ?? "000000000000",
+      dateOfBirth: userDate?.dateOfBirth ?? "1990-01-01",
+      gender: userDate?.gender ?? "male",
+    },
+  });
 
-      //   await updateProfile({ profilePic: base64Image });
-    };
+  
+  const onSubmit = (data) => {
+    console.log("Updated data:", data);
+
+   
+    updateDataMutation.mutate(data, {
+      onSuccess: () => {
+        setIsEditing(false);
+        toast.success(`User Updated data successfully`);
+      },
+      onError: (error) => {
+        console.error("Error changing info:", error);
+        const serverMessage =
+          error?.response?.data?.message || "Something went wrong";
+
+        toast.error(serverMessage);
+      },
+    });
   };
+
+  const handleCancelEdit = () => {
+   
+    reset({
+    
+
+      firstName: userDate?.firstName ?? "John",
+      secondName: userDate?.secondName ?? "Doe",
+      email: userDate?.email ?? "john.doe@example.com",
+      phoneNumber: userDate?.phoneNumber ?? "000000000000",
+      dateOfBirth: userDate?.dateOfBirth ?? "1990-01-01",
+      gender: userDate?.gender ?? "male",
+    });
+    setIsEditing(false);
+  };
+
+  const handleEditToggle = () => {
+    if (isEditing) {
+      handleCancelEdit();
+    } else {
+      setIsEditing(true);
+    }
+  };
+
+
+  const handleUpdateData = async () => {
+   
+    const isValid = await trigger();
+
+    if (isValid) {
+      handleSubmit(onSubmit)();
+    }
+  };
+
+  
+
   return (
     <>
+      {uploadAvatarMutation.isPending && <ViewButtonLoader />}
+      {updateDataMutation.isPending && <ViewButtonLoader />}
+
       <Grid size={{ xs: 12, md: 9 }}>
         <Box sx={{ pb: 2 }}>
           <Typography variant="h4" className="text-white font-semibold">
@@ -51,6 +141,7 @@ function PersonalInfo() {
           }}
         >
           <Box sx={{ position: "relative", display: "inline-block" }}>
+            {/* Take the pic from rahma */}
             <Avatar
               alt="Profile avatar"
               src={selectedImg || "/static/images/avatar/1.jpg"}
@@ -67,7 +158,7 @@ function PersonalInfo() {
               id="avatar-upload"
               className="hidden"
               accept="image/*"
-              onChange={handleImageUpload}
+              onChange={(e) => handleImageUpload(e, setSelectedImg)}
             />
             <label htmlFor="avatar-upload">
               <IconButton
@@ -113,143 +204,247 @@ function PersonalInfo() {
             </Button>
             <Button
               variant="contained"
+              onClick={handleEditToggle}
               sx={{
                 width: { xs: "100%", sm: "auto" },
                 minWidth: { xs: "auto", sm: 140 },
               }}
             >
-              Change your info
+              {isEditing ? "Cancel" : "Change your info"}
             </Button>
+            {isEditing && (
+              <Button
+                type="button" // Change to button to prevent native form submission
+                onClick={handleUpdateData} // Use our custom handler
+                variant="contained"
+                sx={{
+                  width: { xs: "100%", sm: "auto" },
+                  minWidth: { xs: "auto", sm: 140 },
+                  backgroundColor: "#4CAF50",
+                  "&:hover": {
+                    backgroundColor: "#45a049",
+                  },
+                }}
+              >
+                Update data
+              </Button>
+            )}
           </Box>
         </Box>
 
         <Box>
           <div className="border-b border-gray-300 pb-12">
-            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <form
+              id="personal-info-form"
+              onSubmit={handleSubmit(onSubmit)}
+              className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
+            >
               <div className="sm:col-span-3">
                 <label
                   htmlFor="first-name"
-                  className="block text-sm/6 font-medium"
+                  className="block text-sm/6 font-medium text-white"
                 >
                   First name
                 </label>
                 <div className="mt-2">
                   <input
                     id="first-name"
-                    name="first-name"
                     type="text"
                     autoComplete="given-name"
-                    defaultValue="John"
-                    className="block w-full rounded-md border border-gray-300 px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6"
+                    disabled={!isEditing}
+                    className={`block w-full rounded-md border px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6 ${
+                      !isEditing
+                        ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
+                        : errors.firstName
+                        ? "border-red-500 bg-white text-gray-900"
+                        : "border-gray-300 bg-white text-gray-900"
+                    }`}
+                    {...register("firstName", {
+                      required: "First name is required",
+                      minLength: {
+                        value: 2,
+                        message: "First name must be at least 2 characters",
+                      },
+                    })}
                   />
+                  {errors.firstName && (
+                    <span className="text-red-500 text-xs mt-1 block">
+                      {errors.firstName.message}
+                    </span>
+                  )}
                 </div>
               </div>
 
               <div className="sm:col-span-3">
                 <label
-                  htmlFor="last-name"
-                  className="block text-sm/6 font-medium"
+                  htmlFor="second-name"
+                  className="block text-sm/6 font-medium text-white"
                 >
-                  Last name
+                  Second name
                 </label>
                 <div className="mt-2">
                   <input
                     id="last-name"
-                    name="last-name"
                     type="text"
                     autoComplete="family-name"
-                    defaultValue="Doe"
-                    className="block w-full rounded-md border border-gray-300 px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6"
+                    disabled={!isEditing}
+                    className={`block w-full rounded-md border px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6 ${
+                      !isEditing
+                        ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
+                        : errors.secondName
+                        ? "border-red-500 bg-white text-gray-900"
+                        : "border-gray-300 bg-white text-gray-900"
+                    }`}
+                    {...register("secondName", {
+                      required: "Second name is required",
+                      minLength: {
+                        value: 2,
+                        message: "Second name must be at least 2 characters",
+                      },
+                    })}
                   />
+                  {errors.secondName && (
+                    <span className="text-red-500 text-xs mt-1 block">
+                      {errors.secondName.message}
+                    </span>
+                  )}
                 </div>
               </div>
 
               <div className="sm:col-span-4">
-                <label htmlFor="email" className="block text-sm/6 font-medium">
+                <label
+                  htmlFor="email"
+                  className="block text-sm/6 font-medium text-white"
+                >
                   Email address
                 </label>
                 <div className="mt-2">
                   <input
                     id="email"
-                    name="email"
                     type="email"
                     autoComplete="email"
-                    defaultValue="john.doe@example.com"
-                    className="block w-full rounded-md border border-gray-300 px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6"
+                    disabled={!isEditing}
+                    className={`block w-full rounded-md border px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6 ${
+                      !isEditing
+                        ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
+                        : errors.email
+                        ? "border-red-500 bg-white text-gray-900"
+                        : "border-gray-300 bg-white text-gray-900"
+                    }`}
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: "Invalid email address",
+                      },
+                    })}
                   />
-                </div>
-              </div>
-
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="country"
-                  className="block text-sm/6 font-medium"
-                >
-                  Country
-                </label>
-                <div className="mt-2 grid grid-cols-1">
-                  <select
-                    id="country"
-                    name="country"
-                    autoComplete="country-name"
-                    defaultValue="United States"
-                    className="col-start-1 row-start-1 w-full appearance-none rounded-md border border-gray-300 py-1.5 pr-8 pl-3 text-base outline-none focus:border-gray-500 sm:text-sm/6"
-                  >
-                    <option>United States</option>
-                    <option>Canada</option>
-                    <option>Mexico</option>
-                  </select>
-                  <KeyboardArrowDownIcon
-                    aria-hidden="true"
-                    className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
-                  />
+                  {errors.email && (
+                    <span className="text-red-500 text-xs mt-1 block">
+                      {errors.email.message}
+                    </span>
+                  )}
                 </div>
               </div>
 
               <div className="sm:col-span-2 sm:col-start-1">
-                <label htmlFor="phone" className="block text-sm/6 font-medium">
-                  Phone number
+                <label
+                  htmlFor="phoneNumber"
+                  className="block text-sm/6 font-medium text-white"
+                >
+                  phoneNumber number
                 </label>
                 <div className="mt-2">
                   <input
-                    id="phone"
-                    name="phone"
+                    id="phoneNumber"
                     type="tel"
                     autoComplete="tel"
-                    defaultValue="+1 (555) 123-4567"
-                    className="block w-full rounded-md border border-gray-300 px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6"
+                    disabled={!isEditing}
+                    className={`block w-full rounded-md border px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6 ${
+                      !isEditing
+                        ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
+                        : errors.phoneNumber
+                        ? "border-red-500 bg-white text-gray-900"
+                        : "border-gray-300 bg-white text-gray-900"
+                    }`}
+                    {...register("phoneNumber", {
+                      required: "phoneNumber number is required",
+                      pattern: {
+                        value: /^\+?[0-9]{10,15}$/,
+                        message: "Invalid phoneNumber number",
+                      },
+                    })}
                   />
+                  {errors.phoneNumber && (
+                    <span className="text-red-500 text-xs mt-1 block">
+                      {errors.phoneNumber.message}
+                    </span>
+                  )}
                 </div>
               </div>
 
               <div className="sm:col-span-2">
                 <label
-                  htmlFor="birthdate"
-                  className="block text-sm/6 font-medium"
+                  htmlFor="dateOfBirth"
+                  className="block text-sm/6 font-medium text-white"
                 >
                   Date of birth
                 </label>
                 <div className="mt-2">
                   <input
-                    id="birthdate"
-                    name="birthdate"
+                    id="dateOfBirth"
                     type="date"
-                    defaultValue="1990-01-01"
-                    className="block w-full rounded-md border border-gray-300 px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6"
+                    disabled={!isEditing}
+                    className={`block w-full rounded-md border px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6 ${
+                      !isEditing
+                        ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
+                        : errors.dateOfBirth
+                        ? "border-red-500 bg-white text-gray-900"
+                        : "border-gray-300 bg-white text-gray-900"
+                    }`}
+                    {...register("dateOfBirth", {
+                      required: "Date of birth is required",
+                      validate: {
+                        validDate: (value) => {
+                          const date = new Date(value);
+                          return !isNaN(date.getTime()) || "Invalid date";
+                        },
+                        pastDate: (value) => {
+                          const date = new Date(value);
+                          return (
+                            date < new Date() || "Date must be in the past"
+                          );
+                        },
+                      },
+                    })}
                   />
+                  {errors.dateOfBirth && (
+                    <span className="text-red-500 text-xs mt-1 block">
+                      {errors.dateOfBirth.message}
+                    </span>
+                  )}
                 </div>
               </div>
 
               <div className="sm:col-span-2">
-                <label htmlFor="gender" className="block text-sm/6 font-medium">
+                <label
+                  htmlFor="gender"
+                  className="block text-sm/6 font-medium text-white"
+                >
                   Gender
                 </label>
                 <div className="mt-2 grid grid-cols-1">
                   <select
                     id="gender"
-                    name="gender"
-                    defaultValue="male"
-                    className="col-start-1 row-start-1 w-full appearance-none rounded-md border border-gray-300 py-1.5 pr-8 pl-3 text-base outline-none focus:border-gray-500 sm:text-sm/6"
+                    disabled={!isEditing}
+                    className={`col-start-1 row-start-1 w-full appearance-none rounded-md border py-1.5 pr-8 pl-3 text-base outline-none focus:border-gray-500 sm:text-sm/6 ${
+                      !isEditing
+                        ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
+                        : errors.gender
+                        ? "border-red-500 bg-white text-gray-900"
+                        : "border-gray-300 bg-white text-gray-900"
+                    }`}
+                    {...register("gender", { required: "Gender is required" })}
                   >
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -260,9 +455,14 @@ function PersonalInfo() {
                     aria-hidden="true"
                     className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
                   />
+                  {errors.gender && (
+                    <span className="text-red-500 text-xs mt-1 block">
+                      {errors.gender.message}
+                    </span>
+                  )}
                 </div>
               </div>
-            </div>
+            </form>
           </div>
         </Box>
       </Grid>

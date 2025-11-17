@@ -124,10 +124,10 @@ const menuItems = [
     path: "/DashBoard/Orders",
   },
   {
-    text: "Employees",
+    text: "Users",
     icon: <PeopleIcon />,
-    key: "employees",
-    path: "/DashBoard/Employees",
+    key: "users",
+    path: "/DashBoard/Users",
   },
   {
     text: "Settings",

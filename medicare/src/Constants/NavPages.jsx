@@ -1,9 +1,9 @@
-
-import PersonIcon from '@mui/icons-material/Person';
-import LockIcon from '@mui/icons-material/Lock';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import LogoutIcon from '@mui/icons-material/Logout';
-import ColorLensIcon from '@mui/icons-material/ColorLens';
+import PersonIcon from "@mui/icons-material/Person";
+import LockIcon from "@mui/icons-material/Lock";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import LogoutIcon from "@mui/icons-material/Logout";
+import ColorLensIcon from "@mui/icons-material/ColorLens";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const categories = [
   {
@@ -310,10 +310,10 @@ const profileList = [
   { name: "Info", icon: <PersonIcon /> },
   { name: "Security", icon: <LockIcon /> },
   { name: "Notifications", icon: <NotificationsIcon /> },
-  { name: "Logout", icon: <LogoutIcon /> },
+  { name: "Delete Profile", icon: <DeleteIcon /> },
   { name: "Themes", icon: <ColorLensIcon /> },
+  { name: "Logout", icon: <LogoutIcon /> },
 ];
-
 export {
   categories,
   elementsItems,
