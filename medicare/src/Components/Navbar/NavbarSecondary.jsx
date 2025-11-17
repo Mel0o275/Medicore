@@ -56,6 +56,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function NavbarSecondary() {
   const setQuery = useSearchStore((state) => state.setQuery);
+  const query = useSearchStore((state) => state.query);
   const navigate = useNavigate();
   const handleKeyDown = (e) => {
     if (e.key == "Enter") {
@@ -108,6 +109,7 @@ export default function NavbarSecondary() {
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
               onKeyDown={handleKeyDown}
+              value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
               }}
