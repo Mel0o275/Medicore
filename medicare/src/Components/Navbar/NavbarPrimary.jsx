@@ -76,7 +76,7 @@ export default function Navbar(props) {
   const {count : count} = React.useContext(CartContext);
   console.log(count);
 
-  useEffect(() => {count})
+  React.useEffect(() => {count})
 
   //
 

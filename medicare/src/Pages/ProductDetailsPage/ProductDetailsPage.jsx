@@ -13,7 +13,10 @@ import ShareModal from "./ShareModal";
 import { FaRegEye } from "react-icons/fa";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import LoadingScreenAnimation from "../LoadingScreenAnimation/LoadingScreenAnimation";
+import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation";
+import { useProductStore } from "../../Store/useProductStore";
+import toast from "react-hot-toast";
+import { CartContext } from "../../Context/cartContext";
 function ProductDetailsPage() {
   const { id } = useParams();
   console.log(id);
@@ -28,7 +31,13 @@ function ProductDetailsPage() {
     queryFn: fetchProduct,
   });
   const product = data?.data?.product;
-  const relatedProducts = data?.data?.relatedProducts || [];
+  const products = useProductStore((state) => state.products);
+
+  const relatedProducts =
+    products.filter(
+      (p) => p.category === product?.category && p._id !== product?._id
+    ) || [];
+
   const [openmodal, setOpenModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
@@ -181,8 +190,8 @@ function ProductDetailsPage() {
             <div className="mt-4 space-y-1 text-gray-500 text-xl">
               <p>{product.desc}.</p>
               <p className="flex items-center gap-3 pt-4">
-                <FaRegEye className=" text-xl text-[#00a297]" />{" "}
-                {product.visits} people visited this page
+                <FaRegEye className=" text-xl text-[#00a297]" /> 20 people
+                visited this page
               </p>
             </div>
             <div className="flex gap-5">
@@ -210,7 +219,7 @@ function ProductDetailsPage() {
             productTitle={product.title}
           />
         </div>
-        {relatedProducts && relatedProducts.length > 0 && (
+        {relatedProducts && relatedProducts.length != 0 && (
           <>
             <h3 className="text-xl mb-5 font-semibold">Related Products</h3>
             <div className=" flex gap-3 overflow-x-auto hide-scrollbar">
