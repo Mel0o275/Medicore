@@ -29,6 +29,8 @@ function ProductDetailsPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["product", id],
     queryFn: fetchProduct,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
   const product = data?.data?.product;
   const products = useProductStore((state) => state.products);
@@ -41,14 +43,13 @@ function ProductDetailsPage() {
   const [openmodal, setOpenModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
-  const {count : count, setCount : setCount} = useContext(CartContext);
-
+  const { count: count, setCount: setCount } = useContext(CartContext);
 
   const API = import.meta.env.VITE_API_URL;
   console.log(API);
-  const [disabled, setdisabled] = useState(false)
+  const [disabled, setdisabled] = useState(false);
   const token = localStorage.getItem("token");
-  
+
   const navigate = useNavigate();
 
   // async function handleInc() {
@@ -104,29 +105,33 @@ function ProductDetailsPage() {
       navigate("/login");
       return;
     }
-    
+
     try {
-      const { data } = await axios.post(`${API}/cart`,{
-        "_id": id
-      },{
-        headers : {
-          Authorization : token
+      const { data } = await axios.post(
+        `${API}/cart`,
+        {
+          _id: id,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
         }
-      })
+      );
       console.log(1);
       console.log(data);
-      if(data.products.length != -1) {
+      if (data.products.length != -1) {
         toast(`Product added to cart succsessfully✨`, {
-          position : 'top-center',
-          duration : 3000
-        })
+          position: "top-center",
+          duration: 3000,
+        });
         setCount(count + 1);
       }
     } catch (err) {
       console.log(err);
     }
   }
-  
+
   if (isLoading) return <LoadingScreenAnimation />;
   return (
     <section className="pb-14 bg-stone-100/50">
@@ -190,14 +195,15 @@ function ProductDetailsPage() {
             <div className="mt-4 space-y-1 text-gray-500 text-xl">
               <p>{product.desc}.</p>
               <p className="flex items-center gap-3 pt-4">
-                <FaRegEye className=" text-xl text-[#00a297]" /> 20 people
-                visited this page
+                <FaRegEye className=" text-xl text-[#00a297]" />{" "}
+                {product.visits} people visited this page
               </p>
             </div>
             <div className="flex gap-5">
               <button
-              onClick={addToCart}
-              className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row">
+                onClick={addToCart}
+                className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
+              >
                 <FaCartPlus /> <span>Add To Cart</span>
               </button>
               <button className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row">
