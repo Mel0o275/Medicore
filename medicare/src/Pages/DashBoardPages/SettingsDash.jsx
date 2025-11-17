@@ -16,7 +16,6 @@ import {
 } from "@mui/icons-material";
 
 const SettingsDash = () => {
-  // بيانات الأدمن الأساسية
   const [admin, setAdmin] = useState({
     adminId: "ADM001",
     fullName: "Ahmed Hassan",

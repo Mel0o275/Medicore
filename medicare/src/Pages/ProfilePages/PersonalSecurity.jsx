@@ -49,9 +49,12 @@ function PersonalSecurity() {
         },
         onError: (error) => {
           const serverMessage =
-            error?.response?.data?.message || "User doessn't changed password";
 
-          toast.error(serverMessage);
+          error?.response?.data?.message || "User doessn't changed password";
+
+        toast.error(serverMessage);
+        
+
         },
       }
     );

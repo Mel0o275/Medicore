@@ -33,10 +33,11 @@ import MotionDiv from "../../Animations/HomeAnimation";
 
 
 
+
 export default function Home() {
   const [index, setIndex] = useState(0);
 
- 
+
 
   useEffect(() => {
     const interval = setInterval(() => {

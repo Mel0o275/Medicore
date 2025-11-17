@@ -3,6 +3,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
+
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import {
@@ -14,6 +15,7 @@ import { FaShieldAlt, FaCoins, FaShippingFast } from "react-icons/fa";
 import img3 from "/20.jpg";
 import img4 from "/17.jpg";
 import img5 from "/24.jpg";
+
 const categories = [
   {
     title: "Medications",
@@ -480,7 +482,6 @@ const profileList = [
   { name: "Themes", icon: <ColorLensIcon /> },
   { name: "Logout", icon: <LogoutIcon /> },
 ];
-
 export {
   categories,
   elementsItems,

@@ -20,32 +20,36 @@ import { useForm } from "react-hook-form";
 
 import { useUserMutations } from "../../Hooks/reactUser/useUserMutations";
 
-import { useUser } from "../../Hooks/reactUser/useUserSelected";
 /* --------------------------- "Zustand" -------------------------------- */
 
 /* --------------------------- "Components" -------------------------------- */
 
 import ViewButtonLoader from "../../Components/Loades/ViewButtonLoader";
 import toast from "react-hot-toast";
+import { useUser } from "../../Hooks/reactUser/useUserSelected";
+
 import useAuthStore from "../../Store/useAuthStore";
 
 function PersonalInfo() {
   const [selectedImg, setSelectedImg] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+
+  
   const { handleImageUpload } = useHandleImageUpload();
 
   // React query
 
   const { updateDataMutation, uploadAvatarMutation } = useUserMutations();
-  const { user } = useAuthStore();
-  // console.log( user.data.id);
 
-  useEffect(() => {
-    localStorage.setItem("token", user.data.token);
-  });
-  // const { data: userDate, isLoading, isError } = useUser(user.data.id);
 
-  // Initialize react-hook-form with default values within user data
+  // From rahma
+  const {
+    data: userDate,
+    isLoading,
+    isError,
+  } = useUser(localStorage.getItem("id"));
+  
+  // console.log(userDate);
   const {
     register,
     handleSubmit,
@@ -54,23 +58,32 @@ function PersonalInfo() {
     trigger,
   } = useForm({
     defaultValues: {
-      // firstName: "John" | userDate.firstName,
-      // secondName: "Doe" | userDate.secondName,
-      // email: "john.doe@example.com"| userDate.email,
-      // phoneNumber: "000000000000"| userDate.phoneNumber,
-      // dateOfBirth: "1990-01-01" | userDate.dateOfBirth,
-      // gender: "male" | userDate.gender,
-      firstName: "John",
-      secondName: "Doe",
-      email: "john.doe@example.com",
-      phoneNumber: "000000000000",
-      dateOfBirth: "1990-01-01",
-      gender: "male",
+    
+
+      firstName: userDate?.firstName ?? "John",
+      secondName: userDate?.secondName ?? "Doe",
+      email: userDate?.email ?? "john.doe@example.com",
+      phoneNumber: userDate?.phoneNumber ?? "000000000000",
+      dateOfBirth: userDate?.dateOfBirth ?? "1990-01-01",
+      gender: userDate?.gender ?? "male",
     },
   });
 
+  
+ 
+  const { user } = useAuthStore();
+  // console.log( user.data.id);
+
+  useEffect(() => {
+    localStorage.setItem("token", user.data.token);
+  });
+  // const { data: userDate, isLoading, isError } = useUser(user.data.id);
+
+ 
+
   const onSubmit = (data) => {
     console.log("Updated data:", data);
+
 
     updateDataMutation.mutate(data, {
       onSuccess: () => {
@@ -78,6 +91,7 @@ function PersonalInfo() {
         toast.success(`User Updated data successfully`);
       },
       onError: (error) => {
+
         const serverMessage =
           error?.response?.data?.message || "User doesn't Updated data";
 
@@ -87,20 +101,18 @@ function PersonalInfo() {
   };
 
   const handleCancelEdit = () => {
-    reset({
-      //  firstName: "John" | userDate.firstName,
-      //   secondName: "Doe" | userDate.secondName,
-      //   email: "john.doe@example.com"| userDate.email,
-      //   phoneNumber: "000000000000"| userDate.phoneNumber,
-      //   dateOfBirth: "1990-01-01" | userDate.dateOfBirth,
-      //   gender: "male" | userDate.gender,
 
-      firstName: "John",
-      secondName: "Doe",
-      email: "john.doe@example.com",
-      phoneNumber: "000000000000",
-      dateOfBirth: "1990-01-01",
-      gender: "male",
+   
+    reset({
+    
+
+      firstName: userDate?.firstName ?? "John",
+      secondName: userDate?.secondName ?? "Doe",
+      email: userDate?.email ?? "john.doe@example.com",
+      phoneNumber: userDate?.phoneNumber ?? "000000000000",
+      dateOfBirth: userDate?.dateOfBirth ?? "1990-01-01",
+      gender: userDate?.gender ?? "male",
+
     });
     setIsEditing(false);
   };
@@ -113,6 +125,7 @@ function PersonalInfo() {
     }
   };
 
+
   const handleUpdateData = async () => {
     const isValid = await trigger();
 
@@ -120,6 +133,7 @@ function PersonalInfo() {
       handleSubmit(onSubmit)();
     }
   };
+
 
   return (
     <>

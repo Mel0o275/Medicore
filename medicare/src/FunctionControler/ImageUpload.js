@@ -19,17 +19,23 @@ export const useHandleImageUpload = () => {
         onSuccess: () => {
           toast.success("Avatar uploaded successfully! ");
         },
-        onError: () => {
-          toast.error("Failed to upload image ");
+        onError: (error) => {
+          const serverMessage =
+            error?.response?.data?.message || "Something went wrong";
+
+          toast.error(serverMessage);
+          // toast.error("Failed to upload image ");
+
         },
       });
     };
   };
 
-  
-
   return { handleImageUpload };
 };
 
+  
+
+ 
 
 

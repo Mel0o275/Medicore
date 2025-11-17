@@ -32,6 +32,16 @@ import PersonalSecurity from "./Pages/ProfilePages/PersonalSecurity";
 import PersonalNotifications from "./Pages/ProfilePages/PersonalNotifications";
 import ForgotPasswordPage from "./Pages/ForgotPasswordPage/ForgotPasswordPage";
 
+
+import LoadingScreenAnimation from "./Animations/LoadingScreenAnimation.jsx";
+
+import Dashboard from "./Pages/DashBoard";
+import MainDash from "./Pages/DashBoardPages/MainDash";
+import InventoryDash from "./Pages/DashBoardPages/InventoryDash";
+import OrdersDash from "./Pages/DashBoardPages/OrdersDash";
+import UsersDash from "./Pages/DashBoardPages/UsersDash.jsx";
+import SettingsDash from "./Pages/DashBoardPages/SettingsDash";
+// ======
 // import LoadingScreenAnimation from "./Pages/LoadingScreenAnimation/LoadingScreenAnimation";
 import CategoryPage from "./Pages/Shop/CategoryPage.jsx";
 // import Dashboard from "./Pages/DashBoard";
@@ -40,6 +50,7 @@ import CategoryPage from "./Pages/Shop/CategoryPage.jsx";
 // import OrdersDash from "./Pages/DashBoardPages/OrdersDash";
 // import UsersDash from "./Pages/DashBoardPages/UsersDash.jsx";
 // import SettingsDash from "./Pages/DashBoardPages/SettingsDash";
+
 
 /* -------------------------- Toast --------------------------- */
 
@@ -73,10 +84,10 @@ function App() {
   return (
     <ThemeProvider theme={muiTheme}>
       <Router>
-        {/* <LoadingScreenAnimation
+        <LoadingScreenAnimation
           isVisible={isLoading}
           onFinish={() => setIsLoading(false)}
-        /> */}
+        />
 
         <Toaster
           position="top-right"
@@ -91,6 +102,8 @@ function App() {
         <NavbarPrimary />
         <ThemeSwitcher />
         <div className="">
+
+
           <QueryClientProvider client={query}>
             <Routes>
               <Route path="/" element={<Navigate to="/Home" replace />} />
@@ -119,13 +132,13 @@ function App() {
                 </Route>
                 <Route path="/checkout" element={<Checkout />} />
               </Route>
-              {/* <Route path="/DashBoard" element={<Dashboard />}>
+              <Route path="/DashBoard" element={<Dashboard />}>
                 <Route index element={<MainDash />} />
                 <Route path="Inventory" element={<InventoryDash />} />
                 <Route path="Orders" element={<OrdersDash />} />
-                <Route path="Employees" element={<EmployeesDash />} />
+                <Route path="Users" element={<UsersDash />} />
                 <Route path="Settings" element={<SettingsDash />} />
-              </Route> */}
+              </Route>
               <Route path="/questions" element={<Questions />} />
               <Route path="/shop" element={<Shop />} />
               <Route path="/category" element={<CategoryPage />} />
@@ -135,6 +148,7 @@ function App() {
               <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
             </Routes>
           </QueryClientProvider>
+
         </div>
         <Footer />
       </Router>

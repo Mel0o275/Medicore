@@ -30,18 +30,19 @@ function Profile() {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
+  const [openLogout, setOpenLogout] = useState(false);
+
+  function handleOpenLogout() {
+    setOpenLogout(true);
+  }
+  const handleCloseLogout = () => setOpenLogout(false);
+
   function handleOpen() {
     setOpen(true);
   }
   const handleClose = () => setOpen(false);
 
-  // Logout
-  const [openLogout, setOpenLogout] = useState(false);
-  const handleCloseLogout = () => setOpenLogout(false);
-
-  function handleOpenLogout() {
-    setOpenLogout(true);
-  }
+ 
 
   return (
     <Box sx={{ minHeight: "100vh", p: 2 }}>
@@ -57,6 +58,10 @@ function Profile() {
               open={open}
               handleClose={handleClose}
             ></DeleteProfile>
+
+          ) : openLogout ? (
+            <Logout open={openLogout} handleClose={handleCloseLogout}></Logout>
+
           ) : (
             <></>
           )}
@@ -114,8 +119,11 @@ function Profile() {
                       }}
                       onClick={() => {
                         if (item.name != "Delete Profile") {
-                          if (item.name != "Logout") navigate(item.name);
-                          else handleOpenLogout();
+                          if (item.name != "Logout") {
+                            navigate(item.name);
+                          } else {
+                            handleOpenLogout();
+                          }
                         } else {
                           handleOpen();
                         }

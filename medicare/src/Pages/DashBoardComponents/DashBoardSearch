@@ -1,5 +1,6 @@
 import { styled } from "@mui/material/styles";
 /* --------------------------- MUI ---------------------------- */
+
 import {
 
   InputBase,
@@ -12,6 +13,7 @@ const drawerWidth = 280;
 
 
  const Search = styled("div")(({ theme }) => ({
+
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -25,6 +27,7 @@ const drawerWidth = 280;
     width: "auto",
   },
 }));
+
 
 
  const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -58,7 +61,13 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
+    marginTop: theme.spacing(10), 
+
+    overflow: "auto", 
+
+
     
+
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -71,7 +80,13 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
       }),
       marginLeft: 0,
     }),
+
+    
+    display: "flex",
+    flexDirection: "column",
   })
 );
 
-export {Search , SearchIconWrapper , StyledInputBase , Main , drawerWidth};
+export { Search, SearchIconWrapper, StyledInputBase, Main, drawerWidth };
+
+ 

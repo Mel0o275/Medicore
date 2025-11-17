@@ -48,5 +48,8 @@ export const uploadAvatar = async (avatar) => {
 // Delete user
 export const deleteUser = async (id) => {
   const res = await clientUser.delete(`/delete-user/${id}`);
-  return res.data.message; 
+
+  return res.data.message; // "User deleted successfully"
+
+
 };

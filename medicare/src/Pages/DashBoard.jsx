@@ -10,6 +10,8 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+/*------------------------------------ Icons --------------------------------------- */
+
 import {
   Menu as MenuIcon,
   Search as SearchIcon,
@@ -20,59 +22,18 @@ import {
   Settings as SettingsIcon,
   Home as HomeIcon,
 } from "@mui/icons-material";
-import { styled } from "@mui/material/styles";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+
+import { Outlet,  } from "react-router-dom";
 import useSearchStore from "../Store/useSearchStore";
 
-const drawerWidth = 280;
 
-// Styled components (same as before)
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
-}));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  width: "100%",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
-      },
-    },
-  },
-}));
-
-/*------------------------------------ Icons --------------------------------------- */
-import { Menu as MenuIcon, Search as SearchIcon } from "@mui/icons-material";
 /*------------------------------------ React router --------------------------------------- */
 
-import { Outlet } from "react-router-dom";
+
+
+
 
 /*------------------------------------ Dash Components --------------------------------------- */
 import { DrawerHeader } from "./DashBoardComponents/DashBoardDrawerHeader";
@@ -85,20 +46,17 @@ import {
 } from "./DashBoardComponents/DashBoardSearch";
 import { DashboardDrawer } from "./DashBoardComponents/DashBoardDrawer";
 
+
 const Dashboard = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(true);
   const setQuery = useSearchStore((state) => state.setQuery);
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const handleDrawerToggle = () => {
     setOpen(!open);
   };
 
-  const handleMenuClick = (path) => {
-    navigate(path);
-  };
+  
 
   const handleSearch = (e) => {
     setQuery(e.target.value);
