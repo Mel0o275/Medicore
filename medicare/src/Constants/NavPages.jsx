@@ -4,7 +4,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import {
   AiOutlineMessage,
@@ -456,8 +456,19 @@ const filterOptions = {
     "GlowMed",
     "CarePlus",
     "CleanWell",
+    "PetHills",
   ],
-  "Price Filter": ["All", "10L.E-15L.E", "15L.E-20L.E"],
+  "Price Filter": [
+    "All",
+    "10L.E-50L.E",
+    "50L.E-100L.E",
+    "100L.E-200L.E",
+    "200L.E-300L.E",
+    "300L.E-700L.E",
+    "700L.E-1000L.E",
+    "1000L.E-1500L.E",
+    "1500L.E-2500L.E",
+  ],
 };
 
 const filterKeys = {

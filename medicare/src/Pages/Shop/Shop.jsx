@@ -27,6 +27,7 @@ function Shop() {
   const { data, isLoading } = useQuery({
     queryKey: ["products", filters],
     queryFn: fetchProducts,
+    refetchOnWindowFocus: true,
   });
   const itemsPerPage = 12;
   const totalPages = Math.max(

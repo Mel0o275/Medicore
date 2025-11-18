@@ -30,17 +30,19 @@ import {
 import ViewProductModal from "./ViewProductModal.jsx";
 import AddProductModal from "../../Components/AddProduct/AddProduct.jsx";
 import EditProductModal from "../../Components/EditProduct/EditProduct.jsx";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation.jsx";
 import useShopFilters from "../../Hooks/useShopFilters.js";
-
+import toast from "react-hot-toast";
+const url = import.meta.env.VITE_API_URL;
+const token = localStorage.getItem("token");
 const MainDash = () => {
   const { filters } = useShopFilters();
   const fetchProducts = async () => {
     const url = import.meta.env.VITE_API_URL;
     const { data } = await axios.get(
-      `${url}/products${filters ? `?${filters}` : ""}`
+      `${url}/products?${filters ? `${filters}&` : ""}role=admin`
     );
     return data;
   };
@@ -48,7 +50,7 @@ const MainDash = () => {
     queryKey: ["products", filters],
     queryFn: fetchProducts,
   });
-
+  const queryClient = useQueryClient();
   const products = data?.data?.products;
   const [toDelete, setToDelete] = useState(null);
   const [openViewModal, setOpenViewModal] = useState(false);
@@ -60,9 +62,23 @@ const MainDash = () => {
   function handleDeleteClick(product) {
     setToDelete(product);
   }
+  const deleteProduct = useMutation({
+    mutationFn: (product) =>
+      axios.delete(`${url}/products/${product._id}`, {
+        withCredentials: true,
+        headers: { Authorization: token },
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["products"]);
+      toast.success("Product updated!");
+    },
+    onError: (err) => {
+      toast.error("Failed to delete product.");
+    },
+  });
 
   function confirmDelete() {
-    if (!toDelete) return;
+    deleteProduct.mutate(toDelete);
     setToDelete(null);
   }
 
@@ -70,35 +86,7 @@ const MainDash = () => {
     setToDelete(null);
   }
 
-  function handleUpdateProduct(updatedProduct) {
-    setEditingProduct(null);
-  }
-
-  function handleAddProduct(newProduct) {
-    console.log("Adding new product:", newProduct);
-
-    // const completeProduct = {
-    //   id: newId,
-    //   title: newProduct.title,
-    //   category: newProduct.category,
-    //   price: newProduct.price,
-    //   description: newProduct.description,
-    //   images: newProduct.images || [],
-    // };
-
-    handleCloseAddModal();
-
-    // console.log("Product added successfully:", completeProduct);
-  }
-
-  const {
-    register,
-    handleSubmit,
-    onSubmit,
-    handleEdit,
-    errors,
-    setSelectedProduct,
-  } = useEditProduct(handleUpdateProduct);
+  const { handleEdit, setSelectedProduct } = useEditProduct();
 
   const handleOpenViewModal = (product) => {
     setViewingProduct(product);
@@ -123,10 +111,16 @@ const MainDash = () => {
   const handleOpenAddModal = () => setOpenAddModal(true);
   const handleCloseAddModal = () => setOpenAddModal(false);
 
-  const tableColumns = ["_id", "images", "title", "createdAt", "updatedAt"];
+  const tableColumns = [
+    "_id",
+    "images",
+    "title",
+    "secretProduct",
+    "createdAt",
+    "updatedAt",
+  ];
 
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const renderCellContent = (key, value) => {
     if (key === "images" && Array.isArray(value) && value.length > 0) {
@@ -150,7 +144,9 @@ const MainDash = () => {
           <span>{`${value.substring(0, 40)}...`}</span>
         </Tooltip>
       );
-
+    if (key === "secretProduct") {
+      return <span>{value ? "Yes" : "No"}</span>;
+    }
     return value;
   };
 
@@ -207,6 +203,7 @@ const MainDash = () => {
                       fontWeight: "bold",
                       color: "#333",
                       whiteSpace: "nowrap",
+                      textAlign: "center",
                     }}
                   >
                     {formatColumnName(key)}
@@ -228,8 +225,11 @@ const MainDash = () => {
                     transition: "0.2s",
                   }}
                 >
-                  {tableColumns.map((key, j) => (
-                    <TableCell key={`${prod._id}-${key}`}>
+                  {tableColumns.map((key) => (
+                    <TableCell
+                      key={`${prod._id}-${key}`}
+                      sx={{ textAlign: "center" }}
+                    >
                       {renderCellContent(key, prod[key])}
                     </TableCell>
                   ))}
@@ -282,11 +282,7 @@ const MainDash = () => {
       <EditProductModal
         open={!!editingProduct}
         handleClose={handleCloseEditModal}
-        selectedProduct={editingProduct}
-        register={register}
-        handleSubmit={handleSubmit}
-        onSubmit={onSubmit}
-        errors={errors}
+        product={editingProduct}
       />
 
       {/* View Modal */}
@@ -305,7 +301,7 @@ const MainDash = () => {
         <DialogTitle id="delete-dialog-title">Confirm Delete</DialogTitle>
         <DialogContent>
           <Typography>
-            Are you sure you want to delete "{toDelete?.title || toDelete?.name}
+            Are you sure you want to delete "{toDelete?.title}
             "?
           </Typography>
         </DialogContent>
@@ -318,11 +314,7 @@ const MainDash = () => {
       </Dialog>
 
       {/* Add Product Modal */}
-      <AddProductModal
-        open={openAddModal}
-        handleClose={handleCloseAddModal}
-        onAddProduct={handleAddProduct}
-      />
+      <AddProductModal open={openAddModal} handleClose={handleCloseAddModal} />
     </Box>
   );
 };
