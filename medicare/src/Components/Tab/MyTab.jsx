@@ -7,7 +7,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import MyTable from "../ProductDetails/MyTable";
 import ReviewSection from "../ProductDetails/ReviewSection";
 
-export default function MyTab({ page, reviews = [], productTitle }) {
+export default function MyTab({ page, reviews = [], productTitle, productId }) {
   const [value, setValue] = React.useState("1");
   const tabs = {
     about: ["Development", "Qualified Team", "Strategy"],
@@ -123,7 +123,11 @@ export default function MyTab({ page, reviews = [], productTitle }) {
                 <MyTable name="product information" />
               </TabPanel>
               <TabPanel value={"2"}>
-                <ReviewSection reviews={reviews} productTitle={productTitle} />
+                <ReviewSection
+                  reviews={reviews}
+                  productTitle={productTitle}
+                  productId={productId}
+                />
               </TabPanel>
             </>
           )}

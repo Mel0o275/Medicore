@@ -111,7 +111,7 @@ export default function EditProductModal({ open, handleClose, product }) {
     },
     onError: (err) => {
       console.error(err);
-      toast.error("Failed to update product.");
+      toast.error(err.response?.data.message || "Failed to update product.");
     },
   });
 

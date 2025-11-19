@@ -1,25 +1,102 @@
-import { Rating } from "@mui/material";
-import { TbThumbDownFilled, TbThumbUpFilled } from "react-icons/tb";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Rating,
+  Typography,
+} from "@mui/material";
+import { MdEdit, MdDelete } from "react-icons/md";
 import avatar from "/avatar.jpg";
+import { useState } from "react";
+import EditReviewModal from "./EditReviewModal";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-function MyComment({ review }) {
+function MyComment({ review, userId }) {
+  const url = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
+  const queryClient = useQueryClient();
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const deleteReview = useMutation({
+    mutationFn: (review) =>
+      axios.delete(`${url}/reviews/${review._id}`, {
+        withCredentials: true,
+        headers: { Authorization: token },
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["reviews"]);
+      toast.success("Review is deleted");
+    },
+    onError: (err) => {
+      toast.error(err.response?.data.message || "Failed deleting review!");
+    },
+  });
+
+  function confirmDelete() {
+    deleteReview.mutate(review);
+    setOpenDeleteModal(false);
+  }
+  function cancelDelete() {
+    if (!deleteReview.isPending) {
+      setOpenDeleteModal(false);
+    }
+  }
+
+  const handleCloseEditModal = () => setOpenEditModal(false);
   return (
     <div className="bg-white border border-gray-200  p-4 md:p-6 flex flex-col gap-3">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <img
-            src={avatar}
-            alt={review.name}
-            className="rounded-full w-[50px]"
+            src={review?.userId?.profilePic || avatar}
+            alt={review?.userId}
+            className="rounded-full w-[50px] h-[48px]"
           />
           <div>
-            <h1 className="font-semibold text-gray-700">{review.name}</h1>
-            <h3 className="text-sm text-gray-400">{Date.now()}</h3>
+            <h1 className="font-semibold text-gray-700">
+              {review?.userId?.firstName + " " + review?.userId?.secondName}
+            </h1>
+            <div className="flex justify-between items-center gap-20">
+              <h3 className="text-sm text-gray-400">
+                {new Date(review?.updatedAt).toLocaleString()}
+              </h3>
+              {review.updatedAt > review.createdAt && (
+                <h6 className="text-xs text-[#00a297]/50 flex items-center justify-center gap-1">
+                  Edited
+                  <MdEdit />
+                </h6>
+              )}
+            </div>
           </div>
         </div>
+
+        {review?.userId?._id === userId && (
+          <div className="flex gap-2">
+            <button
+              onClick={() => setOpenDeleteModal(true)}
+              className="w-8 text-xl h-8 p-1  bg-stone-100/50 hover:bg-stone-100/90 flex justify-center items-center rounded-full"
+            >
+              <MdDelete />
+            </button>
+            <button
+              className="w-8 text-xl h-8 p-1  bg-stone-100/50 hover:bg-stone-100/90 flex justify-center items-center rounded-full"
+              onClick={() => setOpenEditModal(true)}
+            >
+              <MdEdit />
+            </button>
+          </div>
+        )}
+      </div>
+      <div className="flex justify-between">
+        <Typography variant="h5" className="text-[#00a297] leading-relaxed">
+          Title : {review?.title}
+        </Typography>
         <Rating
           value={review.rating}
-          precision={0.5}
           readOnly
           size="small"
           sx={{
@@ -27,10 +104,37 @@ function MyComment({ review }) {
           }}
         />
       </div>
+      <Typography variant="body2">{review?.review}</Typography>
 
-      <p variant="body2" className="text-gray-500 leading-relaxed">
-        {review.review}
-      </p>
+      <EditReviewModal
+        selectedReview={review}
+        open={openEditModal}
+        handleClose={handleCloseEditModal}
+      />
+
+      <Dialog
+        open={openDeleteModal}
+        onClose={cancelDelete}
+        aria-labelledby="delete-dialog-title"
+      >
+        <DialogTitle id="delete-dialog-title">Confirm Delete</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete your review ?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button disabled={deleteReview.isPending} onClick={cancelDelete}>
+            Cancel
+          </Button>
+          <Button
+            disabled={deleteReview.isPending}
+            onClick={confirmDelete}
+            color="error"
+            variant="contained"
+          >
+            {deleteReview.isPending ? "Deleting...." : "Delete"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
