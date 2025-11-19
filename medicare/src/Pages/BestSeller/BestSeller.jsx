@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import {
   Container,
   Box,
@@ -30,7 +31,7 @@ const fetchProducts = async () => {
   return data;
 };
 const BestSeller = () => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["bestSeller"],
     queryFn: fetchProducts,
     refetchOnWindowFocus: true,
@@ -95,47 +96,81 @@ const BestSeller = () => {
           </Typography>
         </Stack>
 
-        <Swiper
-          modules={[Navigation]}
-          spaceBetween={20}
-          slidesPerView={4}
-          onSwiper={(swiper) => (swiperRef.current = swiper)}
-          loop={false}
-          style={{ paddingBottom: "20px" }}
-          breakpoints={{
-            0: { slidesPerView: 1 },
-            600: { slidesPerView: 2 },
-            900: { slidesPerView: 3 },
-            1200: { slidesPerView: 4 },
-          }}
-        >
-          {popularProducts.map((product) => (
-            <SwiperSlide key={product._id}>
-              <ProductCard product={product} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            mt: 2,
-          }}
-        >
-          <IconButton
-            onClick={() => swiperRef.current?.slidePrev()}
-            sx={{ border: "1px solid #e0e0e0", mr: 1 }}
+        {isError ? (
+          <Box
+            sx={{
+              bgcolor: "#00a29715",
+              color: "#00a297",
+              p: 4,
+              borderRadius: 2,
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 2,
+            }}
           >
-            <ArrowBackIosNewIcon fontSize="small" />
-          </IconButton>
-          <IconButton
-            onClick={() => swiperRef.current?.slideNext()}
-            sx={{ border: "1px solid #e0e0e0" }}
-          >
-            <ArrowForwardIosIcon fontSize="small" />
-          </IconButton>
-        </Box>
+            <MdOutlineReportGmailerrorred
+              style={{ fontSize: 60, color: "#00a297" }}
+            />
+            <Typography
+              variant="h6"
+              fontWeight="bold"
+              sx={{ color: "#00a297" }}
+            >
+              Failed to load products
+            </Typography>
+            <Typography variant="body2" sx={{ mt: 1, color: "#00a297" }}>
+              We’re having trouble loading products. Please try again.
+            </Typography>
+          </Box>
+        ) : (
+          <>
+            <Swiper
+              modules={[Navigation]}
+              spaceBetween={20}
+              slidesPerView={4}
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              loop={false}
+              style={{ paddingBottom: "20px" }}
+              breakpoints={{
+                0: { slidesPerView: 1 },
+                600: { slidesPerView: 2 },
+                900: { slidesPerView: 3 },
+                1200: { slidesPerView: 4 },
+              }}
+            >
+              {popularProducts.map((product) => (
+                <SwiperSlide key={product._id}>
+                  <ProductCard product={product} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                mt: 2,
+              }}
+            >
+              <IconButton
+                onClick={() => swiperRef.current?.slidePrev()}
+                sx={{ border: "1px solid #e0e0e0", mr: 1 }}
+              >
+                <ArrowBackIosNewIcon fontSize="small" />
+              </IconButton>
+              <IconButton
+                onClick={() => swiperRef.current?.slideNext()}
+                sx={{ border: "1px solid #e0e0e0" }}
+              >
+                <ArrowForwardIosIcon fontSize="small" />
+              </IconButton>
+            </Box>
+          </>
+        )}
       </Box>
     </Container>
   );

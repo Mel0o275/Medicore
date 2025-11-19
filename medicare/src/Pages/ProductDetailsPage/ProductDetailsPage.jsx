@@ -1,6 +1,6 @@
 import PageTitle from "../../components/PageTitle";
 import { FaCartPlus, FaShareAlt } from "react-icons/fa";
-import { MdFavorite } from "react-icons/md";
+import { MdFavorite, MdOutlineReportGmailerrorred } from "react-icons/md";
 import MyRating from "../../components/MyRating";
 import MyTab from "../../components/Tab/MyTab";
 import ProductCard from "../../components/Products/ProductCard";
@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation";
 import toast from "react-hot-toast";
 import { CartContext } from "../../Context/cartContext";
+
 function ProductDetailsPage() {
   const { id } = useParams();
   console.log(id);
@@ -24,7 +25,7 @@ function ProductDetailsPage() {
     const { data } = await axios.get(`${url}/products/${id}`);
     return data;
   };
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["product", id],
     queryFn: fetchProduct,
     refetchOnWindowFocus: false,
@@ -125,6 +126,26 @@ function ProductDetailsPage() {
   }
 
   if (isLoading) return <LoadingScreenAnimation />;
+  if (isError) {
+    return (
+      <section className="flex flex-col items-center justify-center h-[70vh] gap-6 text-center bg-stone-100/50 p-6 rounded-lg mx-8 md:mx-24">
+        <MdOutlineReportGmailerrorred className="text-6xl text-[#00a29755]" />
+        <h2 className="text-3xl font-bold text-[#00a29755]">
+          Oops! Something went wrong.
+        </h2>
+        <p className="text-stone-600 text-lg">
+          {error?.response?.data?.message ||
+            "Unable to load the product. Please try again later."}
+        </p>
+        <button
+          onClick={() => window.location.reload()}
+          className="px-6 py-3 bg-[#00a297] text-white rounded-md hover:bg-[#008377] transition"
+        >
+          Retry
+        </button>
+      </section>
+    );
+  }
   return (
     <section className="pb-14 bg-stone-100/50">
       <ScrollButton />
@@ -215,6 +236,7 @@ function ProductDetailsPage() {
             page="details"
             reviews={reviews}
             productTitle={product.title}
+            productId={product._id}
           />
         </div>
         {relatedProducts && relatedProducts.length != 0 && (

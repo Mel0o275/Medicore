@@ -93,8 +93,7 @@ export default function AddProductModal({ open, handleClose }) {
       handleClose();
     },
     onError: (err) => {
-      console.error(err.response?.data.message || err);
-      toast.error("Failed to add product.");
+      toast.error(err.response?.data.message || "Failed to add product.");
     },
   });
 

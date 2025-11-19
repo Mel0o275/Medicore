@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Box, Button, Modal, Paper, Stack, Typography } from "@mui/material";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 function ViewProductModal({ open, handleClose, selectedProduct }) {
   const [hovered, setHovered] = useState(false);
@@ -28,15 +29,21 @@ function ViewProductModal({ open, handleClose, selectedProduct }) {
           boxShadow: "0 6px 20px rgba(0,0,0,0.2)",
         }}
       >
-        <Typography
-          id="product-modal-title"
-          variant="h6"
-          fontWeight="bold"
-          mb={2}
-        >
-          Product Details
-        </Typography>
+        <div className="flex justify-between">
+          <Typography
+            id="product-modal-title"
+            variant="h6"
+            fontWeight="bold"
+            mb={2}
+          >
+            Product Details
+          </Typography>
 
+          <IoIosCloseCircleOutline
+            onClick={handleClose}
+            className="text-3xl cursor-pointer"
+          />
+        </div>
         <Box
           sx={{
             width: "100%",
@@ -93,7 +100,7 @@ function ViewProductModal({ open, handleClose, selectedProduct }) {
             <strong>ID:</strong> {selectedProduct._id}
           </Typography>
           <Typography>
-            <strong>Name:</strong> {selectedProduct.title}
+            <strong>Title:</strong> {selectedProduct.title}
           </Typography>
           <Typography>
             <strong>Brand:</strong> {selectedProduct.brand}
@@ -111,14 +118,6 @@ function ViewProductModal({ open, handleClose, selectedProduct }) {
             <strong>Description:</strong> {selectedProduct.desc}
           </Typography>
         </Stack>
-
-        <Button
-          onClick={handleClose}
-          variant="contained"
-          sx={{ mt: 3, width: "100%", backgroundColor: "#00a297" }}
-        >
-          Close
-        </Button>
       </Paper>
     </Modal>
   );
