@@ -17,18 +17,16 @@ import PendingIcon from "@mui/icons-material/Pending";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 
 const PRIMARY_COLOR = "#00a297";
-const BASE_URL = import.meta.env.VITE_API_URL;
+const API = import.meta.env.VITE_API_URL;
 
 const getStatusProps = (status) => {
   switch (status) {
     case "Order is delivered":
       return { color: PRIMARY_COLOR, Icon: CheckCircleIcon };
-    case "Pending":
-      return { color: "#3e4244ff", Icon: PendingIcon };
     case "Order is on the way":
       return { color: "#328ad3ff", Icon: AccessTimeFilledIcon };
     default:
-      return { color: "#3e4244ff", Icon: PendingIcon };
+      return { color: "#3e4244ff", Icon: PendingIcon }; 
   }
 };
 
@@ -37,26 +35,14 @@ export default function DeliveryStatus() {
   const token = localStorage.getItem("token");
 
   const config = {
-    headers: { Authorization: token },
+    headers: { Authorization: token }, 
   };
 
   const fetchOrders = () => {
     axios
-      .get(`${BASE_URL}/orders`, config)
+      .get(`${API}/orders`, config)
       .then((res) => {
-
-        const updated = res.data.orders.map((order) => {
-          const created = new Date(order.createdAt);
-          const delivery = new Date(created);
-          delivery.setDate(created.getDate() + 3);
-
-          return {
-            ...order,
-            deliveryDate: order.deliveryDate || delivery,
-          };
-        });
-
-        setOrders(updated);
+        setOrders(res.data.orders);
       })
       .catch((err) => console.log("Error fetching orders:", err));
   };
@@ -67,39 +53,46 @@ export default function DeliveryStatus() {
 
   const updateOrderStatus = (id, status) => {
     axios
-      .put(`${BASE_URL}/orders/${id}`, { status }, config)
+      .put(`${API}/orders/${id}`, { status }, config)
       .then(() => fetchOrders())
       .catch((err) => console.log(err));
   };
 
   const deleteOrder = (id) => {
     axios
-      .delete(`${BASE_URL}/orders/${id}`, config)
+      .delete(`${API}/orders/${id}`, config)
       .then(() => fetchOrders())
       .catch((err) => console.log(err));
+  };
+
+  const calculateDeliveryDate = (createdAt) => {
+    const orderDate = new Date(createdAt);
+    orderDate.setDate(orderDate.getDate() + 3);
+    return orderDate.toLocaleDateString();
   };
 
   return (
     <Container maxWidth="md" sx={{ py: 5 }}>
       <Box sx={{ textAlign: "left", mb: 4 }}>
         <Typography variant="h4" fontWeight="bold">
-          Order Delivery Status
+          Your Orders
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          Track your delivery details
+          Track your order delivery status
         </Typography>
       </Box>
 
       <Stack spacing={3}>
-        {orders.map((item) => {
-          const statusProps = getStatusProps(item.status);
+        {orders.map((order) => {
+          const statusProps = getStatusProps(order.status);
           const StatusIcon = statusProps.Icon;
 
           return (
-            <Card key={item._id} sx={{ borderRadius: 2, boxShadow: 2 }}>
+            <Card key={order._id} sx={{ borderRadius: 2, boxShadow: 2 }}>
               <CardContent>
                 <Grid container spacing={2} alignItems="center">
-                  
+
+                  {}
                   <Grid item xs={8}>
                     <Stack direction="row" spacing={2} alignItems="center">
                       <Avatar
@@ -113,24 +106,28 @@ export default function DeliveryStatus() {
 
                       <Box sx={{ textAlign: "left" }}>
                         <Typography variant="subtitle1" fontWeight="bold">
-                          Your Order
+                          Order #{order._id.slice(-6)}
                         </Typography>
 
-                        {item.items?.map((p, index) => (
-                          <Typography key={index} variant="body2">
+                        {}
+                        {order.items?.map((p, i) => (
+                          <Typography key={i} variant="body2">
                             {p.productName} — x{p.quantity}
                           </Typography>
                         ))}
 
                         <Typography variant="body2" fontWeight="bold">
-                          Total: {item.totalPrice} EGP
+                          Total: {order.totalPrice} EGP
                         </Typography>
                       </Box>
                     </Stack>
                   </Grid>
 
+                  {}
                   <Grid item xs={4}>
                     <Stack spacing={1}>
+
+                      {}
                       <Box
                         sx={{
                           display: "flex",
@@ -144,26 +141,29 @@ export default function DeliveryStatus() {
                         }}
                       >
                         <StatusIcon fontSize="small" sx={{ mr: 0.5 }} />
-                        <Typography fontWeight="bold">{item.status}</Typography>
+                        <Typography fontWeight="bold">{order.status}</Typography>
                       </Box>
 
-                      <Typography variant="caption" color="text.secondary">
-                        Order Date: {new Date(item.createdAt).toLocaleDateString()}
+                      <Typography variant="caption">
+                        Order Date: {new Date(order.createdAt).toLocaleDateString()}
                       </Typography>
 
-                      <Typography variant="caption" color="text.secondary">
+                      <Typography variant="caption">
                         Expected Delivery:{" "}
                         <span style={{ fontWeight: "bold", color: PRIMARY_COLOR }}>
-                          {new Date(item.deliveryDate).toLocaleDateString()}
+                          {calculateDeliveryDate(order.createdAt)}
                         </span>
                       </Typography>
 
+                      {}
                       <Stack direction="row" spacing={1} mt={1}>
-                        {item.status !== "Order is delivered" && (
+                        {order.status !== "Order is delivered" && (
                           <Button
                             size="small"
                             variant="outlined"
-                            onClick={() => updateOrderStatus(item._id, "Order is delivered")}
+                            onClick={() =>
+                              updateOrderStatus(order._id, "Order is delivered")
+                            }
                           >
                             Delivered
                           </Button>
@@ -173,13 +173,14 @@ export default function DeliveryStatus() {
                           size="small"
                           color="error"
                           variant="outlined"
-                          onClick={() => deleteOrder(item._id)}
+                          onClick={() => deleteOrder(order._id)}
                         >
                           Delete
                         </Button>
                       </Stack>
                     </Stack>
                   </Grid>
+
                 </Grid>
               </CardContent>
             </Card>
