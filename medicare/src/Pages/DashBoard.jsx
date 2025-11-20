@@ -23,17 +23,10 @@ import {
   Home as HomeIcon,
 } from "@mui/icons-material";
 
-import { Outlet,  } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import useSearchStore from "../Store/useSearchStore";
 
-
-
-
 /*------------------------------------ React router --------------------------------------- */
-
-
-
-
 
 /*------------------------------------ Dash Components --------------------------------------- */
 import { DrawerHeader } from "./DashBoardComponents/DashBoardDrawerHeader";
@@ -46,17 +39,14 @@ import {
 } from "./DashBoardComponents/DashBoardSearch";
 import { DashboardDrawer } from "./DashBoardComponents/DashBoardDrawer";
 
-
 const Dashboard = () => {
   const theme = useTheme();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const setQuery = useSearchStore((state) => state.setQuery);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
   };
-
-  
 
   const handleSearch = (e) => {
     setQuery(e.target.value);
@@ -66,7 +56,6 @@ const Dashboard = () => {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
 
-    
       <AppBar
         position="fixed"
         sx={{
@@ -98,7 +87,6 @@ const Dashboard = () => {
             <MenuIcon />
           </IconButton>
 
-       
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -117,7 +105,6 @@ const Dashboard = () => {
         </Toolbar>
       </AppBar>
 
-  
       <Drawer
         sx={{
           width: drawerWidth,
@@ -135,10 +122,9 @@ const Dashboard = () => {
         <DashboardDrawer />
       </Drawer>
 
-    
       <Main open={open}>
         <DrawerHeader />
-      
+
         <Outlet />
       </Main>
     </Box>

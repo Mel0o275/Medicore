@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import MyRating from "../MyRating";
 import { MdFavorite } from "react-icons/md";
-
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -51,9 +50,10 @@ async function addToWish(id) {
     console.log(err);
   }
 }
+
   return (
-    <div className="w-full rounded-lg border border-stone-200 overflow-hidden group cursor-pointer shadow-sm hover:shadow-lg transition-shadow duration-300">
-      <div className="relative h-40 sm:h-44 md:h-48">
+    <div className="w-full rounded-lg border border-stone-200 overflow-hidden group cursor-pointer shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col h-[400px]">
+      <div className="relative h-48 sm:h-52 md:h-56 flex-shrink-0">
         <img
           src={images[0].url}
           alt="Front"
@@ -64,11 +64,10 @@ async function addToWish(id) {
           alt="Back"
           className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         />
-
         <div
-          className={`absolute  ${
+          className={`absolute ${
             liked ? "right-3 top-3" : "right-[-40px] group-hover:right-3 top-3"
-          } transition-all duration-300 `}
+          } transition-all duration-300`}
         >
           <MdFavorite
             onClick={() => addToWish(_id)}
@@ -79,23 +78,26 @@ async function addToWish(id) {
         </div>
       </div>
 
-      <div className="p-3 flex flex-col justify-center">
+      <div className="p-3 flex flex-col flex-1">
         <h3 className="font-semibold mb-1 text-sm md:text-base line-clamp-2">
           {title}
         </h3>
-        <div className="py-4">
+
+        <div className="py-2">
           <MyRating value={ratings} />
         </div>
+
         <p className="text-gray-700 text-sm md:text-base font-bold">
           {price} L.E
         </p>
-        <div className="mt-2 flex justify-center items-center">
+
+        <div className="mt-auto flex justify-center items-center">
           <NavLink
             to={`/shop/productdetails/${_id}`}
             onClick={() => window.scrollTo(0, 0)}
             className="px-3 py-1.5 bg-[#00a297] text-white text-sm rounded-md 
-         transform transition-all duration-300 
-         translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
+             transform transition-all duration-300 
+             translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
           >
             View Product
           </NavLink>

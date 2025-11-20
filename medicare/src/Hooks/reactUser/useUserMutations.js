@@ -6,16 +6,13 @@ import {
   deleteUser,
 } from "../../API/userApi";
 
-
 export const useUserMutations = () => {
   const queryClient = useQueryClient();
-
 
   const updateDataMutation = useMutation({
     mutationFn: updateUserData,
     onSuccess: () => {
-      queryClient.invalidateQueries(["users"]);
-     
+    queryClient.invalidateQueries({ queryKey: ["user"], exact: false });
     },
   });
 

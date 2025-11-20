@@ -32,7 +32,6 @@ import PersonalSecurity from "./Pages/ProfilePages/PersonalSecurity";
 import PersonalNotifications from "./Pages/ProfilePages/PersonalNotifications";
 import ForgotPasswordPage from "./Pages/ForgotPasswordPage/ForgotPasswordPage";
 
-
 import LoadingScreenAnimation from "./Animations/LoadingScreenAnimation.jsx";
 
 import Dashboard from "./Pages/DashBoard";
@@ -50,7 +49,6 @@ import CategoryPage from "./Pages/Shop/CategoryPage.jsx";
 // import OrdersDash from "./Pages/DashBoardPages/OrdersDash";
 // import UsersDash from "./Pages/DashBoardPages/UsersDash.jsx";
 // import SettingsDash from "./Pages/DashBoardPages/SettingsDash";
-
 
 /* -------------------------- Toast --------------------------- */
 
@@ -89,22 +87,20 @@ function App() {
           onFinish={() => setIsLoading(false)}
         />
 
-        <Toaster
-          position="top-right"
-          reverseOrder={false}
-          toastOptions={{
-            style: {
-              animation: "slideInRight 0.4s",
-            },
-          }}
-        />
         <NavbarSecondary />
         <NavbarPrimary />
         <ThemeSwitcher />
         <div className="">
-
-
           <QueryClientProvider client={query}>
+            <Toaster
+              position="top-right"
+              reverseOrder={false}
+              toastOptions={{
+                style: {
+                  animation: "slideInRight 0.4s",
+                },
+              }}
+            />
             <Routes>
               <Route path="/" element={<Navigate to="/Home" replace />} />
               <Route path="/Home" element={<Home />} />
@@ -148,7 +144,6 @@ function App() {
               <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
             </Routes>
           </QueryClientProvider>
-
         </div>
         <Footer />
       </Router>

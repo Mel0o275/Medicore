@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import useEditProduct from "../../Hooks/useEditProduct.js";
 import {
   Box,
   Typography,
@@ -14,12 +13,11 @@ import {
   IconButton,
   Avatar,
   Tooltip,
-  useMediaQuery,
-  useTheme,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
+  Pagination,
 } from "@mui/material";
 import {
   Add as AddIcon,
@@ -27,113 +25,100 @@ import {
   Delete as DeleteIcon,
   Visibility as ViewIcon,
 } from "@mui/icons-material";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import toast from "react-hot-toast";
+import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation.jsx";
+import useShopFilters from "../../Hooks/useShopFilters.js";
 import ViewProductModal from "./ViewProductModal.jsx";
 import AddProductModal from "../../Components/AddProduct/AddProduct.jsx";
 import EditProductModal from "../../Components/EditProduct/EditProduct.jsx";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation.jsx";
-import useShopFilters from "../../Hooks/useShopFilters.js";
+
+const url = import.meta.env.VITE_API_URL;
+const token = localStorage.getItem("token");
 
 const MainDash = () => {
   const { filters } = useShopFilters();
+  const queryClient = useQueryClient();
+
+  const [toDelete, setToDelete] = useState(null);
+  const [openViewModal, setOpenViewModal] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
+  const [viewingProduct, setViewingProduct] = useState(null);
+  const [editingProduct, setEditingProduct] = useState(null);
+
+  const [page, setPage] = useState(1);
+  const productsPerPage = 12;
+
   const fetchProducts = async () => {
-    const url = import.meta.env.VITE_API_URL;
     const { data } = await axios.get(
-      `${url}/products${filters ? `?${filters}` : ""}`
+      `${url}/products?${filters ? `${filters}&` : ""}role=admin`
     );
     return data;
   };
-  const { data, isLoading } = useQuery({
+
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["products", filters],
     queryFn: fetchProducts,
   });
 
-  const products = data?.data?.products;
-  const [toDelete, setToDelete] = useState(null);
-  const [openViewModal, setOpenViewModal] = useState(false);
-  const [openAddModal, setOpenAddModal] = useState(false);
+  const products = data?.data?.products || [];
+  const pageCount = Math.ceil(products.length / productsPerPage);
 
-  const [viewingProduct, setViewingProduct] = useState(null);
-  const [editingProduct, setEditingProduct] = useState(null);
+  const paginatedProducts = products.slice(
+    (page - 1) * productsPerPage,
+    page * productsPerPage
+  );
+  const deleteProduct = useMutation({
+    mutationFn: (product) =>
+      axios.delete(`${url}/products/${product._id}`, {
+        withCredentials: true,
+        headers: { Authorization: token },
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["products"]);
+      toast.success("Product is deleted!");
+    },
+    onError: () => toast.error("Failed to delete product."),
+  });
 
-  function handleDeleteClick(product) {
-    setToDelete(product);
-  }
-
-  function confirmDelete() {
-    if (!toDelete) return;
+  const handleDeleteClick = (product) => setToDelete(product);
+  const confirmDelete = () => {
+    deleteProduct.mutate(toDelete);
     setToDelete(null);
-  }
-
-  function cancelDelete() {
-    setToDelete(null);
-  }
-
-  function handleUpdateProduct(updatedProduct) {
-    setEditingProduct(null);
-  }
-
-  function handleAddProduct(newProduct) {
-    console.log("Adding new product:", newProduct);
-
-    // const completeProduct = {
-    //   id: newId,
-    //   title: newProduct.title,
-    //   category: newProduct.category,
-    //   price: newProduct.price,
-    //   description: newProduct.description,
-    //   images: newProduct.images || [],
-    // };
-
-    handleCloseAddModal();
-
-    // console.log("Product added successfully:", completeProduct);
-  }
-
-  const {
-    register,
-    handleSubmit,
-    onSubmit,
-    handleEdit,
-    errors,
-    setSelectedProduct,
-  } = useEditProduct(handleUpdateProduct);
+  };
+  const cancelDelete = () => setToDelete(null);
 
   const handleOpenViewModal = (product) => {
     setViewingProduct(product);
     setOpenViewModal(true);
   };
-
   const handleCloseViewModal = () => {
     setOpenViewModal(false);
     setViewingProduct(null);
   };
 
-  const handleOpenEditModal = (product) => {
-    setEditingProduct(product);
-    handleEdit(product);
-  };
-
-  const handleCloseEditModal = () => {
-    setEditingProduct(null);
-    setSelectedProduct(null);
-  };
+  const handleOpenEditModal = (product) => setEditingProduct(product);
+  const handleCloseEditModal = () => setEditingProduct(null);
 
   const handleOpenAddModal = () => setOpenAddModal(true);
   const handleCloseAddModal = () => setOpenAddModal(false);
 
-  const tableColumns = ["_id", "images", "title", "createdAt", "updatedAt"];
-
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const tableColumns = [
+    "_id",
+    "images",
+    "title",
+    "secretProduct",
+    "createdAt",
+    "updatedAt",
+  ];
 
   const renderCellContent = (key, value) => {
     if (key === "images" && Array.isArray(value) && value.length > 0) {
       return (
         <Avatar
           src={value[0].url}
-          alt="Image 1"
+          alt="Image"
           sx={{
             width: 50,
             height: 50,
@@ -143,14 +128,16 @@ const MainDash = () => {
         />
       );
     }
-
-    if (typeof value === "string" && value.length > 40)
+    if (typeof value === "string" && value.length > 40) {
       return (
         <Tooltip title={value}>
           <span>{`${value.substring(0, 40)}...`}</span>
         </Tooltip>
       );
-
+    }
+    if (key === "secretProduct") return <span>{value ? "Yes" : "No"}</span>;
+    if (key === "createdAt" || key === "updatedAt")
+      return <span>{new Date(value).toLocaleString()}</span>;
     return value;
   };
 
@@ -158,6 +145,23 @@ const MainDash = () => {
     key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ");
 
   if (isLoading) return <LoadingScreenAnimation />;
+  if (isError)
+    return (
+      <Box
+        sx={{
+          bgcolor: "#00a29715",
+          color: "#00a297",
+          p: 4,
+          borderRadius: 2,
+          textAlign: "center",
+        }}
+      >
+        <Typography variant="h6" fontWeight="bold" sx={{ color: "#00a297" }}>
+          Failed to load products
+        </Typography>
+      </Box>
+    );
+
   return (
     <Box sx={{ p: { xs: 2, md: 4 } }}>
       <Box
@@ -165,7 +169,7 @@ const MainDash = () => {
           display: "flex",
           flexDirection: { xs: "column", sm: "row" },
           justifyContent: "space-between",
-          alignItems: { xs: "flex-start", sm: "center" },
+          alignItems: "center",
           mb: 3,
           gap: 2,
         }}
@@ -173,40 +177,31 @@ const MainDash = () => {
         <Typography variant="h5" fontWeight="bold">
           🧾 Product Management
         </Typography>
+        <Typography variant="h5" fontWeight="bold">
+          You have {products.length} products
+        </Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
-          sx={{
-            borderRadius: "12px",
-            textTransform: "none",
-            px: 2.5,
-            alignSelf: { xs: "stretch", sm: "auto" },
-          }}
+          sx={{ borderRadius: "12px", textTransform: "none", px: 2.5 }}
           onClick={handleOpenAddModal}
         >
           Add Product
         </Button>
       </Box>
 
-      <Paper
-        elevation={4}
-        sx={{
-          borderRadius: "16px",
-          overflow: "hidden",
-          backgroundColor: "background.paper",
-        }}
-      >
+      <Paper elevation={4} sx={{ borderRadius: "16px", overflow: "hidden" }}>
         <TableContainer sx={{ maxWidth: "100%", overflowX: "auto" }}>
           <Table sx={{ minWidth: 700 }}>
             <TableHead>
               <TableRow sx={{ backgroundColor: "#f4f6f8" }}>
-                {tableColumns.map((key, i) => (
+                {tableColumns.map((key) => (
                   <TableCell
-                    key={i}
+                    key={key}
                     sx={{
                       fontWeight: "bold",
                       color: "#333",
-                      whiteSpace: "nowrap",
+                      textAlign: "center",
                     }}
                   >
                     {formatColumnName(key)}
@@ -219,7 +214,7 @@ const MainDash = () => {
             </TableHead>
 
             <TableBody>
-              {products.map((prod) => (
+              {paginatedProducts.map((prod) => (
                 <TableRow
                   key={prod._id}
                   hover
@@ -228,8 +223,11 @@ const MainDash = () => {
                     transition: "0.2s",
                   }}
                 >
-                  {tableColumns.map((key, j) => (
-                    <TableCell key={`${prod._id}-${key}`}>
+                  {tableColumns.map((key) => (
+                    <TableCell
+                      key={`${prod._id}-${key}`}
+                      sx={{ textAlign: "center" }}
+                    >
                       {renderCellContent(key, prod[key])}
                     </TableCell>
                   ))}
@@ -278,25 +276,29 @@ const MainDash = () => {
         </TableContainer>
       </Paper>
 
-      {/* Edit Modal */}
+      {pageCount > 1 && (
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+          <Pagination
+            count={pageCount}
+            page={page}
+            onChange={(e, value) => setPage(value)}
+            color="primary"
+          />
+        </Box>
+      )}
+
       <EditProductModal
         open={!!editingProduct}
         handleClose={handleCloseEditModal}
-        selectedProduct={editingProduct}
-        register={register}
-        handleSubmit={handleSubmit}
-        onSubmit={onSubmit}
-        errors={errors}
+        product={editingProduct}
       />
-
-      {/* View Modal */}
       <ViewProductModal
         selectedProduct={viewingProduct}
         open={openViewModal}
         handleClose={handleCloseViewModal}
       />
+      <AddProductModal open={openAddModal} handleClose={handleCloseAddModal} />
 
-      {/* Delete Confirmation Dialog */}
       <Dialog
         open={!!toDelete}
         onClose={cancelDelete}
@@ -305,24 +307,23 @@ const MainDash = () => {
         <DialogTitle id="delete-dialog-title">Confirm Delete</DialogTitle>
         <DialogContent>
           <Typography>
-            Are you sure you want to delete "{toDelete?.title || toDelete?.name}
-            "?
+            Are you sure you want to delete "{toDelete?.title}"?
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={cancelDelete}>Cancel</Button>
-          <Button onClick={confirmDelete} color="error" variant="contained">
-            Delete
+          <Button disabled={deleteProduct.isPending} onClick={cancelDelete}>
+            Cancel
+          </Button>
+          <Button
+            disabled={deleteProduct.isPending}
+            onClick={confirmDelete}
+            color="error"
+            variant="contained"
+          >
+            {deleteProduct.isPending ? "Deleting..." : "Delete"}
           </Button>
         </DialogActions>
       </Dialog>
-
-      {/* Add Product Modal */}
-      <AddProductModal
-        open={openAddModal}
-        handleClose={handleCloseAddModal}
-        onAddProduct={handleAddProduct}
-      />
     </Box>
   );
 };

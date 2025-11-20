@@ -1,6 +1,15 @@
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import { Rating, TextField, createTheme, ThemeProvider } from "@mui/material";
+import toast from "react-hot-toast";
+import { useForm } from "react-hook-form";
+import {
+  Rating,
+  TextField,
+  createTheme,
+  ThemeProvider,
+  Button,
+} from "@mui/material";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 const theme = createTheme({
   components: {
     MuiTextField: {
@@ -33,45 +42,63 @@ const theme = createTheme({
   },
 });
 
-export default function ReviewForm() {
+export default function ReviewForm({ productId }) {
+  const token = localStorage.getItem("token");
+  const url = import.meta.env.VITE_API_URL;
+  const queryClient = useQueryClient();
   const [rating, setRating] = useState(0);
-  const [formData, setFormData] = useState({
-    title: "",
-    review: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({ rating, ...formData });
-    toast.success("Review submitted", {
-      position: "top-center",
-    });
-
-    setFormData({
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
       title: "",
       review: "",
-    });
-    setRating(0);
+    },
+  });
+  const addReview = useMutation({
+    mutationFn: (formData) =>
+      axios.post(`${url}/reviews`, formData, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["reviews"]);
+      toast.success("Review added!");
+      reset();
+      setRating(0);
+    },
+    onError: (err) => {
+      toast.error(err.response?.data.message || "Failed adding review!");
+    },
+  });
+
+  const onSubmit = (data) => {
+    if (!rating) {
+      toast.error("Please select a rating");
+      return;
+    }
+    const payload = {
+      productId,
+      rating,
+      title: data.title,
+      review: data.review,
+    };
+    addReview.mutate(payload);
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Toaster />
       <form
-        onSubmit={handleSubmit}
-        className=" p-6 bg-white shadow border border-gray-200"
+        onSubmit={handleSubmit(onSubmit)}
+        className="p-6 bg-white shadow border border-gray-200"
       >
         <p className="text-sm text-gray-500 mb-4">
-          Your email address will not be published. Required fields are marked{" "}
-          <span className="text-red-500">*</span>
+          Required fields are marked <span className="text-red-500">*</span>
         </p>
 
         <div className="mb-4">
@@ -80,6 +107,7 @@ export default function ReviewForm() {
           </label>
           <Rating
             value={rating}
+            precision={0.1}
             onChange={(e, newValue) => setRating(newValue)}
             size="large"
           />
@@ -88,34 +116,35 @@ export default function ReviewForm() {
         <div className="mb-4">
           <TextField
             label="Review Title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
             fullWidth
             variant="outlined"
+            {...register("title", { required: "Title is required" })}
+            error={!!errors.title}
+            helperText={errors.title?.message}
           />
         </div>
 
         <div className="mb-4">
           <TextField
             label="Your Review"
-            name="review"
-            value={formData.review}
-            onChange={handleChange}
             fullWidth
             variant="outlined"
             multiline
             rows={4}
-            required
+            {...register("review", { required: "Review is required" })}
+            error={!!errors.review}
+            helperText={errors.review?.message}
           />
         </div>
 
-        <button
+        <Button
           type="submit"
-          className=" bg-[#00a297] text-white rounded-md px-6 py-1 text-lg cursor-pointer"
+          disabled={addReview.isPending}
+          sx={{ background: "#00a297" }}
+          className=" !text-white rounded-md px-6 py-1 text-lg cursor-pointer"
         >
-          Submit
-        </button>
+          {addReview.isPending ? "Submitting..." : "Submit"}
+        </Button>
       </form>
     </ThemeProvider>
   );

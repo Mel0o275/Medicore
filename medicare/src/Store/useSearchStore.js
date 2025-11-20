@@ -14,6 +14,7 @@ const useSearchStore = create((set) => ({
   setPrice: (newPrice) => set({ price: newPrice }),
   setSort: (newSort) => set({ sort: newSort }),
   setPage: (newPage) => set({ page: newPage }),
+
   clearQuery: () => set({ query: "" }),
   clearCategory: () => set({ category: [] }),
   clearBrand: () => set({ brand: [] }),
