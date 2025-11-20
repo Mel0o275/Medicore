@@ -23,7 +23,7 @@ export const getUserById = async (id) => {
 export const updateUserData = async (newData) => {
   //   console.log("Sending data to server:", newData);
 
-  const res = await clientUser.put("/change-data", JSON.stringify(newData));
+  const res = await clientUser.put("/change-data", (newData));
   return res.data.data.user;
 };
 

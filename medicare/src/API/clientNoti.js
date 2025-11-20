@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const clientNoti = axios.create({
-  baseURL: "http://localhost:4000/api/v1/notifications",
+  baseURL: "https://medicore-backend.vercel.app/api/v1/notifications",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
