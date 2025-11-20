@@ -34,21 +34,38 @@ function PersonalInfo() {
   const [selectedImg, setSelectedImg] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  
   const { handleImageUpload } = useHandleImageUpload();
 
   // React query
 
   const { updateDataMutation, uploadAvatarMutation } = useUserMutations();
 
+  const { user } = useAuthStore();
 
   // From rahma
+  const userId = user?.data?.id;
+  const token = user?.data?.token || localStorage.getItem("token");
+
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("token", token);
+    }
+  }, [token]);
+
+  // console.log("User : " + user);
+  // console.log("Token : " + token);
+  // console.log("Id : " + userId);
+
   const {
     data: userDate,
     isLoading,
     isError,
-  } = useUser(localStorage.getItem("id"));
-  
+  } = useUser(userId, {
+    enabled: !!userId ,
+  });
+
+  console.log(userDate);
+
   // console.log(userDate);
   const {
     register,
@@ -58,32 +75,33 @@ function PersonalInfo() {
     trigger,
   } = useForm({
     defaultValues: {
-    
-
-      firstName: userDate?.firstName ?? "John",
-      secondName: userDate?.secondName ?? "Doe",
-      email: userDate?.email ?? "john.doe@example.com",
-      phoneNumber: userDate?.phoneNumber ?? "000000000000",
-      dateOfBirth: userDate?.dateOfBirth ?? "1990-01-01",
-      gender: userDate?.gender ?? "male",
+      firstName: "",
+      secondName: "",
+      email: "",
+      phoneNumber: "",
+      dateOfBirth: "",
+      gender: "",
     },
   });
 
-  
- 
-  const { user } = useAuthStore();
-  // console.log( user.data.id);
-
   useEffect(() => {
-    localStorage.setItem("token", user.data.token);
-  });
-  // const { data: userDate, isLoading, isError } = useUser(user.data.id);
+    if (userDate) {
+      // console.log("Malak");
+      reset({
+        firstName: userDate.firstName,
+        secondName: userDate.secondName,
+        email: userDate.email,
+        phoneNumber: userDate.phoneNumber,
+        dateOfBirth: userDate.dateOfBirth,
+        gender: userDate.gender,
+      });
+    }
+  }, [userDate, reset]);
 
- 
+  console.log("user id : " + userId);
 
   const onSubmit = (data) => {
     console.log("Updated data:", data);
-
 
     updateDataMutation.mutate(data, {
       onSuccess: () => {
@@ -91,7 +109,6 @@ function PersonalInfo() {
         toast.success(`User Updated data successfully`);
       },
       onError: (error) => {
-
         const serverMessage =
           error?.response?.data?.message || "User doesn't Updated data";
 
@@ -101,19 +118,20 @@ function PersonalInfo() {
   };
 
   const handleCancelEdit = () => {
+    if (!userDate) {
+      // console.log("Hassan")
+      return;
+    }
 
-   
     reset({
-    
-
-      firstName: userDate?.firstName ?? "John",
-      secondName: userDate?.secondName ?? "Doe",
-      email: userDate?.email ?? "john.doe@example.com",
-      phoneNumber: userDate?.phoneNumber ?? "000000000000",
-      dateOfBirth: userDate?.dateOfBirth ?? "1990-01-01",
-      gender: userDate?.gender ?? "male",
-
+      firstName: userDate.firstName,
+      secondName: userDate.secondName,
+      email: userDate.email,
+      phoneNumber: userDate.phoneNumber,
+      dateOfBirth: userDate.dateOfBirth,
+      gender: userDate.gender,
     });
+
     setIsEditing(false);
   };
 
@@ -125,7 +143,6 @@ function PersonalInfo() {
     }
   };
 
-
   const handleUpdateData = async () => {
     const isValid = await trigger();
 
@@ -133,7 +150,6 @@ function PersonalInfo() {
       handleSubmit(onSubmit)();
     }
   };
-
 
   return (
     <>
