@@ -16,7 +16,7 @@ export const getUsers = async ({ page = 1, limit = 10 }) => {
 // Get one user
 export const getUserById = async (id) => {
   const res = await clientUser.get(`/get-user/${id}`);
-  return res.data.data.user;
+  return res?.data?.data?.user;
 };
 
 // Change user data
