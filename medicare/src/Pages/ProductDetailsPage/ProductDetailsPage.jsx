@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation";
 import toast from "react-hot-toast";
 import { CartContext } from "../../Context/cartContext";
+import { WishContext } from "../../Context/wishContext";
 
 function ProductDetailsPage() {
   const { id } = useParams();
@@ -35,8 +36,11 @@ function ProductDetailsPage() {
   const relatedProducts = data?.data?.relatedProducts;
   const [openmodal, setOpenModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [isWished, setIsWished] = useState(false);
+
 
   const { count: count, setCount: setCount } = useContext(CartContext);
+  const { count: Wishcount, setCount: setWishCount } = useContext(WishContext);
 
   const API = import.meta.env.VITE_API_URL;
   console.log(API);
@@ -119,6 +123,39 @@ function ProductDetailsPage() {
           duration: 3000,
         });
         setCount(count + 1);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function addToWish() {
+    if (!token?.trim()) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const { data } = await axios.post(
+        `${API}/wish`,
+        {
+          _id: id,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      console.log(1);
+      console.log(data);
+      if (data.products.length != -1) {
+        toast(`Product added to wishlist succsessfully✨`, {
+          position: "top-center",
+          duration: 3000,
+        });
+        setWishCount(Wishcount + 1);
+        setIsWished(true);
       }
     } catch (err) {
       console.log(err);
@@ -219,9 +256,15 @@ function ProductDetailsPage() {
               >
                 <FaCartPlus /> <span>Add To Cart</span>
               </button>
-              <button className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row">
-                <MdFavorite /> <span>Add To Wishlist</span>
-              </button>
+              {!isWished && (
+                <button
+                  onClick={addToWish}
+                  className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
+                >
+                  <MdFavorite /> <span>Add To Wishlist</span>
+                </button>
+              )}
+
               <button
                 className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
                 onClick={() => setOpenModal(true)}

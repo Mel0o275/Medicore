@@ -42,6 +42,7 @@ import { Link } from "react-router-dom";
 import useAuthStore from "../../Store/useAuthStore.js";
 
 import {CartContext} from "../../Context/cartContext.jsx"
+import { WishContext } from "../../Context/wishContext.jsx";
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -74,9 +75,12 @@ export default function Navbar(props) {
   //Mai
 
   const {count : count} = React.useContext(CartContext);
+  const {count : Wishcount} = React.useContext(WishContext);
   console.log(count);
+  console.log(Wishcount);
 
   React.useEffect(() => {count})
+  React.useEffect(() => {Wishcount})
 
   //
 
@@ -241,7 +245,7 @@ export default function Navbar(props) {
                 component={Link}
                 to="/wishlist"
               >
-                <Badge badgeContent={4} color="error">
+                <Badge badgeContent={Wishcount} color="error">
                   <FavoriteBorderIcon />
                 </Badge>
               </IconButton>

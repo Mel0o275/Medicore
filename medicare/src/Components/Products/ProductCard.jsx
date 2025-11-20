@@ -1,10 +1,55 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import MyRating from "../MyRating";
 import { MdFavorite } from "react-icons/md";
 import { NavLink } from "react-router-dom";
-
+import axios from "axios";
+import toast from "react-hot-toast";
+import { WishContext } from "../../Context/wishContext";
 const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
   const [liked, setLiked] = useState(false);
+  ///////////////////////////////MAI//////////////////////////////
+  const token = localStorage.getItem("token");
+  const [wishItems, setWishItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const API = import.meta.env.VITE_API_URL;
+  const { count: Wishcount, setCount: setWishCount } = useContext(WishContext);
+
+
+
+async function addToWish(id) {
+  if (!token?.trim()) {
+    navigate("/login");
+    return;
+  }
+
+  try {
+    const { data } = await axios.post(
+      `${API}/wish`,
+      {
+        _id: id,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    console.log(1);
+    console.log(data);
+    const liked = data.products.some((item) => item.id === id);
+    setLiked(liked);
+    if (data.products.length != -1) {
+      toast(`Product added to wishlist succsessfully✨`, {
+        position: "top-center",
+        duration: 3000,
+      });
+      setWishCount(Wishcount + 1);
+      setLiked(true);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
 
   return (
     <div className="w-full rounded-lg border border-stone-200 overflow-hidden group cursor-pointer shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col h-[400px]">
@@ -25,10 +70,10 @@ const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
           } transition-all duration-300`}
         >
           <MdFavorite
-            onClick={() => setLiked(!liked)}
-            className={`cursor-pointer text-3xl p-1.5 rounded-full transition-colors duration-500 ${
-              liked ? "bg-[#00a297] text-white" : "bg-gray-300 text-black"
-            } hover:bg-[#00a297] hover:text-white`}
+            onClick={() => addToWish(_id)}
+            className={`cursor-pointer text-3xl p-1.5 rounded-full transition-colors duration-500 
+        ${liked ? "bg-[#00a297] text-white" : "bg-gray-300 text-black"} 
+        hover:bg-[#00a297] hover:text-white`}
           />
         </div>
       </div>
