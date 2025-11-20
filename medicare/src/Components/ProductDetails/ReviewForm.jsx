@@ -1,5 +1,5 @@
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import {
   Rating,
@@ -93,7 +93,6 @@ export default function ReviewForm({ productId }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Toaster />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="p-6 bg-white shadow border border-gray-200"
