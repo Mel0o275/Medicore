@@ -35,6 +35,8 @@ function ProductDetailsPage() {
   const relatedProducts = data?.data?.relatedProducts;
   const [openmodal, setOpenModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [isWished, setIsWished] = useState(false);
+
 
   const { count: count, setCount: setCount } = useContext(CartContext);
   const { count: Wishcount, setCount: setWishCount } = useContext(WishContext);
@@ -152,6 +154,7 @@ function ProductDetailsPage() {
           duration: 3000,
         });
         setWishCount(Wishcount + 1);
+        setIsWished(true);
       }
     } catch (err) {
       console.log(err);
@@ -232,11 +235,15 @@ function ProductDetailsPage() {
               >
                 <FaCartPlus /> <span>Add To Cart</span>
               </button>
-              <button
-                onClick={addToWish}
-              className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row">
-                <MdFavorite /> <span>Add To Wishlist</span>
-              </button>
+              {!isWished && (
+                <button
+                  onClick={addToWish}
+                  className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
+                >
+                  <MdFavorite /> <span>Add To Wishlist</span>
+                </button>
+              )}
+
               <button
                 className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
                 onClick={() => setOpenModal(true)}
