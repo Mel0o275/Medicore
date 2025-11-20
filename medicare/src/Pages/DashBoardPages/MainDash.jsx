@@ -47,7 +47,6 @@ const MainDash = () => {
   const [viewingProduct, setViewingProduct] = useState(null);
   const [editingProduct, setEditingProduct] = useState(null);
 
-  // Pagination state
   const [page, setPage] = useState(1);
   const productsPerPage = 12;
 
@@ -137,6 +136,8 @@ const MainDash = () => {
       );
     }
     if (key === "secretProduct") return <span>{value ? "Yes" : "No"}</span>;
+    if (key === "createdAt" || key === "updatedAt")
+      return <span>{new Date(value).toLocaleString()}</span>;
     return value;
   };
 
