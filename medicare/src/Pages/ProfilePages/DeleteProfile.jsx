@@ -8,6 +8,8 @@ import { useUserMutations } from "../../Hooks/reactUser/useUserMutations";
 import ViewButtonLoader from "../../Components/Loades/ViewButtonLoader";
 import toast from "react-hot-toast";
 
+import useAuthStore from "../../Store/useAuthStore";
+
 const Fade = React.forwardRef(function Fade(props, ref) {
   const {
     children,
@@ -67,22 +69,25 @@ const modalStyle = {
 function DeleteProfile({ open, handleClose }) {
   const { deleteUserMutation } = useUserMutations();
 
+
+      const { user } = useAuthStore();
+      console.log( user.data.id);
+
+
   const handleDelete = async () => {
     // console.log("Deleting user profile...");
 
 
-      // const { user } = useAuthStore();
-      // console.log( user.data.id);
 
     // From the rahma
-    const userId = localStorage.getItem("id");
+    const userId = user?.data?.id;
     deleteUserMutation.mutate(userId, {
       onSuccess: () => {
         console.log(" User deleted successfully");
         handleClose();
         toast.success(`User deleted successfully`);
 
-        // window.location.href = "/login";
+        window.location.href = "/login";
       },
       onError: (error) => {
        
