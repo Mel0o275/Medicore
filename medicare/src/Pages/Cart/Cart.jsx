@@ -58,7 +58,7 @@ export default function Cart() {
 
   useEffect(() => {
     getUserCart();
-  }, [cartItems]);
+  }, []);
 
   const subtotal = cartItems.reduce(
     (total, item) => total + item.price * (item.count || 1),
@@ -113,6 +113,7 @@ export default function Cart() {
     });
     console.log(data);
     console.log(cartItems);
+    setCartItems(prev => prev.filter(item => item.product_id !== itemId));
     setCount(count-myCount)
   }
 

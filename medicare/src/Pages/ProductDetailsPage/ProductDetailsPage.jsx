@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation";
 import toast from "react-hot-toast";
 import { CartContext } from "../../Context/cartContext";
+import { WishContext } from "../../Context/wishContext";
 function ProductDetailsPage() {
   const { id } = useParams();
   console.log(id);
@@ -36,6 +37,7 @@ function ProductDetailsPage() {
   const [quantity, setQuantity] = useState(1);
 
   const { count: count, setCount: setCount } = useContext(CartContext);
+  const { count: Wishcount, setCount: setWishCount } = useContext(WishContext);
 
   const API = import.meta.env.VITE_API_URL;
   console.log(API);
@@ -124,6 +126,38 @@ function ProductDetailsPage() {
     }
   }
 
+  async function addToWish() {
+    if (!token?.trim()) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const { data } = await axios.post(
+        `${API}/wish`,
+        {
+          _id: id,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      console.log(1);
+      console.log(data);
+      if (data.products.length != -1) {
+        toast(`Product added to wishlist succsessfully✨`, {
+          position: "top-center",
+          duration: 3000,
+        });
+        setWishCount(Wishcount + 1);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   if (isLoading) return <LoadingScreenAnimation />;
   return (
     <section className="pb-14 bg-stone-100/50">
@@ -198,7 +232,9 @@ function ProductDetailsPage() {
               >
                 <FaCartPlus /> <span>Add To Cart</span>
               </button>
-              <button className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row">
+              <button
+                onClick={addToWish}
+              className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row">
                 <MdFavorite /> <span>Add To Wishlist</span>
               </button>
               <button
