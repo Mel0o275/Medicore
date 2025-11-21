@@ -93,7 +93,7 @@ function MyComment({ review, userId }) {
       </div>
       <div className="flex justify-between">
         <Typography variant="h5" className="text-[#00a297] leading-relaxed">
-          Title : {review?.title}
+          {review?.title}
         </Typography>
         <Rating
           value={review.rating}
