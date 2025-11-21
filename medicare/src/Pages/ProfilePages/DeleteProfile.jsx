@@ -69,15 +69,11 @@ const modalStyle = {
 function DeleteProfile({ open, handleClose }) {
   const { deleteUserMutation } = useUserMutations();
 
-
-      const { user } = useAuthStore();
-      console.log( user.data.id);
-
+  const { user } = useAuthStore();
+  console.log(user.data.id);
 
   const handleDelete = async () => {
     // console.log("Deleting user profile...");
-
-
 
     // From the rahma
     const userId = user?.data?.id;
@@ -90,14 +86,11 @@ function DeleteProfile({ open, handleClose }) {
         window.location.href = "/login";
       },
       onError: (error) => {
-       
-
         // console.error("Delete failed:", error);
         const serverMessage =
           error?.response?.data?.message || "User doessn't deleted";
 
         toast.error(serverMessage);
-
       },
     });
   };

@@ -17,7 +17,7 @@ export default function ProductImagesSwipper({ itemImages }) {
           className="flex justify-center items-center bg-gray-50"
         >
           <img
-            src={img}
+            src={img.url}
             alt={`product-${i}`}
             className="w-full h-full object-contain "
           />
