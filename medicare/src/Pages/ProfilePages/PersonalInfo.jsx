@@ -31,8 +31,12 @@ import { useUser } from "../../Hooks/reactUser/useUserSelected";
 import useAuthStore from "../../Store/useAuthStore";
 
 function PersonalInfo() {
-  const [selectedImg, setSelectedImg] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const { user } = useAuthStore();
+
+  // From rahma
+  const userId = user?.data?.id;
+  const token = user?.data?.token || localStorage.getItem("token");
 
   const { handleImageUpload } = useHandleImageUpload();
 
@@ -40,67 +44,61 @@ function PersonalInfo() {
 
   const { updateDataMutation, uploadAvatarMutation } = useUserMutations();
 
-  const { user } = useAuthStore();
-
-  // From rahma
-  const userId = user?.data?.id;
-  const token = user?.data?.token || localStorage.getItem("token");
-
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
     }
   }, [token]);
 
-  // console.log("User : " + user);
-  // console.log("Token : " + token);
-  // console.log("Id : " + userId);
-
-  const {
-    data: userDate,
-    isLoading,
-    isError,
-  } = useUser(userId, {
-    enabled: !!userId ,
+  const { data: userDate } = useUser(userId, {
+    enabled: !!userId,
   });
 
-  console.log(userDate);
-
-  // console.log(userDate);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    trigger,
-  } = useForm({
-    defaultValues: {
-      firstName: "",
-      secondName: "",
-      email: "",
-      phoneNumber: "",
-      dateOfBirth: "",
-      gender: "",
-    },
+  const [changeData, setChangeData] = useState({
+    firstName: "",
+    secondName: "",
+    email: "",
+    phoneNumber: "",
+    dateOfBirth: "",
+    gender: "",
   });
 
+  const [selectedImg, setSelectedImg] = useState(null);
   useEffect(() => {
     if (userDate) {
-      // console.log("Malak");
+      setChangeData({
+        firstName: userDate.firstName || "",
+        secondName: userDate.secondName || "",
+        email: userDate.email || "",
+        phoneNumber: userDate.phoneNumber || "",
+        dateOfBirth: formatDate(userDate.dateOfBirth),
+        gender: userDate.gender || "",
+      });
+
       reset({
         firstName: userDate.firstName,
         secondName: userDate.secondName,
         email: userDate.email,
         phoneNumber: userDate.phoneNumber,
-        dateOfBirth: userDate.dateOfBirth,
+        dateOfBirth: formatDate(userDate.dateOfBirth),
         gender: userDate.gender,
       });
     }
-  }, [userDate, reset]);
+  }, [userDate]);
+
+  console.log(userDate);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
 
   console.log("user id : " + userId);
 
-  const onSubmit = (data) => {
+  function onSubmit(data) {
+    console.log("Moka");
     console.log("Updated data:", data);
 
     updateDataMutation.mutate(data, {
@@ -115,11 +113,11 @@ function PersonalInfo() {
         toast.error(serverMessage);
       },
     });
-  };
+  }
 
   const handleCancelEdit = () => {
     if (!userDate) {
-      // console.log("Hassan")
+      console.log("Hassan");
       return;
     }
 
@@ -143,12 +141,10 @@ function PersonalInfo() {
     }
   };
 
-  const handleUpdateData = async () => {
-    const isValid = await trigger();
-
-    if (isValid) {
-      handleSubmit(onSubmit)();
-    }
+  const formatDate = (isoDate) => {
+    if (!isoDate) return "";
+    const d = new Date(isoDate);
+    return d.toISOString().split("T")[0];
   };
 
   return (
@@ -226,15 +222,7 @@ function PersonalInfo() {
               width: { xs: "100%", sm: "auto" },
             }}
           >
-            <Button
-              variant="contained"
-              sx={{
-                width: { xs: "100%", sm: "auto" },
-                minWidth: { xs: "auto", sm: 140 },
-              }}
-            >
-              Delete the img
-            </Button>
+            
             <Button
               variant="contained"
               onClick={handleEditToggle}
@@ -247,8 +235,9 @@ function PersonalInfo() {
             </Button>
             {isEditing && (
               <Button
-                type="button" // Change to button to prevent native form submission
-                onClick={handleUpdateData} // Use our custom handler
+                type="submit"
+                // onClick={handleUpdateData}
+                form="personal-info-form"
                 variant="contained"
                 sx={{
                   width: { xs: "100%", sm: "auto" },
@@ -269,7 +258,10 @@ function PersonalInfo() {
           <div className="border-b border-gray-300 pb-12">
             <form
               id="personal-info-form"
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit((data) => {
+                console.log(data);
+                onSubmit(data);
+              })}
               className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
             >
               <div className="sm:col-span-3">
@@ -281,6 +273,12 @@ function PersonalInfo() {
                 </label>
                 <div className="mt-2">
                   <input
+                    onChange={(e) => {
+                      setChangeData((prev) => ({
+                        ...prev,
+                        firstName: e.target.value,
+                      }));
+                    }}
                     id="first-name"
                     type="text"
                     autoComplete="given-name"
@@ -317,6 +315,12 @@ function PersonalInfo() {
                 </label>
                 <div className="mt-2">
                   <input
+                    onChange={(e) => {
+                      setChangeData((prev) => ({
+                        ...prev,
+                        secondName: e.target.value,
+                      }));
+                    }}
                     id="last-name"
                     type="text"
                     autoComplete="family-name"
@@ -353,6 +357,12 @@ function PersonalInfo() {
                 </label>
                 <div className="mt-2">
                   <input
+                    onChange={(e) => {
+                      setChangeData((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }));
+                    }}
                     id="email"
                     type="email"
                     autoComplete="email"
@@ -389,6 +399,12 @@ function PersonalInfo() {
                 </label>
                 <div className="mt-2">
                   <input
+                    onChange={(e) => {
+                      setChangeData((prev) => ({
+                        ...prev,
+                        phoneNumber: e.target.value,
+                      }));
+                    }}
                     id="phoneNumber"
                     type="tel"
                     autoComplete="tel"
@@ -425,6 +441,12 @@ function PersonalInfo() {
                 </label>
                 <div className="mt-2">
                   <input
+                    onChange={(e) => {
+                      setChangeData((prev) => ({
+                        ...prev,
+                        dateOfBirth: e.target.value,
+                      }));
+                    }}
                     id="dateOfBirth"
                     type="date"
                     disabled={!isEditing}
@@ -478,12 +500,19 @@ function PersonalInfo() {
                         : "border-gray-300 bg-white text-gray-900"
                     }`}
                     {...register("gender", { required: "Gender is required" })}
+                    onChange={(e) => {
+                      setChangeData((prev) => ({
+                        ...prev,
+                        gender: e.target.value,
+                      }));
+                    }}
                   >
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
                     <option value="prefer-not-to-say">Prefer not to say</option>
                   </select>
+
                   <KeyboardArrowDownIcon
                     aria-hidden="true"
                     className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"

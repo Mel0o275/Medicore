@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Pagination } from "swiper/modules";
-
+import { useState } from "react";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
@@ -8,7 +8,7 @@ import "swiper/css/pagination";
 import "swiper/css/autoplay";
 // ================================ Constants ========================================
 
-import { products } from "../../Constants/NavPages.jsx";
+// import { products } from "../../Constants/NavPages.jsx";
 
 // ================================ MUI ========================================
 import IconButton from "@mui/material/IconButton";
@@ -19,8 +19,65 @@ import toast from "react-hot-toast";
 import { Button, Typography } from "@mui/material";
 // ================================ Componnets ========================================
 import ViewButton from "../Buttons/ViewButton";
+// ================================ Mai  ========================================
+import { useContext } from "react";
+import { CartContext } from "../../Context/cartContext.jsx";
 
+import axios from "axios";
+
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 export default function ProductsSwipper() {
+  const navigate = useNavigate();
+  const { count, setCount } = useContext(CartContext);
+
+  const API = import.meta.env.VITE_API_URL;
+  // console.log(API);
+  const token = localStorage.getItem("token");
+
+  const fetchProducts = async () => {
+    const { data } = await axios.get(`${API}/products`);
+    return data;
+  };
+  const {
+    data: productsdata,
+    // isLoading,
+    // isError,
+    // error,
+  } = useQuery({
+    queryKey: ["products"],
+    queryFn: fetchProducts,
+    refetchOnWindowFocus: true,
+  });
+  const products = productsdata?.data?.products || [];
+
+  // ======================== Add To Cart Function ========================
+  async function addToCart(item) {
+    if (!token?.trim()) {
+      navigate("/login");
+      return;
+    }
+
+    console.log(item._id);
+
+    try {
+      const { data } = await axios.post(
+        `${API}/cart`,
+        { _id: item._id },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      toast.success(`Added ${item.title} to Cart 🛒`);
+      setCount(count + 1);
+    } catch (err) {
+      console.log(err);
+      toast.error(`Failed to add ${item.title} to cart`);
+    }
+  }
   return (
     <Swiper
       slidesPerView={4}
@@ -46,11 +103,11 @@ export default function ProductsSwipper() {
             {/* Image container */}
             <div className="relative group h-64 overflow-hidden">
               <img
-                src={item.images[0]}
+                src={item.images[0].url}
                 className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
               />
               <img
-                src={item.images[1]}
+                src={item.images[1].url}
                 className="w-full h-full object-cover absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
               />
 
@@ -62,9 +119,9 @@ export default function ProductsSwipper() {
                 <IconButton
                   color="primary"
                   className="bg-white shadow-md hover:bg-gray-100"
-                  onClick={() =>
-                    toast.success(`Added ${item.title} to Cart 🛒`)
-                  }
+                  onClick={() => {
+                    addToCart(item);
+                  }}
                 >
                   <AddShoppingCartIcon />
                 </IconButton>
@@ -84,7 +141,9 @@ export default function ProductsSwipper() {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => toast.success(`Added ${item.title} to Cart 🛒`)}
+                onClick={() => {
+                  addToCart(item);
+                }}
                 sx={{
                   position: "absolute",
                   bottom: "-50px",
@@ -119,7 +178,7 @@ export default function ProductsSwipper() {
                 {item.desc}
               </Typography>
               <Typography variant="p" className="text-xl font-bold mt-2">
-                {item.price}
+                {item.price}$
               </Typography>
             </div>
           </div>

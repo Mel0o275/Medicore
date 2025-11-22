@@ -38,7 +38,6 @@ function ProductDetailsPage() {
   const [quantity, setQuantity] = useState(1);
   const [isWished, setIsWished] = useState(false);
 
-
   const { count: count, setCount: setCount } = useContext(CartContext);
   const { count: Wishcount, setCount: setWishCount } = useContext(WishContext);
 
@@ -198,7 +197,7 @@ function ProductDetailsPage() {
       <div className="mx-8 md:mx-24">
         <div className="flex flex-col md:flex-row gap-8 items-stretch mt-14">
           <div className="flex-1 flex flex-col gap-6">
-            <div className="relative max-h-[55vh] group border-2 border-stone-200 rounded-md overflow-hidden flex-1">
+            <div className="relative max-h-[55vh] min-h-[400px] group border-2 border-stone-200 rounded-md overflow-hidden flex-1">
               <img
                 src={product.images[0].url}
                 alt="Front"
