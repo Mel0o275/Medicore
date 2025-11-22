@@ -11,37 +11,19 @@ import { MdEdit, MdDelete } from "react-icons/md";
 import avatar from "/avatar.jpg";
 import { useState } from "react";
 import EditReviewModal from "./EditReviewModal";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import toast from "react-hot-toast";
+
+import useDeleteReview from "../../Hooks/review/useDeleteReview";
 
 function MyComment({ review, userId }) {
-  const url = import.meta.env.VITE_API_URL;
-  const token = localStorage.getItem("token");
-  const queryClient = useQueryClient();
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const deleteReview = useMutation({
-    mutationFn: (review) =>
-      axios.delete(`${url}/reviews/${review._id}`, {
-        withCredentials: true,
-        headers: { Authorization: token },
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["reviews"]);
-      toast.success("Review is deleted");
-    },
-    onError: (err) => {
-      toast.error(err.response?.data.message || "Failed deleting review!");
-    },
-  });
-
+  const { deleteReview } = useDeleteReview();
   function confirmDelete() {
     deleteReview.mutate(review);
     setOpenDeleteModal(false);
   }
   function cancelDelete() {
-    if (!deleteReview.isPending) {
+    if (!deleteReview?.isPending) {
       setOpenDeleteModal(false);
     }
   }
