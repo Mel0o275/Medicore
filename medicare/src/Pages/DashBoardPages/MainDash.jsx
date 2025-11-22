@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -25,64 +25,37 @@ import {
   Delete as DeleteIcon,
   Visibility as ViewIcon,
 } from "@mui/icons-material";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import toast from "react-hot-toast";
-import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation.jsx";
 import useShopFilters from "../../Hooks/useShopFilters.js";
 import ViewProductModal from "./ViewProductModal.jsx";
 import AddProductModal from "../../Components/AddProduct/AddProduct.jsx";
 import EditProductModal from "../../Components/EditProduct/EditProduct.jsx";
-
-const url = import.meta.env.VITE_API_URL;
-const token = localStorage.getItem("token");
+import useAllProducts from "../../Hooks/useAllProducts.js";
+import useDeleteProduct from "../../Hooks/product/useDeleteProduct.js";
+import ShopLoading from "../../Components/shop/ShopLoading.jsx";
+import ShopError from "../../Components/shop/ShopError.jsx";
 
 const MainDash = () => {
   const { filters } = useShopFilters();
-  const queryClient = useQueryClient();
-
-  const [toDelete, setToDelete] = useState(null);
-  const [openViewModal, setOpenViewModal] = useState(false);
-  const [openAddModal, setOpenAddModal] = useState(false);
-  const [viewingProduct, setViewingProduct] = useState(null);
-  const [editingProduct, setEditingProduct] = useState(null);
+  const { data, isLoading, isError, error } = useAllProducts(filters, "admin");
+  const products = data?.data?.products || [];
 
   const [page, setPage] = useState(1);
   const productsPerPage = 12;
 
-  const fetchProducts = async () => {
-    const { data } = await axios.get(
-      `${url}/products?${filters ? `${filters}&` : ""}role=admin`
-    );
-    return data;
-  };
-
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["products", filters],
-    queryFn: fetchProducts,
-  });
-
-  const products = data?.data?.products || [];
   const pageCount = Math.ceil(products.length / productsPerPage);
 
   const paginatedProducts = products.slice(
     (page - 1) * productsPerPage,
     page * productsPerPage
   );
-  const deleteProduct = useMutation({
-    mutationFn: (product) =>
-      axios.delete(`${url}/products/${product._id}`, {
-        withCredentials: true,
-        headers: { Authorization: token },
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["products"]);
-      toast.success("Product is deleted!");
-    },
-    onError: () => toast.error("Failed to delete product."),
-  });
 
+  const [toDelete, setToDelete] = useState(null);
+  const [openViewModal, setOpenViewModal] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
+  const [viewingProduct, setViewingProduct] = useState(null);
+  const [editingProduct, setEditingProduct] = useState(null);
   const handleDeleteClick = (product) => setToDelete(product);
+  const { deleteProduct } = useDeleteProduct();
   const confirmDelete = () => {
     deleteProduct.mutate(toDelete);
     setToDelete(null);
@@ -144,23 +117,8 @@ const MainDash = () => {
   const formatColumnName = (key) =>
     key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ");
 
-  if (isLoading) return <LoadingScreenAnimation />;
-  if (isError)
-    return (
-      <Box
-        sx={{
-          bgcolor: "#00a29715",
-          color: "#00a297",
-          p: 4,
-          borderRadius: 2,
-          textAlign: "center",
-        }}
-      >
-        <Typography variant="h6" fontWeight="bold" sx={{ color: "#00a297" }}>
-          Failed to load products
-        </Typography>
-      </Box>
-    );
+  if (isLoading) return <ShopLoading />;
+  if (isError) return <ShopError error={error} />;
 
   return (
     <Box sx={{ p: { xs: 2, md: 4 } }}>
