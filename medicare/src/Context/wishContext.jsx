@@ -1,11 +1,10 @@
-// wishContext
+// wishContext.js
 import { useEffect, useState, createContext } from 'react';
 import axios from 'axios';
 
 export const WishContext = createContext();
 
 const API = import.meta.env.VITE_API_URL;
-const token = localStorage.getItem("token");
 
 export default function WishProvider({ children }) {
     const [count, setCount] = useState(0);
@@ -15,7 +14,10 @@ export default function WishProvider({ children }) {
         return stored ? JSON.parse(stored) : [];
     });
 
-    async function getUserWish() {
+    const token = localStorage.getItem("token");
+
+    const getUserWish = async () => {
+        if (!token) return;
         try {
             const { data } = await axios.get(`${API}/wish`, {
                 headers: { Authorization: token }
@@ -24,57 +26,52 @@ export default function WishProvider({ children }) {
             const res = data.products || [];
             setWishItems(res);
 
-            let sum = 0;
-            res.forEach(item => sum += item.count);
+            const sum = res.reduce((acc, item) => acc + item.count, 0);
             setCount(sum);
+
             const ids = res.map(item => item._id);
             setLikedItems(ids);
             localStorage.setItem("likedItems", JSON.stringify(ids));
-
         } catch (err) {
             console.error(err);
         }
-    }
+    };
 
-    async function deleteItem(id) {
-        try {
-            await axios.delete(`${API}/wish/${id}`, {
-                headers: { Authorization: token }
-            });
-    
-            await getUserWish();
-    
-            setLikedItems(prev => {
-                const updated = prev.filter(itemId => itemId !== id);
-                localStorage.setItem("likedItems", JSON.stringify(updated));
-                return updated;
-            });
-    
-        } catch (err) {
-            console.error(err);
-        }
-    }
-    
+    const toggleLike = async (id) => {
+        if (!token) return;
 
-    function toggleLike(id) {
+        const isLiked = likedItems.includes(id);
         setLikedItems(prev => {
-            let updated;
-            if (prev.includes(id)) {
-                updated = prev.filter(itemId => itemId !== id);
-            } else {
-                updated = [...prev, id];
-            }
+            const updated = isLiked ? prev.filter(itemId => itemId !== id) : [...prev, id];
             localStorage.setItem("likedItems", JSON.stringify(updated));
             return updated;
         });
-    }
+
+        setCount(prev => isLiked ? prev - 1 : prev + 1);
+
+        try {
+            if (!isLiked) {
+                await axios.post(`${API}/wish`, { _id: id }, { headers: { Authorization: token } });
+            } else {
+                await axios.delete(`${API}/wish/${id}`, { headers: { Authorization: token } });
+            }
+        } catch (err) {
+            console.error(err);
+            setLikedItems(prev => {
+                const reverted = isLiked ? [...prev, id] : prev.filter(itemId => itemId !== id);
+                localStorage.setItem("likedItems", JSON.stringify(reverted));
+                return reverted;
+            });
+            setCount(prev => isLiked ? prev + 1 : prev - 1);
+        }
+    };
 
     useEffect(() => {
         getUserWish();
     }, []);
 
     return (
-        <WishContext.Provider 
+        <WishContext.Provider
             value={{
                 count,
                 setCount,
@@ -83,8 +80,7 @@ export default function WishProvider({ children }) {
                 likedItems,
                 setLikedItems,
                 toggleLike,
-                getUserWish,
-                deleteItem
+                getUserWish
             }}
         >
             {children}

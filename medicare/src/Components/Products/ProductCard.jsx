@@ -2,53 +2,25 @@ import { useContext } from "react";
 import MyRating from "../MyRating";
 import { MdFavorite } from "react-icons/md";
 import { NavLink, useNavigate } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { WishContext } from "../../Context/wishContext";
 
 const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const API = import.meta.env.VITE_API_URL;
+  const { likedItems, toggleLike } = useContext(WishContext);
 
-  const { likedItems, toggleLike, getUserWish, count, setCount } = useContext(WishContext);
-
-  const isLiked = likedItems.includes(_id);
-
-  const handleLike = async () => {
+  const handleLike = () => {
+    const token = localStorage.getItem("token");
     if (!token?.trim()) {
       navigate("/login");
       return;
     }
+
+    const currentlyLiked = likedItems.includes(_id);
     toggleLike(_id);
-    try {
-      if (!isLiked) {
-        await axios.post(
-          `${API}/wish`,
-          { _id },
-          { headers: { Authorization: token } }
-        );
-        toast("Product added to wishlist ✨", {
-          position: "top-center",
-          duration: 3000,
-        });
-        setCount(count + 1);
-      } else {
-        await axios.delete(`${API}/wish/${_id}`, {
-          headers: { Authorization: token },
-        });
-        toast("Product removed from wishlist ✨", {
-          position: "top-center",
-          duration: 3000,
-        });
-        setCount(count - 1);
-        getUserWish();
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Something went wrong!");
-      toggleLike(_id);
-    }
+
+    const action = currentlyLiked ? "removed from" : "added to";
+    toast(`Product ${action} wishlist ✨`, { position: "top-center", duration: 2000 });
   };
 
   return (
@@ -68,32 +40,25 @@ const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
           <MdFavorite
             onClick={handleLike}
             className={`cursor-pointer text-3xl p-1.5 rounded-full transition-colors duration-500
-              ${isLiked ? "bg-[#00a297] text-white" : "bg-gray-300 text-black"}
+              ${likedItems.includes(_id) ? "bg-[#00a297] text-white" : "bg-gray-300 text-black"}
               hover:bg-[#00a297] hover:text-white`}
           />
         </div>
       </div>
 
       <div className="p-3 flex flex-col flex-1">
-        <h3 className="font-semibold mb-1 text-sm md:text-base line-clamp-2">
-          {title}
-        </h3>
-
+        <h3 className="font-semibold mb-1 text-sm md:text-base line-clamp-2">{title}</h3>
         <div className="py-2">
           <MyRating value={ratings} />
         </div>
-
-        <p className="text-gray-700 text-sm md:text-base font-bold">
-          {price} L.E
-        </p>
-
+        <p className="text-gray-700 text-sm md:text-base font-bold">{price} L.E</p>
         <div className="mt-auto flex justify-center items-center">
           <NavLink
             to={`/shop/productdetails/${_id}`}
             onClick={() => window.scrollTo(0, 0)}
             className="px-3 py-1.5 bg-[#00a297] text-white text-sm rounded-md 
-             transform transition-all duration-300 
-             translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
+                        transform transition-all duration-300 
+                        translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
           >
             View Product
           </NavLink>
