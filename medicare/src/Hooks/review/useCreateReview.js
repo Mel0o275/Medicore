@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 
 const token = localStorage.getItem("token");
 const url = import.meta.env.VITE_API_URL;
-function useCreateReview(productId, rating, handleClose) {
+function useCreateReview(productId, handleClose) {
   const queryClient = useQueryClient();
   const addReview = useMutation({
     mutationFn: (formData) =>
@@ -23,11 +23,12 @@ function useCreateReview(productId, rating, handleClose) {
       toast.error(err.response?.data.message || "Failed adding review!");
     },
   });
-  const onSubmit = (data) => {
+  const onSubmit = (data, rating) => {
     if (!rating) {
       toast.error("Please select a rating");
       return;
     }
+
     const payload = {
       productId,
       rating,

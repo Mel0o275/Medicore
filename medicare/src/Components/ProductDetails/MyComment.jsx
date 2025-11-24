@@ -36,7 +36,7 @@ function MyComment({ review, userId }) {
           <img
             src={review?.userId?.profilePic || avatar}
             alt={review?.userId}
-            className="rounded-full w-[50px] h-[48px]"
+            className="rounded-full w-[50px] h-[50px] object-cover"
           />
           <div>
             <h1 className="font-semibold text-gray-700">
