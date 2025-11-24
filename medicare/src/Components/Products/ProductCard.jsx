@@ -1,55 +1,55 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import MyRating from "../MyRating";
 import { MdFavorite } from "react-icons/md";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { WishContext } from "../../Context/wishContext";
+
 const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
-  const [liked, setLiked] = useState(false);
-  ///////////////////////////////MAI//////////////////////////////
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const [wishItems, setWishItems] = useState([]);
-  const [loading, setLoading] = useState(true);
   const API = import.meta.env.VITE_API_URL;
-  const { count: Wishcount, setCount: setWishCount } = useContext(WishContext);
 
+  const { likedItems, toggleLike, getUserWish, count, setCount } = useContext(WishContext);
 
+  const isLiked = likedItems.includes(_id);
 
-async function addToWish(id) {
-  if (!token?.trim()) {
-    navigate("/login");
-    return;
-  }
-
-  try {
-    const { data } = await axios.post(
-      `${API}/wish`,
-      {
-        _id: id,
-      },
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
-    console.log(1);
-    console.log(data);
-    const liked = data.products.some((item) => item.id === id);
-    setLiked(liked);
-    if (data.products.length != -1) {
-      toast(`Product added to wishlist succsessfully✨`, {
-        position: "top-center",
-        duration: 3000,
-      });
-      setWishCount(Wishcount + 1);
-      setLiked(true);
+  const handleLike = async () => {
+    if (!token?.trim()) {
+      navigate("/login");
+      return;
     }
-  } catch (err) {
-    console.log(err);
-  }
-}
+    toggleLike(_id);
+    try {
+      if (!isLiked) {
+        await axios.post(
+          `${API}/wish`,
+          { _id },
+          { headers: { Authorization: token } }
+        );
+        toast("Product added to wishlist ✨", {
+          position: "top-center",
+          duration: 3000,
+        });
+        setCount(count + 1);
+      } else {
+        await axios.delete(`${API}/wish/${_id}`, {
+          headers: { Authorization: token },
+        });
+        toast("Product removed from wishlist ✨", {
+          position: "top-center",
+          duration: 3000,
+        });
+        setCount(count - 1);
+        getUserWish();
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong!");
+      toggleLike(_id);
+    }
+  };
 
   return (
     <div className="w-full rounded-lg border border-stone-200 overflow-hidden group cursor-pointer shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col h-[400px]">
@@ -64,16 +64,12 @@ async function addToWish(id) {
           alt="Back"
           className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         />
-        <div
-          className={`absolute ${
-            liked ? "right-3 top-3" : "right-[-40px] group-hover:right-3 top-3"
-          } transition-all duration-300`}
-        >
+        <div className="absolute right-3 top-3 transition-all duration-300">
           <MdFavorite
-            onClick={() => addToWish(_id)}
-            className={`cursor-pointer text-3xl p-1.5 rounded-full transition-colors duration-500 
-        ${liked ? "bg-[#00a297] text-white" : "bg-gray-300 text-black"} 
-        hover:bg-[#00a297] hover:text-white`}
+            onClick={handleLike}
+            className={`cursor-pointer text-3xl p-1.5 rounded-full transition-colors duration-500
+              ${isLiked ? "bg-[#00a297] text-white" : "bg-gray-300 text-black"}
+              hover:bg-[#00a297] hover:text-white`}
           />
         </div>
       </div>
