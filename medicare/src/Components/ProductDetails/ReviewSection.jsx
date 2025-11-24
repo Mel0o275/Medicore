@@ -2,23 +2,14 @@ import CommentsContainer from "./CommentsContainer";
 import ReviewForm from "./ReviewForm";
 import { VscPreview } from "react-icons/vsc";
 import useAuthStore from "../../Store/useAuthStore";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import useGetReviews from "../../Hooks/review/useGetReviews";
 let accent = "#00a297";
 
 function ReviewSection({ productTitle, productId }) {
-  const fetchReviews = async () => {
-    const url = import.meta.env.VITE_API_URL;
-    const { data } = await axios.get(`${url}/reviews/${productId}`);
-    return data;
-  };
-  const user = useAuthStore((state) => state.user);
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["reviews", productId],
-    queryFn: fetchReviews,
-  });
+  const { data, isLoading, isError, error } = useGetReviews(productId);
   const reviews = data?.data?.reviews;
   const reviewsNumber = data?.results;
+  const user = useAuthStore((state) => state.user);
   if (isLoading)
     return (
       <div className="flex justify-center items-center w-full py-5">
@@ -37,8 +28,9 @@ function ReviewSection({ productTitle, productId }) {
         className={`flex flex-col gap-4  w-full ${user ? "xl:w-[48%]" : ""}  `}
       >
         {reviewsNumber > 0 ? (
-          <h1 className="font-semibold text-2xl flex  items-center gap-2">
-            <VscPreview /> {reviewsNumber} review for {productTitle}
+          <h1 className="font-semibold text-2xl flex  gap-2">
+            <VscPreview className="text-4xl" /> {reviewsNumber} review for{" "}
+            {productTitle}
           </h1>
         ) : (
           ""

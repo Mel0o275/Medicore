@@ -1,6 +1,6 @@
 import PageTitle from "../../components/PageTitle";
 import { FaCartPlus, FaShareAlt } from "react-icons/fa";
-import { MdFavorite, MdOutlineReportGmailerrorred } from "react-icons/md";
+import { MdFavorite } from "react-icons/md";
 import MyRating from "../../components/MyRating";
 import MyTab from "../../components/Tab/MyTab";
 import ProductCard from "../../components/Products/ProductCard";
@@ -11,27 +11,17 @@ import { useContext, useState } from "react";
 import ShareModal from "./ShareModal";
 import { FaRegEye } from "react-icons/fa";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation";
 import toast from "react-hot-toast";
 import { CartContext } from "../../Context/cartContext";
 import { WishContext } from "../../Context/wishContext";
+import useViewProduct from "../../Hooks/product/useViewProduct";
+import ShopError from "../../Components/shop/ShopError";
+import ShopLoading from "../../Components/shop/ShopLoading";
 
 function ProductDetailsPage() {
   const { id } = useParams();
   console.log(id);
-
-  const fetchProduct = async () => {
-    const url = import.meta.env.VITE_API_URL;
-    const { data } = await axios.get(`${url}/products/${id}`);
-    return data;
-  };
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["product", id],
-    queryFn: fetchProduct,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+  const { data, isLoading, isError, error } = useViewProduct(id);
   const product = data?.data?.product;
   const relatedProducts = data?.data?.relatedProducts;
   const [openmodal, setOpenModal] = useState(false);
@@ -161,27 +151,8 @@ function ProductDetailsPage() {
     }
   }
 
-  if (isLoading) return <LoadingScreenAnimation />;
-  if (isError) {
-    return (
-      <section className="flex flex-col items-center justify-center h-[70vh] gap-6 text-center bg-stone-100/50 p-6 rounded-lg mx-8 md:mx-24">
-        <MdOutlineReportGmailerrorred className="text-6xl text-[#00a29755]" />
-        <h2 className="text-3xl font-bold text-[#00a29755]">
-          Oops! Something went wrong.
-        </h2>
-        <p className="text-stone-600 text-lg">
-          {error?.response?.data?.message ||
-            "Unable to load the product. Please try again later."}
-        </p>
-        <button
-          onClick={() => window.location.reload()}
-          className="px-6 py-3 bg-[#00a297] text-white rounded-md hover:bg-[#008377] transition"
-        >
-          Retry
-        </button>
-      </section>
-    );
-  }
+  if (isLoading) return <ShopLoading />;
+  if (isError) return <ShopError error={error} />;
   return (
     <section className="pb-14 bg-stone-100/50">
       <ScrollButton />

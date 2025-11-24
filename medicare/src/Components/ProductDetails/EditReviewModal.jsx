@@ -9,15 +9,10 @@ import {
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import axios from "axios";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-hot-toast";
+
+import useEditReview from "../../Hooks/review/useEditReview";
 
 function EditReviewModal({ open, handleClose, selectedReview }) {
-  const url = import.meta.env.VITE_API_URL;
-  const token = localStorage.getItem("token");
-  const queryClient = useQueryClient();
-
   const [rating, setRating] = useState(0);
 
   const {
@@ -41,45 +36,16 @@ function EditReviewModal({ open, handleClose, selectedReview }) {
       setRating(selectedReview.rating);
     }
   }, [selectedReview, reset, open]);
-
-  const updateReview = useMutation({
-    mutationFn: ({ reviewId, payload }) =>
-      axios.patch(`${url}/reviews/${reviewId}`, payload, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["reviews"]);
-      toast.success("Review updated!");
-      reset();
-      setRating(0);
-      handleClose();
-    },
-    onError: (err) => {
-      toast.error(err.response?.data.message || "Failed editing review!");
-    },
-  });
-
-  const onSubmit = (data) => {
-    if (!rating) {
-      toast.error("Please select a rating", { position: "top-center" });
-      return;
-    }
-
-    const payload = {
-      rating,
-      title: data.title,
-      review: data.review,
-    };
-
-    updateReview.mutate({
-      reviewId: selectedReview._id,
-      payload,
-    });
+  const handleCloseAndExit = () => {
+    reset();
+    setRating(0);
+    handleClose();
   };
-
+  const { updateReview, onSubmit } = useEditReview(
+    selectedReview,
+    rating,
+    handleCloseAndExit
+  );
   return (
     <Modal
       open={open}

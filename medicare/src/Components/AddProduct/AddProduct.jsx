@@ -18,10 +18,8 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { IoMdCreate } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import toast from "react-hot-toast";
 import { categories } from "../../Constants/NavPages";
+import useCreateProduct from "../../Hooks/product/useCreateProduct";
 
 const PRIMARY_COLOR = "#00a297";
 const customTheme = createTheme({
@@ -56,10 +54,6 @@ const productSchema = z.object({
 });
 
 export default function AddProductModal({ open, handleClose }) {
-  const token = localStorage.getItem("token");
-  const url = import.meta.env.VITE_API_URL;
-  const queryClient = useQueryClient();
-
   const {
     register,
     handleSubmit,
@@ -78,47 +72,12 @@ export default function AddProductModal({ open, handleClose }) {
     },
   });
 
-  const addProduct = useMutation({
-    mutationFn: (formData) =>
-      axios.post(`${url}/products`, formData, {
-        headers: {
-          Authorization: token,
-          "Content-Type": "multipart/form-data",
-        },
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["products"]);
-      toast.success("Product added!");
-      reset();
-      handleClose();
-    },
-    onError: (err) => {
-      toast.error(err.response?.data.message || "Failed to add product.");
-    },
-  });
-
-  const onSubmit = (data) => {
-    const formData = new FormData();
-    formData.append("title", data.title);
-    formData.append("brand", data.brand);
-    formData.append("category", data.category);
-    formData.append("price", data.price);
-    formData.append("ratings", data.ratings || 0);
-    formData.append("desc", data.desc || "");
-
-    if (data.images && data.images.length > 0) {
-      Array.from(data.images).forEach((file) => {
-        formData.append("images", file);
-      });
-    }
-
-    addProduct.mutate(formData);
-  };
-
   const handleCloseAndReset = () => {
     reset();
     handleClose();
   };
+
+  const { addProduct, onSubmit } = useCreateProduct(handleCloseAndReset);
 
   return (
     <ThemeProvider theme={customTheme}>

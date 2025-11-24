@@ -60,15 +60,13 @@ export default function useShopFilters() {
     filters = filters.slice(0, -1);
   }
   const clearAll = () => {
-    if (filters !== "") {
-      filters = "";
-      clearBrand();
-      clearCategory();
-      clearPrice();
-      clearSort();
-      clearQuery();
-      setPage(1);
-    }
+    filters = "";
+    clearBrand();
+    clearCategory();
+    clearPrice();
+    clearSort();
+    clearQuery();
+    setPage(1);
   };
   return { filters, clearAll };
 }
