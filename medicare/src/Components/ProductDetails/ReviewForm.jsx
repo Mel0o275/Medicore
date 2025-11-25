@@ -57,16 +57,12 @@ export default function ReviewForm({ productId }) {
     reset();
     setRating(0);
   };
-  const { addReview, onSubmit } = useCreateReview(
-    productId,
-    rating,
-    handleClose
-  );
+  const { addReview, onSubmit } = useCreateReview(productId, handleClose);
 
   return (
     <ThemeProvider theme={theme}>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit((data) => onSubmit(data, rating))}
         className="p-6 bg-white shadow border border-gray-200"
       >
         <p className="text-sm text-gray-500 mb-4">
