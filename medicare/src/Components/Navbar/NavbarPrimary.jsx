@@ -105,7 +105,7 @@ export default function Navbar(props) {
 
   return (
     <HideOnScroll {...props}>
-      <AppBar sx={{ position: "sticky" }}>
+      <AppBar sx={{ position: "sticky", zIndex:"1201" }}>
         <Grid
           container
           spacing={2}

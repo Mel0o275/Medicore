@@ -199,6 +199,7 @@ export default function DrawerNav({ open, toggleDrawer }) {
         "& .MuiDrawer-paper": {
           boxShadow: "2px 0 10px rgba(0, 0, 0, 0.1)",
         },
+        zIndex:"1201 !important"
       }}
     >
       {DrawerList}
