@@ -99,7 +99,6 @@ const BestSeller = () => {
         {isError ? (
           <Box
             sx={{
-              bgcolor: "#00a29715",
               color: "#00a297",
               p: 4,
               borderRadius: 2,
