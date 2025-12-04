@@ -35,7 +35,7 @@ export default function DeliveryStatus() {
   const token = localStorage.getItem("token");
 
   const config = {
-    headers: { Authorization: token }, 
+    headers: { Authorization: `Bearer ${token}` }, 
   };
 
   const fetchOrders = () => {
@@ -92,7 +92,6 @@ export default function DeliveryStatus() {
               <CardContent>
                 <Grid container spacing={2} alignItems="center">
 
-                  {}
                   <Grid item xs={8}>
                     <Stack direction="row" spacing={2} alignItems="center">
                       <Avatar
@@ -109,7 +108,6 @@ export default function DeliveryStatus() {
                           Order #{order._id.slice(-6)}
                         </Typography>
 
-                        {}
                         {order.items?.map((p, i) => (
                           <Typography key={i} variant="body2">
                             {p.productName} — x{p.quantity}
@@ -123,11 +121,9 @@ export default function DeliveryStatus() {
                     </Stack>
                   </Grid>
 
-                  {}
                   <Grid item xs={4}>
                     <Stack spacing={1}>
 
-                      {}
                       <Box
                         sx={{
                           display: "flex",
@@ -155,7 +151,6 @@ export default function DeliveryStatus() {
                         </span>
                       </Typography>
 
-                      {}
                       <Stack direction="row" spacing={1} mt={1}>
                         {order.status !== "Order is delivered" && (
                           <Button
