@@ -10,6 +10,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const SignInForm = () => {
+  const role = useAuthStore((s) => s.user)?.data?.role;
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
@@ -41,7 +42,13 @@ const SignInForm = () => {
 
         // Show success message then navigate
         toast.success("Signed in successfully. ");
-        navigate("/Profile");
+        if (role === "admin") {
+          navigate("Dashboard");
+        } else {
+          navigate("/");
+        }
+
+        // navigate("/Profile");
       } else {
         const respMsg = "Unable to sign in. Please try again.";
         toast.error(respMsg);

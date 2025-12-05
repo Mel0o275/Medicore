@@ -1,5 +1,4 @@
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import {
   Rating,
@@ -8,8 +7,7 @@ import {
   ThemeProvider,
   Button,
 } from "@mui/material";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import useCreateReview from "../../Hooks/review/useCreateReview";
 const theme = createTheme({
   components: {
     MuiTextField: {
@@ -43,9 +41,6 @@ const theme = createTheme({
 });
 
 export default function ReviewForm({ productId }) {
-  const token = localStorage.getItem("token");
-  const url = import.meta.env.VITE_API_URL;
-  const queryClient = useQueryClient();
   const [rating, setRating] = useState(0);
   const {
     handleSubmit,
@@ -58,43 +53,16 @@ export default function ReviewForm({ productId }) {
       review: "",
     },
   });
-  const addReview = useMutation({
-    mutationFn: (formData) =>
-      axios.post(`${url}/reviews`, formData, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["reviews"]);
-      toast.success("Review added!");
-      reset();
-      setRating(0);
-    },
-    onError: (err) => {
-      toast.error(err.response?.data.message || "Failed adding review!");
-    },
-  });
-
-  const onSubmit = (data) => {
-    if (!rating) {
-      toast.error("Please select a rating");
-      return;
-    }
-    const payload = {
-      productId,
-      rating,
-      title: data.title,
-      review: data.review,
-    };
-    addReview.mutate(payload);
+  const handleClose = () => {
+    reset();
+    setRating(0);
   };
+  const { addReview, onSubmit } = useCreateReview(productId, handleClose);
 
   return (
     <ThemeProvider theme={theme}>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit((data) => onSubmit(data, rating))}
         className="p-6 bg-white shadow border border-gray-200"
       >
         <p className="text-sm text-gray-500 mb-4">

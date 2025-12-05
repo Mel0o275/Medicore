@@ -1,42 +1,35 @@
-import PageTitle from "../../components/PageTitle";
+import PageTitle from "../../Components/PageTitle";
 import { FaCartPlus, FaShareAlt } from "react-icons/fa";
-import { MdFavorite, MdOutlineReportGmailerrorred } from "react-icons/md";
-import MyRating from "../../components/MyRating";
-import MyTab from "../../components/Tab/MyTab";
-import ProductCard from "../../components/Products/ProductCard";
-import ScrollButton from "../../components/ScrollButton";
+import { MdFavorite } from "react-icons/md";
+import MyTab from "../../Components/Tab/MyTab";
+import ProductCard from "../../Components/Products/ProductCard";
+import ScrollButton from "../../Components/ScrollButton";
 import { features, reviews } from "../../Constants/NavPages";
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useState } from "react";
 import ShareModal from "./ShareModal";
 import { FaRegEye } from "react-icons/fa";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation";
 import toast from "react-hot-toast";
 import { CartContext } from "../../Context/cartContext";
+import { WishContext } from "../../Context/wishContext";
+import useViewProduct from "../../Hooks/product/useViewProduct";
+import ShopError from "../../Components/shop/ShopError";
+import ShopLoading from "../../Components/shop/ShopLoading";
+import MyRating from "../../Components/MyRating/MyRating";
 
 function ProductDetailsPage() {
   const { id } = useParams();
   console.log(id);
-
-  const fetchProduct = async () => {
-    const url = import.meta.env.VITE_API_URL;
-    const { data } = await axios.get(`${url}/products/${id}`);
-    return data;
-  };
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["product", id],
-    queryFn: fetchProduct,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+  const { data, isLoading, isError, error } = useViewProduct(id);
   const product = data?.data?.product;
   const relatedProducts = data?.data?.relatedProducts;
   const [openmodal, setOpenModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [isWished, setIsWished] = useState(false);
 
   const { count: count, setCount: setCount } = useContext(CartContext);
+  const { count: Wishcount, setCount: setWishCount } = useContext(WishContext);
 
   const API = import.meta.env.VITE_API_URL;
   console.log(API);
@@ -125,27 +118,41 @@ function ProductDetailsPage() {
     }
   }
 
-  if (isLoading) return <LoadingScreenAnimation />;
-  if (isError) {
-    return (
-      <section className="flex flex-col items-center justify-center h-[70vh] gap-6 text-center bg-stone-100/50 p-6 rounded-lg mx-8 md:mx-24">
-        <MdOutlineReportGmailerrorred className="text-6xl text-[#00a29755]" />
-        <h2 className="text-3xl font-bold text-[#00a29755]">
-          Oops! Something went wrong.
-        </h2>
-        <p className="text-stone-600 text-lg">
-          {error?.response?.data?.message ||
-            "Unable to load the product. Please try again later."}
-        </p>
-        <button
-          onClick={() => window.location.reload()}
-          className="px-6 py-3 bg-[#00a297] text-white rounded-md hover:bg-[#008377] transition"
-        >
-          Retry
-        </button>
-      </section>
-    );
+  async function addToWish() {
+    if (!token?.trim()) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const { data } = await axios.post(
+        `${API}/wish`,
+        {
+          _id: id,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      console.log(1);
+      console.log(data);
+      if (data.products.length != -1) {
+        toast(`Product added to wishlist succsessfully✨`, {
+          position: "top-center",
+          duration: 3000,
+        });
+        setWishCount(Wishcount + 1);
+        setIsWished(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
+
+  if (isLoading) return <ShopLoading />;
+  if (isError) return <ShopError error={error} />;
   return (
     <section className="pb-14 bg-stone-100/50">
       <ScrollButton />
@@ -161,7 +168,7 @@ function ProductDetailsPage() {
       <div className="mx-8 md:mx-24">
         <div className="flex flex-col md:flex-row gap-8 items-stretch mt-14">
           <div className="flex-1 flex flex-col gap-6">
-            <div className="relative max-h-[55vh] group border-2 border-stone-200 rounded-md overflow-hidden flex-1">
+            <div className="relative max-h-[55vh] min-h-[400px] group border-2 border-stone-200 rounded-md overflow-hidden flex-1">
               <img
                 src={product.images[0].url}
                 alt="Front"
@@ -219,9 +226,15 @@ function ProductDetailsPage() {
               >
                 <FaCartPlus /> <span>Add To Cart</span>
               </button>
-              <button className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row">
-                <MdFavorite /> <span>Add To Wishlist</span>
-              </button>
+              {!isWished && (
+                <button
+                  onClick={addToWish}
+                  className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
+                >
+                  <MdFavorite /> <span>Add To Wishlist</span>
+                </button>
+              )}
+
               <button
                 className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
                 onClick={() => setOpenModal(true)}

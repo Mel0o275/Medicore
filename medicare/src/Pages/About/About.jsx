@@ -1,12 +1,18 @@
-import MyAccordion from "../../components/About/MyAccordion";
-import MyTab from "../../components/Tab/MyTab";
-import PageTitle from "../../components/PageTitle";
+import MyAccordion from "../../Components/About/MyAccordion";
+import MyTab from "../../Components/Tab/MyTab";
+import PageTitle from "../../Components/PageTitle";
 import img7 from "/about-page-07.jpg";
-import MyImgGrid from "../../components/About/MyImgGrid";
-import MyAboutCardsContainer from "../../components/About/MyAboutCardsContainer";
+import MyImgGrid from "../../Components/About/MyImgGrid";
+import MyAboutCardsContainer from "../../Components/About/MyAboutCardsContainer";
 import { NavLink } from "react-router-dom";
-import ScrollButton from "../../components/ScrollButton";
+import ScrollButton from "../../Components/ScrollButton";
 import { stats } from "../../Constants/NavPages";
+import AnimatedNumber from "../../Components/About/AnimatedNumber";
+function splitValue(value) {
+  const number = parseInt(value);
+  const suffix = value.replace(/[0-9]/g, "");
+  return { number, suffix };
+}
 
 function About() {
   return (
@@ -43,12 +49,17 @@ function About() {
 
       <section className="bg-[url('/about-page-06.jpg')] bg-cover bg-fixed mb-14 h-[40vh]">
         <div className="mx-8 md:mx-32 flex justify-center md:justify-between items-center h-full text-center text-white flex-wrap">
-          {stats.map((item, idx) => (
-            <div key={idx} className="md:basis-0 basis-[35%]">
-              <span className="text-4xl font-bold">{item.value}</span>
-              <p className="text-lg whitespace-nowrap">{item.label}</p>
-            </div>
-          ))}
+          {stats.map((item, idx) => {
+            const { number, suffix } = splitValue(item.value);
+            return (
+              <div key={idx} className="md:basis-0 basis-[35%]">
+                <span className="text-4xl font-bold">
+                  <AnimatedNumber to={number} suffix={suffix} />
+                </span>
+                <p className="text-lg whitespace-nowrap">{item.label}</p>
+              </div>
+            );
+          })}
         </div>
       </section>
 

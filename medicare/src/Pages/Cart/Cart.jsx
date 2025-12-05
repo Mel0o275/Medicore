@@ -55,19 +55,16 @@ export default function Cart() {
     }
   }
 
-
-  useEffect(() => {
-    getUserCart();
-  }, [cartItems]);
-
   const subtotal = cartItems.reduce(
     (total, item) => total + item.price * (item.count || 1),
     0
   );
+
   const discount = 0.05;
   const totalAfterDiscount = subtotal - subtotal * discount;
 
   const {count : count, setCount : setCount} = useContext(CartContext);
+  console.log(count);
 
   async function increseCart(itemId) {
     if (!token?.trim()) {
@@ -113,9 +110,13 @@ export default function Cart() {
     });
     console.log(data);
     console.log(cartItems);
+    setCartItems(prev => prev.filter(item => item.product_id !== itemId));
     setCount(count-myCount)
   }
 
+  useEffect(() => {
+    getUserCart();
+  }, [count]);
   if (loading) return <CartLoading />;
 
   return (

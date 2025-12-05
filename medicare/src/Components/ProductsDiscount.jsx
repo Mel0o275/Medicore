@@ -14,60 +14,56 @@ import toast from "react-hot-toast";
 // import { products } from "../Constants/NavPages.jsx";
 import ViewButton from "./Buttons/ViewButton";
 
-import { useProductStore } from "../Store/useProductStore";
-
-
 // ================================ Mai  ========================================
 
 import { useContext } from "react";
 import { CartContext } from "../Context/cartContext.jsx";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function ProductsDiscount() {
-  const { products } = useProductStore();
-  console.log(products);
-
+  const queryClient = useQueryClient();
+  const query = queryClient.getQueryData(["products"]);
+  const products = query?.data?.products || [];
   const limitedProducts = products.slice(0, 12);
 
   console.log(limitedProducts);
 
+  const navigate = useNavigate();
+  const { count, setCount } = useContext(CartContext);
 
-    const navigate = useNavigate();
-    const { count, setCount } = useContext(CartContext);
-  
-    const API = import.meta.env.VITE_API_URL;
-    // console.log(API);
-    const token = localStorage.getItem("token");
-  
-    // ======================== Add To Cart Function ========================
-    async function addToCart(item) {
-      if (!token?.trim()) {
-        navigate("/login");
-        return;
-      }
-  
-      console.log(item._id);
-  
-      try {
-        const { data } = await axios.post(
-          `${API}/cart`,
-          { _id: item._id },
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-  
-        toast.success(`Added ${item.title} to Cart 🛒`);
-        setCount(count + 1);
-      } catch (err) {
-        console.log(err);
-        toast.error(`Failed to add ${item.title} to cart`);
-      }
+  const API = import.meta.env.VITE_API_URL;
+  // console.log(API);
+  const token = localStorage.getItem("token");
+
+  // ======================== Add To Cart Function ========================
+  async function addToCart(item) {
+    if (!token?.trim()) {
+      navigate("/login");
+      return;
     }
+
+    console.log(item._id);
+
+    try {
+      const { data } = await axios.post(
+        `${API}/cart`,
+        { _id: item._id },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      toast.success(`Added ${item.title} to Cart 🛒`);
+      setCount(count + 1);
+    } catch (err) {
+      console.log(err);
+      toast.error(`Failed to add ${item.title} to cart`);
+    }
+  }
 
   return (
     <Grid container spacing={2}>
@@ -98,8 +94,8 @@ export default function ProductsDiscount() {
                         color="primary"
                         className="bg-white shadow-md hover:bg-gray-100"
                         onClick={() => {
-                    addToCart(item);
-                  }}
+                          addToCart(item);
+                        }}
                       >
                         <AddShoppingCartIcon fontSize="small" />
                       </IconButton>

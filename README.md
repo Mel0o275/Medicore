@@ -62,8 +62,28 @@ Each team member contributed to backend development and user operations for Medi
 
 👩‍💻 **Jolie Nixon Ezzat Tawfeek** → Backend for Orders (all order operations, management, and processing)
 
+**📅 Week 4 – Task Distribution**
 
-**🔄 Next Week (Week 4) – Upcoming Tasks**  
+During Week 4, each team member focused on integrating their backend modules with the corresponding frontend components, ensuring smooth communication between the system layers.
+
+👩‍💻 Mai Bakry Ahmed Morsy
+→ Completed the integration of the Cart, Wishlist, and Checkout backend with their frontend interfaces.
+
+👩‍💻 Malak Hassan Abd Elmonem Hashem
+→ Finished connecting the backend of User Management and Notifications with all related frontend pages.
+
+👩‍💻 Rahma Magdy Fouad Abass
+→ Integrated the entire Authentication System (login, signup, protected routes, password operations) with the frontend.
+
+👩‍💻 Jolie Nixon Ezzat Tawfeek
+→ Completed frontend–backend integration for Orders, including order creation, viewing, and management features.
+
+👨‍💻 Youssef Ashraf Ali Gamal El Deen Saleh
+→ Fully integrated all Product Management backend logic (CRUD operations, filtering, and product handling) with the frontend.
+
+⭐ This week represents the final development phase before the official project discussion, marking the completion of all core features and system integration.
+
+**🔄 Upcoming Inhancements will be provided SOON**  
 📌 To be updated after the next sprint planning meeting.
 
 ---

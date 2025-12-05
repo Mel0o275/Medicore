@@ -20,10 +20,8 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { GrUpdate } from "react-icons/gr";
 import { MdOutlineCancel } from "react-icons/md";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import toast from "react-hot-toast";
 import { categories } from "../../Constants/NavPages";
+import useEditProduct from "../../Hooks/product/useEditProduct";
 
 const PRIMARY_COLOR = "#00a297";
 const customTheme = createTheme({
@@ -56,9 +54,6 @@ const productSchema = z.object({
 });
 
 export default function EditProductModal({ open, handleClose, product }) {
-  const token = localStorage.getItem("token");
-  const url = import.meta.env.VITE_API_URL;
-  const queryClient = useQueryClient();
   const [previewImages, setPreviewImages] = useState([]);
 
   const {
@@ -94,52 +89,15 @@ export default function EditProductModal({ open, handleClose, product }) {
       setPreviewImages(product.images || []);
     }
   }, [product, setValue]);
-
-  const updateProduct = useMutation({
-    mutationFn: ({ id, formData }) =>
-      axios.patch(`${url}/products/${id}`, formData, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-          "Content-Type": "multipart/form-data",
-        },
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["products"]);
-      toast.success("Product updated!");
-      handleCloseAndReset();
-    },
-    onError: (err) => {
-      console.error(err);
-      toast.error(err.response?.data.message || "Failed to update product.");
-    },
-  });
-
-  const onSubmit = (data) => {
-    const formData = new FormData();
-    formData.append("title", data.title);
-    formData.append("brand", data.brand);
-    formData.append("category", data.category);
-    formData.append("price", data.price);
-    formData.append("ratings", data.ratings || 0);
-    formData.append("desc", data.desc || "");
-    formData.append("secretProduct", String(data.secretProduct));
-
-    if (data.images && data.images.length > 0) {
-      Array.from(data.images).forEach((file) =>
-        formData.append("images", file)
-      );
-    }
-
-    updateProduct.mutate({ id: product._id, formData });
-  };
-
   const handleCloseAndReset = () => {
     reset();
     setPreviewImages([]);
     handleClose();
   };
-
+  const { updateProduct, onSubmit } = useEditProduct(
+    product,
+    handleCloseAndReset
+  );
   return (
     <ThemeProvider theme={customTheme}>
       <Modal open={open} onClose={handleCloseAndReset}>

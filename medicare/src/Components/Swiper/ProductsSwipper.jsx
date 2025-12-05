@@ -20,22 +20,36 @@ import { Button, Typography } from "@mui/material";
 // ================================ Componnets ========================================
 import ViewButton from "../Buttons/ViewButton";
 // ================================ Mai  ========================================
-
-import { useProductStore } from "../../Store/useProductStore.js";
 import { useContext } from "react";
 import { CartContext } from "../../Context/cartContext.jsx";
 
 import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 export default function ProductsSwipper() {
-  const { products } = useProductStore();
   const navigate = useNavigate();
   const { count, setCount } = useContext(CartContext);
 
   const API = import.meta.env.VITE_API_URL;
   // console.log(API);
   const token = localStorage.getItem("token");
+
+  const fetchProducts = async () => {
+    const { data } = await axios.get(`${API}/products`);
+    return data;
+  };
+  const {
+    data: productsdata,
+    // isLoading,
+    // isError,
+    // error,
+  } = useQuery({
+    queryKey: ["products"],
+    queryFn: fetchProducts,
+    refetchOnWindowFocus: true,
+  });
+  const products = productsdata?.data?.products || [];
 
   // ======================== Add To Cart Function ========================
   async function addToCart(item) {
