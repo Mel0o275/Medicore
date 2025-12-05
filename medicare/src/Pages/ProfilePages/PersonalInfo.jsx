@@ -173,7 +173,7 @@ function PersonalInfo() {
             {/* Take the pic from rahma */}
             <Avatar
               alt="Profile avatar"
-              src={selectedImg || "/static/images/avatar/1.jpg"}
+              src={selectedImg || userDate?.profilePic || "/static/images/avatar/1.jpg"}
               sx={{
                 width: 80,
                 height: 80,
