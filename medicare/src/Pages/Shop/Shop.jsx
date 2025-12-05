@@ -34,6 +34,7 @@ function Shop() {
     };
   }, []);
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     if (page > totalPages) {
       setPage(1);
     }
