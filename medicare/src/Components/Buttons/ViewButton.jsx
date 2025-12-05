@@ -2,12 +2,7 @@
 import React, { useState, useEffect, forwardRef } from "react";
 
 /* -------------------------- MUI --------------------------- */
-import {
-
-  Slide,
- 
-  IconButton,
-} from "@mui/material";
+import { Slide, IconButton } from "@mui/material";
 /* -------------------------- Icons --------------------------- */
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
@@ -33,24 +28,21 @@ export default function ViewButton({ item }) {
     }, 2000);
   };
 
- 
-
   return (
     <>
       {loading && <ViewButtonLoader />}
 
-      <IconButton
-        color="primary"
-        className="bg-white shadow-md hover:bg-gray-100"
-        onClick={handleClickOpen}
+      <Link
+        to={`/shop/productdetails/${item._id}`}
+        style={{ textDecoration: "none" }}
       >
-        <Link to={`/shop/productdetails/${item._id}`}>
-        <VisibilityIcon fontSize="small" />
-        </Link>
-      </IconButton>
-
-
-
+        <IconButton
+          color="primary"
+         className="bg-white shadow-md hover:bg-gray-100"
+        >
+          <VisibilityIcon fontSize="small" />
+        </IconButton>
+      </Link>
 
       {/* <ProductViewDialog
         item={item}

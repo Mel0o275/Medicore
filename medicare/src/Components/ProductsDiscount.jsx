@@ -22,7 +22,28 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 
+import { WishContext } from "../Context/wishContext.jsx";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+
 export default function ProductsDiscount() {
+  const { likedItems, toggleLike } = useContext(WishContext);
+
+  function handleLike(_id) {
+    const token = localStorage.getItem("token");
+    if (!token?.trim()) {
+      navigate("/login");
+      return;
+    }
+
+    const currentlyLiked = likedItems.includes(_id);
+    toggleLike(_id);
+
+    const action = currentlyLiked ? "removed from" : "added to";
+    toast(`Product ${action} wishlist ✨`, {
+      position: "top-center",
+      duration: 2000,
+    });
+  }
   const queryClient = useQueryClient();
   const query = queryClient.getQueryData(["products"]);
   const products = query?.data?.products || [];
@@ -100,13 +121,29 @@ export default function ProductsDiscount() {
                         <AddShoppingCartIcon fontSize="small" />
                       </IconButton>
                       <IconButton
-                        color="primary"
-                        className="bg-white shadow-md hover:bg-gray-100"
-                        onClick={() => {
-                          toast.success(`Added ${item.title} to Wishlist ❤️`);
+                        onClick={() => handleLike(item._id)}
+                        sx={{
+                          backgroundColor: likedItems.includes(item._id)
+                            ? "#00a297"
+                            : "",
+                          color: likedItems.includes(item._id)
+                            ? "#fff"
+                            : "#000",
+                          boxShadow: "0px 2px 8px rgba(0,0,0,0.15)",
+                          "&:hover": {
+                            backgroundColor: likedItems.includes(item._id)
+                              ? "#008c82"
+                              : "",
+                            transform: "scale(1.1)",
+                          },
+                          transition: "all 0.25s ease-in-out",
                         }}
                       >
-                        <FavoriteBorderIcon fontSize="small" />
+                        {likedItems.includes(item._id) ? (
+                          <FavoriteIcon fontSize="small" />
+                        ) : (
+                          <FavoriteBorderIcon fontSize="small" />
+                        )}
                       </IconButton>
                       <ViewButton item={item} />
                     </div>
@@ -122,9 +159,9 @@ export default function ProductsDiscount() {
                     >
                       {item.title}
                     </Typography>
-                    <Typography variant="p" className="text-gray-500 text-xs">
+                    {/* <Typography variant="p" className="text-gray-500 text-xs">
                       {item.desc}
-                    </Typography>
+                    </Typography> */}
                     <Typography variant="p" className="text-lg font-bold  mt-1">
                       {item.price}$
                     </Typography>
