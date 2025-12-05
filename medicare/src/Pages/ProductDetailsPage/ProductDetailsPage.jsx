@@ -219,27 +219,29 @@ function ProductDetailsPage() {
                 {product.visits} people visited this page
               </p>
             </div>
-            <div className="flex gap-5">
+            <div className="flex gap-5 justify-center">
               <button
                 onClick={addToCart}
-                className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
+                className="px-6 lg:px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
               >
-                <FaCartPlus /> <span>Add To Cart</span>
+                <FaCartPlus />{" "}
+                <span className="hidden lg:block">Add To Cart</span>
               </button>
               {!isWished && (
                 <button
                   onClick={addToWish}
-                  className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
+                  className="px-6 lg:px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
                 >
-                  <MdFavorite /> <span>Add To Wishlist</span>
+                  <MdFavorite />{" "}
+                  <span className="hidden lg:block">Add To Wishlist</span>
                 </button>
               )}
 
               <button
-                className="px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
+                className="px-6 lg:px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
                 onClick={() => setOpenModal(true)}
               >
-                <FaShareAlt /> <span>Share</span>
+                <FaShareAlt /> <span className="hidden lg:block">Share</span>
               </button>
             </div>
           </div>
