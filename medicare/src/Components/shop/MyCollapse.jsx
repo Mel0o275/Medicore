@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MyRating from "../MyRating";
+import MyRating from "../MyRating/MyRating";
 import { filterOptions } from "../../Constants/NavPages";
 import useSearchStore from "../../Store/useSearchStore";
 

@@ -1,10 +1,9 @@
-import PageTitle from "../../components/PageTitle";
+import PageTitle from "../../Components/PageTitle";
 import { FaCartPlus, FaShareAlt } from "react-icons/fa";
 import { MdFavorite } from "react-icons/md";
-import MyRating from "../../components/MyRating";
-import MyTab from "../../components/Tab/MyTab";
-import ProductCard from "../../components/Products/ProductCard";
-import ScrollButton from "../../components/ScrollButton";
+import MyTab from "../../Components/Tab/MyTab";
+import ProductCard from "../../Components/Products/ProductCard";
+import ScrollButton from "../../Components/ScrollButton";
 import { features, reviews } from "../../Constants/NavPages";
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useState } from "react";
@@ -17,6 +16,7 @@ import { WishContext } from "../../Context/wishContext";
 import useViewProduct from "../../Hooks/product/useViewProduct";
 import ShopError from "../../Components/shop/ShopError";
 import ShopLoading from "../../Components/shop/ShopLoading";
+import MyRating from "../../Components/MyRating/MyRating";
 
 function ProductDetailsPage() {
   const { id } = useParams();

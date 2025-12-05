@@ -1,9 +1,9 @@
-import PageTitle from "../../components/PageTitle";
-import MyCollapse from "../../components/shop/MyCollapse";
-import MySelectElement from "../../components/shop/MySelectElement";
-import ProductsContainer from "../../components/Products/ProductsContainer";
-import MyPagination from "../../components/MyPagination";
-import ScrollButton from "../../components/ScrollButton";
+import PageTitle from "../../Components/PageTitle";
+import MyCollapse from "../../Components/shop/MyCollapse";
+import MySelectElement from "../../Components/shop/MySelectElement";
+import ProductsContainer from "../../Components/Products/ProductsContainer";
+import MyPagination from "../../Components/MyPagination";
+import ScrollButton from "../../Components/ScrollButton";
 import { shopFilters } from "../../Constants/NavPages";
 import { GiMedicines } from "react-icons/gi";
 import useShopFilters from "../../Hooks/useShopFilters";

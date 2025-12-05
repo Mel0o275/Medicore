@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import MyRating from "../MyRating";
+import MyRating from "../MyRating/MyRating";
 import { MdFavorite } from "react-icons/md";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
