@@ -1,4 +1,4 @@
-import MyAccordion from "../../components/About/MyAccordion";
+import MyAccordion from "../../Components/About/MyAccordion";
 import MyTab from "../../components/Tab/MyTab";
 import PageTitle from "../../components/PageTitle";
 import img7 from "/about-page-07.jpg";
