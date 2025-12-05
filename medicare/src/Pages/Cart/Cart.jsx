@@ -103,6 +103,7 @@ export default function Cart() {
   }
 
   async function removeItem(itemId, myCount) {
+   try {
     const data = await axios.delete(`${API}/cart/${itemId}`,{
       headers : {
         Authorization : token
@@ -112,6 +113,9 @@ export default function Cart() {
     console.log(cartItems);
     setCartItems(prev => prev.filter(item => item.product_id !== itemId));
     setCount(count-myCount)
+   } catch (err) {
+    console.log(err);
+   }
   }
 
   useEffect(() => {
