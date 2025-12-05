@@ -41,8 +41,12 @@ import {
 import { Link } from "react-router-dom";
 import useAuthStore from "../../Store/useAuthStore.js";
 
-import {CartContext} from "../../Context/cartContext.jsx"
+// <<<<<<< HEAD
+import { CartContext } from "../../Context/cartContext.jsx";
+// =======
+
 import { WishContext } from "../../Context/wishContext.jsx";
+// >>>>>>> main
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -74,13 +78,20 @@ export default function Navbar(props) {
 
   //Mai
 
+
+// =======
   const {count : count} = React.useContext(CartContext);
   const {count : Wishcount} = React.useContext(WishContext);
+  
+// >>>>>>> main
   console.log(count);
   console.log(Wishcount);
 
+
+// =======
   React.useEffect(() => {count})
   React.useEffect(() => {Wishcount})
+// >>>>>>> main
 
   //
 
@@ -103,13 +114,16 @@ export default function Navbar(props) {
   const [openDrawer, setOpenDrawer] = useState(false);
   const user = useAuthStore((state) => state.user);
 
+  const role = user?.data?.role;
+  
+
   const toggleDrawer = (newOpen) => () => {
     setOpenDrawer(newOpen);
   };
 
   return (
     <HideOnScroll {...props}>
-      <AppBar sx={{ position: "sticky", zIndex:"1201" }}>
+      <AppBar sx={{ position: "sticky", zIndex: "1201" }}>
         <Grid
           container
           spacing={2}
@@ -185,7 +199,8 @@ export default function Navbar(props) {
                         ))}
                       </Menu>
                     </Box>
-                  ) : (
+                  ) : ele === "Dashboard" && role !== "admin" ? null : (
+                   
                     <Button
                       sx={{ color: "black", fontWeight: "600" }}
                       component={Link}
