@@ -15,15 +15,14 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 420,
-  maxWidth: "90vw",
   bgcolor: "background.paper",
-  borderRadius: "16px",
-  boxShadow: "0 20px 60px rgba(0, 0, 0, 0.2)",
-  p: 0,
-  overflow: "hidden",
-  background: "linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)",
-  border: "1px solid rgba(255, 255, 255, 0.8)",
+  boxShadow: 24,
+  borderRadius: "12px",
+  width: "90%", // phones
+  maxWidth: "480px", // tablets
+
+  maxHeight: "90vh",
+  overflowY: "auto",
 };
 
 const BackdropStyle = {
@@ -56,11 +55,10 @@ export default function ViewUser({ open, handleClose, userId }) {
   };
 
   return (
-    <Modal 
-      open={open} 
+    <Modal
+      open={open}
       onClose={handleClose}
-     
-       BackdropProps={{
+      BackdropProps={{
         style: { backgroundColor: `${theme.primaryColor}` },
       }}
       sx={{
@@ -71,7 +69,9 @@ export default function ViewUser({ open, handleClose, userId }) {
         {/* Header with Gradient Background */}
         <Box
           sx={{
-            background: user ? getRoleColor(user.role) : "linear-gradient(45deg, #667eea, #764ba2)",
+            background: user
+              ? getRoleColor(user.role)
+              : "linear-gradient(45deg, #667eea, #764ba2)",
             p: 3,
             position: "relative",
             color: "white",
@@ -94,8 +94,23 @@ export default function ViewUser({ open, handleClose, userId }) {
           </IconButton>
 
           {isLoading ? (
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-              <Avatar sx={{ width: 80, height: 80 }} />
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+                flexDirection: { xs: "column", sm: "row" },
+                textAlign: { xs: "center", sm: "left" },
+              }}
+            >
+              <Avatar
+                sx={{
+                  width: { xs: 60, sm: 80 },
+                  height: { xs: 60, sm: 80 },
+                  border: "3px solid rgba(255, 255, 255, 0.3)",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                }}
+              />
               <Box>
                 <Typography variant="h6" fontWeight="600">
                   Loading...
@@ -103,13 +118,21 @@ export default function ViewUser({ open, handleClose, userId }) {
               </Box>
             </Box>
           ) : (
-            <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+                flexDirection: { xs: "column", sm: "row" },
+                textAlign: { xs: "center", sm: "left" },
+              }}
+            >
               <Avatar
                 src={user?.profilePic || ""}
                 alt={user?.firstName}
                 sx={{
-                  width: 80,
-                  height: 80,
+                  width: { xs: 60, sm: 80 },
+                  height: { xs: 60, sm: 80 },
                   border: "3px solid rgba(255, 255, 255, 0.3)",
                   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
                 }}
@@ -118,8 +141,8 @@ export default function ViewUser({ open, handleClose, userId }) {
                 <Typography variant="h5" fontWeight="700" sx={{ mb: 0.5 }}>
                   {user?.firstName} {user?.secondName}
                 </Typography>
-                <Typography 
-                  sx={{ 
+                <Typography
+                  sx={{
                     opacity: 0.9,
                     fontSize: "0.9rem",
                     fontWeight: 500,
@@ -137,11 +160,11 @@ export default function ViewUser({ open, handleClose, userId }) {
           {isLoading ? (
             <ViewButtonLoader />
           ) : isError ? (
-            <Box 
-              sx={{ 
-                textAlign: "center", 
+            <Box
+              sx={{
+                textAlign: "center",
                 py: 4,
-                color: "error.main"
+                color: "error.main",
               }}
             >
               <Typography variant="h6" color="error" sx={{ mb: 1 }}>
@@ -157,30 +180,34 @@ export default function ViewUser({ open, handleClose, userId }) {
               <Box
                 sx={{
                   display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
+                  gridTemplateColumns: {
+                    xs: "1fr",
+                    sm: "1fr 1fr",
+                  },
+
                   gap: 3,
                   width: "100%",
                   textAlign: "left",
                 }}
               >
                 <Box>
-                  <Typography 
-                    variant="caption" 
+                  <Typography
+                    variant="caption"
                     color="text.secondary"
-                    sx={{ 
+                    sx={{
                       fontWeight: 600,
                       textTransform: "uppercase",
                       fontSize: "0.75rem",
-                      letterSpacing: "0.5px"
+                      letterSpacing: "0.5px",
                     }}
                   >
                     Email
                   </Typography>
-                  <Typography 
-                    variant="body1" 
-                    sx={{ 
+                  <Typography
+                    variant="body1"
+                    sx={{
                       fontWeight: 500,
-                      mt: 0.5
+                      mt: 0.5,
                     }}
                   >
                     {user?.email || "N/A"}
@@ -188,23 +215,23 @@ export default function ViewUser({ open, handleClose, userId }) {
                 </Box>
 
                 <Box>
-                  <Typography 
-                    variant="caption" 
+                  <Typography
+                    variant="caption"
                     color="text.secondary"
-                    sx={{ 
+                    sx={{
                       fontWeight: 600,
                       textTransform: "uppercase",
                       fontSize: "0.75rem",
-                      letterSpacing: "0.5px"
+                      letterSpacing: "0.5px",
                     }}
                   >
                     Phone
                   </Typography>
-                  <Typography 
-                    variant="body1" 
-                    sx={{ 
+                  <Typography
+                    variant="body1"
+                    sx={{
                       fontWeight: 500,
-                      mt: 0.5
+                      mt: 0.5,
                     }}
                   >
                     {user?.phoneNumber || "N/A"}
@@ -212,24 +239,27 @@ export default function ViewUser({ open, handleClose, userId }) {
                 </Box>
 
                 <Box>
-                  <Typography 
-                    variant="caption" 
+                  <Typography
+                    variant="caption"
                     color="text.secondary"
-                    sx={{ 
+                    sx={{
                       fontWeight: 600,
                       textTransform: "uppercase",
                       fontSize: "0.75rem",
-                      letterSpacing: "0.5px"
+                      letterSpacing: "0.5px",
                     }}
                   >
                     Gender
                   </Typography>
-                  <Typography 
-                    variant="body1" 
-                    sx={{ 
+                  <Typography
+                    variant="body1"
+                    sx={{
                       fontWeight: 500,
                       mt: 0.5,
-                      color: user?.gender?.toLowerCase() === "male" ? "primary.main" : "secondary.main"
+                      color:
+                        user?.gender?.toLowerCase() === "male"
+                          ? "primary.main"
+                          : "secondary.main",
                     }}
                   >
                     {user?.gender || "N/A"}
@@ -237,23 +267,23 @@ export default function ViewUser({ open, handleClose, userId }) {
                 </Box>
 
                 <Box>
-                  <Typography 
-                    variant="caption" 
+                  <Typography
+                    variant="caption"
                     color="text.secondary"
-                    sx={{ 
+                    sx={{
                       fontWeight: 600,
                       textTransform: "uppercase",
                       fontSize: "0.75rem",
-                      letterSpacing: "0.5px"
+                      letterSpacing: "0.5px",
                     }}
                   >
                     Date of Birth
                   </Typography>
-                  <Typography 
-                    variant="body1" 
-                    sx={{ 
+                  <Typography
+                    variant="body1"
+                    sx={{
                       fontWeight: 500,
-                      mt: 0.5
+                      mt: 0.5,
                     }}
                   >
                     {formatDate(user?.dateOfBirth)}
@@ -265,18 +295,18 @@ export default function ViewUser({ open, handleClose, userId }) {
 
               {/* Footer */}
               <Box sx={{ textAlign: "center" }}>
-                <Typography 
-                  variant="body2" 
+                <Typography
+                  variant="body2"
                   color="text.secondary"
                   sx={{ mb: 1 }}
                 >
                   Member since
                 </Typography>
-                <Typography 
-                  variant="body1" 
-                  sx={{ 
+                <Typography
+                  variant="body1"
+                  sx={{
                     fontWeight: 600,
-                    color: "primary.main"
+                    color: "primary.main",
                   }}
                 >
                   {formatDate(user?.createdAt)}

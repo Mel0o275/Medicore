@@ -49,12 +49,12 @@ const menuItems = [
     key: "users",
     path: "/DashBoard/Users",
   },
-  {
-    text: "Settings",
-    icon: <SettingsIcon />,
-    key: "settings",
-    path: "/DashBoard/Settings",
-  },
+  // {
+  //   text: "Settings",
+  //   icon: <SettingsIcon />,
+  //   key: "settings",
+  //   path: "/DashBoard/Settings",
+  // },
 ];
 
 export function DashboardDrawer() {

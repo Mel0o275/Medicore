@@ -34,8 +34,17 @@ const UsersDash = () => {
   const { data: users = [], isLoading, isError } = useUsers(page, limit);
 
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [selectedUserId, setSelectedUserId] = React.useState(null);
+
+  const handleOpen = (id) => {
+    setSelectedUserId(id);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedUserId(null);
+  };
 
   const excludedKeys = [
     "_id",
@@ -216,7 +225,7 @@ const UsersDash = () => {
                         <IconButton
                           color="info"
                           size="small"
-                          onClick={handleOpen}
+                          onClick={() => handleOpen(user._id)}
                         >
                           <ViewIcon />
                         </IconButton>
@@ -225,7 +234,7 @@ const UsersDash = () => {
                         <ViewUser
                           open={open}
                           handleClose={handleClose}
-                          userId={user._id}
+                          userId={selectedUserId}
                         />
                       )}
                     </Box>
