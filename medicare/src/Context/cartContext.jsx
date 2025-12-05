@@ -14,6 +14,12 @@ export default function CartProvider({ children }) {
     const [cartItems, setCartItems] = useState([]);
 
     async function getUserCart() {
+        if (!token) {
+            console.log("User not logged in — Skip request");
+            setCartItems([]);
+            setCount(0);
+            return; 
+        }
         try {
             const { data } = await axios.get(`${API}/cart`, {
                 headers: {
