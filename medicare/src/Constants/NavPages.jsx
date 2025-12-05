@@ -58,7 +58,6 @@ const categories = [
 const elementsItems = [
   "about",
   "contact",
-  "Blog",
   "Feedback",
   "delivery",
   "Questions",
@@ -69,8 +68,8 @@ const navItems = [
   "Home",
   "Shop",
   "bestseller",
-  "Sales",
   "Elements",
+  "Dashboard"
 ];
 
 const shapes = {

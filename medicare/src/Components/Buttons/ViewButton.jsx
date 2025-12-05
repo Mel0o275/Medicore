@@ -14,6 +14,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 /* -------------------------- Components --------------------------- */
 import ViewButtonLoader from "../Loades/ViewButtonLoader";
 import ProductViewDialog from "../Dialogs/ProductViewDialog";
+import { Link } from "react-router-dom";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -43,14 +44,19 @@ export default function ViewButton({ item }) {
         className="bg-white shadow-md hover:bg-gray-100"
         onClick={handleClickOpen}
       >
+        <Link to={`/shop/productdetails/${item._id}`}>
         <VisibilityIcon fontSize="small" />
+        </Link>
       </IconButton>
 
-      <ProductViewDialog
+
+
+
+      {/* <ProductViewDialog
         item={item}
         open={open}
         handleClose={() => setOpen(false)}
-      />
+      /> */}
     </>
   );
 }

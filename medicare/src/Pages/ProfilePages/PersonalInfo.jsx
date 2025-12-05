@@ -267,7 +267,7 @@ function PersonalInfo() {
               <div className="sm:col-span-3">
                 <label
                   htmlFor="first-name"
-                  className="block text-sm/6 font-medium text-white"
+                  className="block text-sm/6 font-medium"
                 >
                   First name
                 </label>
@@ -309,7 +309,7 @@ function PersonalInfo() {
               <div className="sm:col-span-3">
                 <label
                   htmlFor="second-name"
-                  className="block text-sm/6 font-medium text-white"
+                  className="block text-sm/6 font-medium "
                 >
                   Second name
                 </label>
@@ -351,7 +351,7 @@ function PersonalInfo() {
               <div className="sm:col-span-4">
                 <label
                   htmlFor="email"
-                  className="block text-sm/6 font-medium text-white"
+                  className="block text-sm/6 font-medium "
                 >
                   Email address
                 </label>
@@ -393,7 +393,7 @@ function PersonalInfo() {
               <div className="sm:col-span-2 sm:col-start-1">
                 <label
                   htmlFor="phoneNumber"
-                  className="block text-sm/6 font-medium text-white"
+                  className="block text-sm/6 font-medium "
                 >
                   phoneNumber number
                 </label>
@@ -435,7 +435,7 @@ function PersonalInfo() {
               <div className="sm:col-span-2">
                 <label
                   htmlFor="dateOfBirth"
-                  className="block text-sm/6 font-medium text-white"
+                  className="block text-sm/6 font-medium "
                 >
                   Date of birth
                 </label>
@@ -484,7 +484,7 @@ function PersonalInfo() {
               <div className="sm:col-span-2">
                 <label
                   htmlFor="gender"
-                  className="block text-sm/6 font-medium text-white"
+                  className="block text-sm/6 font-medium "
                 >
                   Gender
                 </label>

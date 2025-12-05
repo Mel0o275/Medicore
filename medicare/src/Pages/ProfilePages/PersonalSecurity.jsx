@@ -123,7 +123,7 @@ function PersonalSecurity() {
               <div className="sm:col-span-3">
                 <label
                   htmlFor="password"
-                  className="block text-sm/6 font-medium text-white"
+                  className="block text-sm/6 font-medium "
                 >
                   New Password
                 </label>
@@ -154,7 +154,7 @@ function PersonalSecurity() {
               <div className="sm:col-span-3">
                 <label
                   htmlFor="confirmPassword"
-                  className="block text-sm/6 font-medium text-white"
+                  className="block text-sm/6 font-medium "
                 >
                   Confirm New Password
                 </label>
@@ -257,7 +257,7 @@ function PersonalSecurity() {
                     onClick={handleCancel}
                     type="button"
                     sx={{
-                      color: "white",
+                      
                       borderColor: "gray.500",
                       "&:hover": {
                         borderColor: "gray.300",
