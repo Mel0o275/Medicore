@@ -42,7 +42,7 @@ function MyComment({ review, userId }) {
             <h1 className="font-semibold text-gray-700">
               {review?.userId?.firstName + " " + review?.userId?.secondName}
             </h1>
-            <div className="flex justify-between items-center gap-20">
+            <div className="flex justify-between items-center gap-2 flex-wrap">
               <h3 className="text-sm text-gray-400">
                 {new Date(review?.updatedAt).toLocaleString()}
               </h3>
@@ -73,7 +73,7 @@ function MyComment({ review, userId }) {
           </div>
         )}
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-2 flex-wrap">
         <Typography variant="h5" className="text-[#00a297] leading-relaxed">
           {review?.title}
         </Typography>
