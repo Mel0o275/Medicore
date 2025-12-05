@@ -44,7 +44,7 @@ const ContactUs = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 5 }}>
       <Box sx={{ textAlign: 'center', mb: 5 }}>
-        <Typography variant="caption" color="text.secondary">Home / Contact Us</Typography>
+        <PageTitle title="Contact Us" />
         <Typography variant="h3" component="h1" fontWeight="bold">Contact Us</Typography>
       </Box>
 
