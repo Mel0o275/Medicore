@@ -21,7 +21,7 @@ import "swiper/css/navigation";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation";
-import ProductCard from "../../components/Products/ProductCard";
+import ProductCard from "../../Components/Products/ProductCard";
 
 const PRIMARY_COLOR = "#00a297";
 

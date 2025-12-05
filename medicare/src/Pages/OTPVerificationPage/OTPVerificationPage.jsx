@@ -1,4 +1,4 @@
-import OTPVerification from "../../components/OTPVerification/OTPVerification";
+import OTPVerification from "../../Components/OTPVerification/OTPVerification";
 
 const OTPVerificationPage = () => {
   return <OTPVerification />;
