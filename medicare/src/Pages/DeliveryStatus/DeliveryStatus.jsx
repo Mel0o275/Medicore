@@ -40,7 +40,7 @@ export default function DeliveryStatus() {
 
   const fetchOrders = () => {
     axios
-      .get(`${API}/orders/user`, config)  
+      .get(`${API}/orders/my-orders`, config)  
       .then((res) => {
         setOrders(res.data.orders);
       })
