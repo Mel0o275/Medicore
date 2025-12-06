@@ -49,7 +49,6 @@ const SignUpForm = () => {
           gender: data.gender,
           password: data.password,
         },
-        credentials: "include",
       });
 
       // Navigate to login only when the response status is 200 or 201
