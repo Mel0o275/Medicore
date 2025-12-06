@@ -26,7 +26,7 @@ const getStatusProps = (status) => {
     case "Order is on the way":
       return { color: "#328ad3ff", Icon: AccessTimeFilledIcon };
     default:
-      return { color: "#3e4244ff", Icon: PendingIcon }; 
+      return { color: "#3e4244ff", Icon: PendingIcon };
   }
 };
 
@@ -35,12 +35,12 @@ export default function DeliveryStatus() {
   const token = localStorage.getItem("token");
 
   const config = {
-    headers: { Authorization: `Bearer ${token}` }, 
+    headers: { Authorization: `Bearer ${token}` },
   };
 
   const fetchOrders = () => {
     axios
-      .get(`${API}/orders`, config)
+      .get(`${API}/orders/user`, config)  
       .then((res) => {
         setOrders(res.data.orders);
       })
@@ -84,14 +84,14 @@ export default function DeliveryStatus() {
 
       <Stack spacing={3}>
         {orders.map((order) => {
-          const statusProps = getStatusProps(order.status);
-          const StatusIcon = statusProps.Icon;
+          const { color, Icon } = getStatusProps(order.status);
 
           return (
             <Card key={order._id} sx={{ borderRadius: 2, boxShadow: 2 }}>
               <CardContent>
                 <Grid container spacing={2} alignItems="center">
-
+                  
+                  {/* Product Info */}
                   <Grid item xs={8}>
                     <Stack direction="row" spacing={2} alignItems="center">
                       <Avatar
@@ -121,22 +121,23 @@ export default function DeliveryStatus() {
                     </Stack>
                   </Grid>
 
+                  {/* Status + Date */}
                   <Grid item xs={4}>
                     <Stack spacing={1}>
-
+                      
                       <Box
                         sx={{
                           display: "flex",
                           alignItems: "center",
-                          color: statusProps.color,
-                          background: statusProps.color + "10",
+                          color,
+                          background: color + "10",
                           px: 1,
                           py: 0.5,
                           borderRadius: "6px",
                           width: "fit-content",
                         }}
                       >
-                        <StatusIcon fontSize="small" sx={{ mr: 0.5 }} />
+                        <Icon fontSize="small" sx={{ mr: 0.5 }} />
                         <Typography fontWeight="bold">{order.status}</Typography>
                       </Box>
 
