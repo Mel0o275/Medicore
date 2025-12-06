@@ -42,7 +42,7 @@ export default function DeliveryStatus() {
     axios
       .get(`${API}/orders/my-orders`, config)  
       .then((res) => {
-        setOrders(res.data.orders);
+        setOrders(res.data);
       })
       .catch((err) => console.log("Error fetching orders:", err));
   };
