@@ -202,25 +202,7 @@ function PersonalNotifications() {
           </Button>
         </Box>
 
-        {/* Clear All Button */}
-        <Box sx={{ mb: 2, display: "flex", justifyContent: "flex-end" }}>
-          <Button
-            variant="outlined"
-            startIcon={<ClearAllIcon />}
-            onClick={handleClearAll}
-            sx={{
-              color: "#6b7280",
-              borderColor: "#6b7280",
-              "&:hover": {
-                backgroundColor: "#374151",
-                borderColor: "#9ca3af",
-                color: "white"
-              }
-            }}
-          >
-            Clear All Notifications
-          </Button>
-        </Box>
+      
 
         <Box
           className="space-y-4"
