@@ -19,7 +19,7 @@ const {data : user} = useUser(userId);
           margin: "0 auto 16px",
           border: `3px solid ${theme.palette.primary.main}`,
         }}
-        src="/static/images/avatar/1.jpg"
+        src={user?.profilePic}
         alt="Admin Avatar"
       >
         A
