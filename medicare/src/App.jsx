@@ -90,7 +90,7 @@ function App() {
         <NavbarSecondary />
         <NavbarPrimary />
         <ThemeSwitcher />
-        <div className="">
+        <div className="" style={{minHeight:"100vh"}}>
           <QueryClientProvider client={query}>
             <Toaster
               position="top-right"
