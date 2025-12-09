@@ -55,13 +55,7 @@ const categories = [
   },
 ];
 
-const elementsItems = [
-  "about",
-  "contact",
-  "Feedback",
-  "delivery",
-  "Questions",
-];
+const elementsItems = ["about", "contact", "Feedback", "delivery", "Questions"];
 
 const navItems = [
   "All Categories",
@@ -69,7 +63,7 @@ const navItems = [
   "Shop",
   "bestseller",
   "Elements",
-  "Dashboard"
+  "Dashboard",
 ];
 
 const shapes = {
@@ -492,6 +486,35 @@ const profileList = [
   { name: "Themes", icon: <ColorLensIcon /> },
   { name: "Logout", icon: <LogoutIcon /> },
 ];
+
+const developers = [
+  {
+    gender: "female",
+    name: "Mai Bakery",
+    url: "https://www.linkedin.com/in/mai-bakery-4281aa293?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+  },
+  {
+    gender: "female",
+    name: "Malak Hassan",
+    url: "https://www.linkedin.com/in/malak-hassan-9819562b3?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+  },
+  {
+    gender: "male",
+    name: "Youssef Saleh",
+    url: "http://www.linkedin.com/in/youssef-ashraf-4b4a03267",
+  },
+  {
+    gender: "female",
+    name: "Rahma Magdy",
+    url: "https://www.linkedin.com/in/rahma-magdy",
+  },
+  {
+    gender: "female",
+    name: "Jolie Nixon",
+    url: "http://www.linkedin.com/in/jolie-nixon",
+  },
+];
+
 export {
   categories,
   elementsItems,
@@ -511,4 +534,5 @@ export {
   shopFilters,
   filterOptions,
   filterKeys,
+  developers,
 };
