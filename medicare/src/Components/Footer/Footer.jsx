@@ -9,10 +9,13 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 
+import { developers } from "../../Constants/NavPages";
+import { Typography } from "@mui/material";
+
 export default function Footer() {
   return (
-    <Box bgcolor="primary.main" sx={{color:"black"}}>
-      <Container >
+    <Box bgcolor="primary.main" sx={{ color: "black" }}>
+      <Container>
         <Grid container spacing={2} sx={{ padding: "2rem" }}>
           {/* ----------- Company / Pharmacy Info ----------- */}
           <Grid
@@ -114,7 +117,6 @@ export default function Footer() {
                       bgcolor: "black",
                       fontSize: { md: "0.75rem", xs: "1rem", sm: "0.75rem" },
                     }}
-                  
                   >
                     Subscribe
                   </Button>
@@ -124,7 +126,14 @@ export default function Footer() {
           </Grid>
 
           {/* ----------- Bottom Footer ----------- */}
-          <Grid size={12} container spacing={2}>
+          <Grid
+            size={12}
+            container
+            spacing={2}
+            sx={{
+              justifyContent: "center",
+            }}
+          >
             <Grid
               size={{ md: 6, xs: 12 }}
               container
@@ -151,7 +160,7 @@ export default function Footer() {
             </Grid>
 
             <Grid
-              size={{ md: 3, xs: 12, sm: 6 }}
+              size={{ md: 6, xs: 12, sm: 6 }}
               container
               spacing={2}
               sx={{ justifyContent: "center", alignItems: "center" }}
@@ -160,18 +169,54 @@ export default function Footer() {
             </Grid>
 
             <Grid
-              size={{ md: 3, xs: 12, sm: 6 }}
               container
-              spacing={2}
-              sx={{ justifyContent: "center", alignItems: "center" }}
+              spacing={3}
+              sx={{
+                justifyContent: "center",
+                alignItems: "center",
+                mt: 2,
+              }}
             >
-              {[1, 2, 3, 4, 5, 6].map((num) => (
-                <Grid item size={2} key={num}>
-                  <img
-                    src={`/public/images/payment-${num}.svg`}
-                    alt={`Payment ${num}`}
-                    style={{ width: "100%", height: "auto" }}
-                  />
+              {developers.map((engineer) => (
+                <Grid
+                  item
+                  size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
+                  key={engineer.url}
+                >
+                  <Box
+                    sx={{
+                      p: 3,
+                      borderRadius: 2,
+                      textAlign: "center",
+                      bgcolor: engineer.gender == "female" ? "#d669b4":"#0067a2",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                      transition: "0.3s",
+                      "&:hover": {
+                        boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
+                        transform: "translateY(-4px)",
+                      },
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{ fontWeight: 600, mb: 1, color: "#333" }}
+                    >
+                      {engineer.name}
+                    </Typography>
+
+                    <a
+                      href={engineer.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: "#1976d2",
+                        textDecoration: "none",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Visit Profile →
+                    </a>
+                  </Box>
                 </Grid>
               ))}
             </Grid>
