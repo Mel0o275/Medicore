@@ -168,58 +168,95 @@ export default function Footer() {
               <h1>Medicore</h1>
             </Grid>
 
-            <Grid
-              container
-              spacing={3}
-              sx={{
-                justifyContent: "center",
-                alignItems: "center",
-                mt: 2,
-              }}
-            >
-              {developers.map((engineer) => (
-                <Grid
-                  item
-                  size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
-                  key={engineer.url}
-                >
+            <Box sx={{ textAlign: "center", my: 2 }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 700,
+                  mb: 2,
+                  color: "#333",
+                  fontSize: { xs: "1rem", sm: "1.2rem" },
+                }}
+              >
+                Meet Our Team
+              </Typography>
+
+              <Grid
+                container
+                spacing={3}
+                sx={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mt: 1,
+                }}
+              >
+                {developers.map((engineer) => (
                   <Box
+                    key={engineer.url}
+                    component="a"
+                    href={engineer.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     sx={{
-                      p: 3,
-                      borderRadius: 2,
+                      position: "relative",
+                      display: "inline-block",
                       textAlign: "center",
-                      bgcolor: engineer.gender == "female" ? "#d669b4":"#0067a2",
-                      boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-                      transition: "0.3s",
+                      textDecoration: "none",
+                      transition: "transform 0.3s",
                       "&:hover": {
-                        boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
                         transform: "translateY(-4px)",
                       },
                     }}
                   >
+                    {/* Avatar */}
+                    <Box
+                      component="img"
+                      src={engineer?.avatar}
+                      alt={engineer.name}
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: "50%",
+                        border:
+                          engineer.gender === "female"
+                            ? "2px solid #d669b4"
+                            : "2px solid #0067a2",
+                        transition: "all 0.3s",
+                      }}
+                    />
+
+                    {/* Name tooltip */}
                     <Typography
-                      variant="h6"
-                      sx={{ fontWeight: 600, mb: 1, color: "#333" }}
+                      sx={{
+                        position: "absolute",
+                        bottom: -20,
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        fontSize: "0.65rem",
+                        color:
+                          engineer.gender === "female" ? "#d669b4" : "#0067a2",
+                        fontWeight: 600,
+                        opacity: 0,
+                        transition: "opacity 0.3s",
+                        pointerEvents: "none",
+                      }}
+                      className="engineer-name"
                     >
                       {engineer.name}
                     </Typography>
 
-                    <a
-                      href={engineer.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        color: "#1976d2",
-                        textDecoration: "none",
-                        fontWeight: "bold",
+                    {/* Hover effect to show name */}
+                    <Box
+                      sx={{
+                        "&:hover .engineer-name": {
+                          opacity: 1,
+                        },
                       }}
-                    >
-                      Visit Profile →
-                    </a>
+                    />
                   </Box>
-                </Grid>
-              ))}
-            </Grid>
+                ))}
+              </Grid>
+            </Box>
           </Grid>
         </Grid>
       </Container>

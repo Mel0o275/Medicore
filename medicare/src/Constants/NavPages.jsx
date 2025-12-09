@@ -492,26 +492,31 @@ const developers = [
     gender: "female",
     name: "Mai Bakery",
     url: "https://www.linkedin.com/in/mai-bakery-4281aa293?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    avatar: "/95.png",
   },
   {
     gender: "female",
     name: "Malak Hassan",
     url: "https://www.linkedin.com/in/malak-hassan-9819562b3?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    avatar: "/60.png",
   },
   {
     gender: "male",
     name: "Youssef Saleh",
     url: "http://www.linkedin.com/in/youssef-ashraf-4b4a03267",
+    avatar: "/32.png",
   },
   {
     gender: "female",
     name: "Rahma Magdy",
     url: "https://www.linkedin.com/in/rahma-magdy",
+    avatar: "/95.png",
   },
   {
     gender: "female",
     name: "Jolie Nixon",
     url: "http://www.linkedin.com/in/jolie-nixon",
+    avatar: "/93.png",
   },
 ];
 
