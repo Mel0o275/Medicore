@@ -123,7 +123,7 @@ const Dashboard = () => {
       </Drawer>
 
       <Main open={open}>
-        <DrawerHeader />
+        {/* <DrawerHeader /> */}
 
         <Outlet />
       </Main>

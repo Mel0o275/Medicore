@@ -1,8 +1,15 @@
 /* --------------------------- MUI ---------------------------- */
 import { Box, Typography, Avatar, useTheme } from "@mui/material";
 
+import useAuthStore from "../../Store/useAuthStore";
+import { useUser } from "../../Hooks/reactUser/useUserSelected";
 export function AdminSlider() {
   const theme = useTheme();
+  const userId = useAuthStore((state) => state.user)?.data?.id; 
+
+
+const {data : user} = useUser(userId); 
+
   return (
     <Box sx={{ p: 2, textAlign: "center" }}>
       <Avatar
@@ -12,13 +19,13 @@ export function AdminSlider() {
           margin: "0 auto 16px",
           border: `3px solid ${theme.palette.primary.main}`,
         }}
-        src="/static/images/avatar/1.jpg"
+        src={user?.profilePic}
         alt="Admin Avatar"
       >
         A
       </Avatar>
       <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
-        John Doe
+        {user?.firstName} {user?.secondName} 
       </Typography>
       <Typography variant="body2" color="text.secondary">
         Administrator

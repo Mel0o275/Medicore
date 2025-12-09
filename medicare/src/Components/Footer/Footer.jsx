@@ -11,7 +11,7 @@ import Container from "@mui/material/Container";
 
 export default function Footer() {
   return (
-    <Box bgcolor="primary.main">
+    <Box bgcolor="primary.main" sx={{color:"black"}}>
       <Container >
         <Grid container spacing={2} sx={{ padding: "2rem" }}>
           {/* ----------- Company / Pharmacy Info ----------- */}

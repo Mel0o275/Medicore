@@ -39,7 +39,7 @@ import MainDash from "./Pages/DashBoardPages/MainDash";
 import InventoryDash from "./Pages/DashBoardPages/InventoryDash";
 import OrdersDash from "./Pages/DashBoardPages/OrdersDash";
 import UsersDash from "./Pages/DashBoardPages/UsersDash.jsx";
-import SettingsDash from "./Pages/DashBoardPages/SettingsDash";
+// import SettingsDash from "./Pages/DashBoardPages/SettingsDash";
 // ======
 // import LoadingScreenAnimation from "./Pages/LoadingScreenAnimation/LoadingScreenAnimation";
 import CategoryPage from "./Pages/Shop/CategoryPage.jsx";
@@ -90,7 +90,7 @@ function App() {
         <NavbarSecondary />
         <NavbarPrimary />
         <ThemeSwitcher />
-        <div className="">
+        <div className="" style={{minHeight:"100vh"}}>
           <QueryClientProvider client={query}>
             <Toaster
               position="top-right"
@@ -133,7 +133,7 @@ function App() {
                 <Route path="Inventory" element={<InventoryDash />} />
                 <Route path="Orders" element={<OrdersDash />} />
                 <Route path="Users" element={<UsersDash />} />
-                <Route path="Settings" element={<SettingsDash />} />
+                {/* <Route path="Settings" element={<SettingsDash />} /> */}
               </Route>
               <Route path="/questions" element={<Questions />} />
               <Route path="/shop" element={<Shop />} />
