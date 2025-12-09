@@ -10,7 +10,7 @@ import { Box, AppBar, Toolbar, Typography, InputBase } from "@mui/material";
 
 import { styled, alpha } from "@mui/material/styles";
 import useSearchStore from "../../Store/useSearchStore";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -86,7 +86,8 @@ export default function NavbarSecondary() {
             <Typography
               variant="h6"
               noWrap
-              component="a"
+              component={Link}
+              to={"/Home"}
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -94,6 +95,7 @@ export default function NavbarSecondary() {
                 fontWeight: 700,
                 letterSpacing: ".3rem",
                 color: "inherit",
+                cursor: "pointer",
                 textDecoration: "none",
               }}
             >
