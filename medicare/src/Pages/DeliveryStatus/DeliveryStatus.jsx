@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+/*import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Container,
@@ -91,7 +91,7 @@ export default function DeliveryStatus() {
               <CardContent>
                 <Grid container spacing={2} alignItems="center">
                   
-                  {/* Product Info */}
+                  
                   <Grid item xs={8}>
                     <Stack direction="row" spacing={2} alignItems="center">
                       <Avatar
@@ -121,7 +121,7 @@ export default function DeliveryStatus() {
                     </Stack>
                   </Grid>
 
-                  {/* Status + Date */}
+                  
                   <Grid item xs={4}>
                     <Stack spacing={1}>
                       
@@ -186,3 +186,4 @@ export default function DeliveryStatus() {
     </Container>
   );
 }
+  */
