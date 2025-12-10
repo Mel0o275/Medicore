@@ -26,43 +26,62 @@ const getStatusProps = (status) => {
     case "Order is on the way":
       return { color: "#328ad3ff", Icon: AccessTimeFilledIcon };
     default:
-      return { color: "#3e4244ff", Icon: PendingIcon }; 
+      return { color: "#3e4244ff", Icon: PendingIcon };
   }
 };
 
 export default function DeliveryStatus() {
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const token = localStorage.getItem("token");
 
   const config = {
-    headers: { Authorization: `Bearer ${token}` }, 
+    headers: { Authorization: Bearer ${token} },
   };
 
-  const fetchOrders = () => {
-    axios
-      .get(`${API}/orders`, config)
-      .then((res) => {
-        setOrders(res.data.orders);
-      })
-      .catch((err) => console.log("Error fetching orders:", err));
+  const fetchOrders = async () => {
+    if (!token) {
+      console.log("No token found!");
+      setError("Please login to view your orders.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await axios.get(${API}/orders/my-orders, config);
+      console.log("Data from API:", res.data); // تيست للتأكد من البيانات
+      setOrders(res.data.orders || []);
+    } catch (err) {
+      console.error("Error fetching orders:", err.response?.data || err.message);
+      setError(err.response?.data?.message || "Error fetching orders");
+      setOrders([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchOrders();
   }, []);
 
-  const updateOrderStatus = (id, status) => {
-    axios
-      .put(`${API}/orders/${id}`, { status }, config)
-      .then(() => fetchOrders())
-      .catch((err) => console.log(err));
+  const updateOrderStatus = async (id, status) => {
+    try {
+      await axios.put(${API}/orders/${id}, { status }, config);
+      fetchOrders();
+    } catch (err) {
+      console.error(err.response?.data || err.message);
+    }
   };
 
-  const deleteOrder = (id) => {
-    axios
-      .delete(`${API}/orders/${id}`, config)
-      .then(() => fetchOrders())
-      .catch((err) => console.log(err));
+  const deleteOrder = async (id) => {
+    try {
+      await axios.delete(${API}/orders/${id}, config);
+      fetchOrders();
+    } catch (err) {
+      console.error(err.response?.data || err.message);
+    }
   };
 
   const calculateDeliveryDate = (createdAt) => {
@@ -70,6 +89,10 @@ export default function DeliveryStatus() {
     orderDate.setDate(orderDate.getDate() + 3);
     return orderDate.toLocaleDateString();
   };
+
+  if (loading) return <Typography>Loading orders...</Typography>;
+  if (error) return <Typography color="error">{error}</Typography>;
+  if (orders.length === 0) return <Typography>No orders yet.</Typography>;
 
   return (
     <Container maxWidth="md" sx={{ py: 5 }}>
@@ -84,14 +107,14 @@ export default function DeliveryStatus() {
 
       <Stack spacing={3}>
         {orders.map((order) => {
-          const statusProps = getStatusProps(order.status);
-          const StatusIcon = statusProps.Icon;
+          const { color, Icon } = getStatusProps(order.status);
 
           return (
             <Card key={order._id} sx={{ borderRadius: 2, boxShadow: 2 }}>
               <CardContent>
                 <Grid container spacing={2} alignItems="center">
 
+                  {/* Product Info */}
                   <Grid item xs={8}>
                     <Stack direction="row" spacing={2} alignItems="center">
                       <Avatar
@@ -99,21 +122,18 @@ export default function DeliveryStatus() {
                         sx={{
                           width: 56,
                           height: 56,
-                          border: `2px solid ${PRIMARY_COLOR}`,
+                          border: 2px solid ${PRIMARY_COLOR},
                         }}
                       />
-
                       <Box sx={{ textAlign: "left" }}>
                         <Typography variant="subtitle1" fontWeight="bold">
                           Order #{order._id.slice(-6)}
                         </Typography>
-
                         {order.items?.map((p, i) => (
                           <Typography key={i} variant="body2">
                             {p.productName} — x{p.quantity}
                           </Typography>
                         ))}
-
                         <Typography variant="body2" fontWeight="bold">
                           Total: {order.totalPrice} EGP
                         </Typography>
@@ -121,22 +141,22 @@ export default function DeliveryStatus() {
                     </Stack>
                   </Grid>
 
+                  {/* Status + Date */}
                   <Grid item xs={4}>
                     <Stack spacing={1}>
-
                       <Box
                         sx={{
                           display: "flex",
                           alignItems: "center",
-                          color: statusProps.color,
-                          background: statusProps.color + "10",
+                          color,
+                          background: color + "10",
                           px: 1,
                           py: 0.5,
                           borderRadius: "6px",
                           width: "fit-content",
                         }}
                       >
-                        <StatusIcon fontSize="small" sx={{ mr: 0.5 }} />
+                        <Icon fontSize="small" sx={{ mr: 0.5 }} />
                         <Typography fontWeight="bold">{order.status}</Typography>
                       </Box>
 
@@ -163,7 +183,6 @@ export default function DeliveryStatus() {
                             Delivered
                           </Button>
                         )}
-
                         <Button
                           size="small"
                           color="error"
