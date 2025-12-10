@@ -70,7 +70,7 @@ const ThemeSwitcher = () => {
   return (
     <Box
       sx={{
-        p: 4,
+        p: 1,
         textAlign: "center",
         transition: "0.4s ease",
         position: "fixed",
@@ -82,7 +82,6 @@ const ThemeSwitcher = () => {
         control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
         onClick={toggleMode}
       />
-     
     </Box>
   );
 };

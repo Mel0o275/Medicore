@@ -9,10 +9,13 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 
+import { developers } from "../../Constants/NavPages";
+import { Typography } from "@mui/material";
+
 export default function Footer() {
   return (
-    <Box bgcolor="primary.main">
-      <Container >
+    <Box bgcolor="primary.main" sx={{ color: "black" }}>
+      <Container>
         <Grid container spacing={2} sx={{ padding: "2rem" }}>
           {/* ----------- Company / Pharmacy Info ----------- */}
           <Grid
@@ -114,7 +117,6 @@ export default function Footer() {
                       bgcolor: "black",
                       fontSize: { md: "0.75rem", xs: "1rem", sm: "0.75rem" },
                     }}
-                  
                   >
                     Subscribe
                   </Button>
@@ -124,7 +126,14 @@ export default function Footer() {
           </Grid>
 
           {/* ----------- Bottom Footer ----------- */}
-          <Grid size={12} container spacing={2}>
+          <Grid
+            size={12}
+            container
+            spacing={2}
+            sx={{
+              justifyContent: "center",
+            }}
+          >
             <Grid
               size={{ md: 6, xs: 12 }}
               container
@@ -151,7 +160,7 @@ export default function Footer() {
             </Grid>
 
             <Grid
-              size={{ md: 3, xs: 12, sm: 6 }}
+              size={{ md: 6, xs: 12, sm: 6 }}
               container
               spacing={2}
               sx={{ justifyContent: "center", alignItems: "center" }}
@@ -159,22 +168,95 @@ export default function Footer() {
               <h1>Medicore</h1>
             </Grid>
 
-            <Grid
-              size={{ md: 3, xs: 12, sm: 6 }}
-              container
-              spacing={2}
-              sx={{ justifyContent: "center", alignItems: "center" }}
-            >
-              {[1, 2, 3, 4, 5, 6].map((num) => (
-                <Grid item size={2} key={num}>
-                  <img
-                    src={`/public/images/payment-${num}.svg`}
-                    alt={`Payment ${num}`}
-                    style={{ width: "100%", height: "auto" }}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+            <Box sx={{ textAlign: "center", my: 2 }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 700,
+                  mb: 2,
+                  color: "#333",
+                  fontSize: { xs: "1rem", sm: "1.2rem" },
+                }}
+              >
+                Meet Our Team
+              </Typography>
+
+              <Grid
+                container
+                spacing={3}
+                sx={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mt: 1,
+                }}
+              >
+                {developers.map((engineer) => (
+                  <Box
+                    key={engineer.url}
+                    component="a"
+                    href={engineer.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      position: "relative",
+                      display: "inline-block",
+                      textAlign: "center",
+                      textDecoration: "none",
+                      transition: "transform 0.3s",
+                      "&:hover": {
+                        transform: "translateY(-4px)",
+                      },
+                    }}
+                  >
+                    {/* Avatar */}
+                    <Box
+                      component="img"
+                      src={engineer?.avatar}
+                      alt={engineer.name}
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: "50%",
+                        border:
+                          engineer.gender === "female"
+                            ? "2px solid #d669b4"
+                            : "2px solid #0067a2",
+                        transition: "all 0.3s",
+                      }}
+                    />
+
+                    {/* Name tooltip */}
+                    <Typography
+                      sx={{
+                        position: "absolute",
+                        bottom: -20,
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        fontSize: "0.65rem",
+                        color:
+                          engineer.gender === "female" ? "#d669b4" : "#0067a2",
+                        fontWeight: 600,
+                        opacity: 0,
+                        transition: "opacity 0.3s",
+                        pointerEvents: "none",
+                      }}
+                      className="engineer-name"
+                    >
+                      {engineer.name}
+                    </Typography>
+
+                    {/* Hover effect to show name */}
+                    <Box
+                      sx={{
+                        "&:hover .engineer-name": {
+                          opacity: 1,
+                        },
+                      }}
+                    />
+                  </Box>
+                ))}
+              </Grid>
+            </Box>
           </Grid>
         </Grid>
       </Container>
