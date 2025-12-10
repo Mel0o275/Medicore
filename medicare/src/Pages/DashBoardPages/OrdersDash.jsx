@@ -35,7 +35,7 @@ const OrdersDash = () => {
     axios
       .get(`${API}/orders`, config)
       .then((res) => {
-        setOrders(res.data); 
+        setOrders(res.data.orders || res.data || []);
       })
       .catch((err) => console.log("Error loading orders:", err));
   }, []);
