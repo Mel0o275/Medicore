@@ -9,7 +9,7 @@ import Home from "./Pages/Home/Home";
 import About from "./Pages/About/About";
 import BestSeller from "./Pages/BestSeller/BestSeller.jsx";
 import ContactUs from "./Pages/ContactUs/ContactUs.jsx";
-import DeliveryStatus from "./Pages/DeliveryStatus/DeliveryStatus.jsx";
+// import DeliveryStatus from "./Pages/DeliveryStatus/DeliveryStatus.jsx";
 import Cart from "./Pages/Cart/Cart";
 import FeedbackPage from "./Pages/FeedBackPage/FeedbackPage";
 import SignInPage from "./Pages/SignInPage/SignInPage";
@@ -90,7 +90,7 @@ function App() {
         <NavbarSecondary />
         <NavbarPrimary />
         <ThemeSwitcher />
-        <div className="" style={{minHeight:"100vh"}}>
+        <div className="" style={{ minHeight: "100vh" }}>
           <QueryClientProvider client={query}>
             <Toaster
               position="top-right"
@@ -108,7 +108,7 @@ function App() {
               <Route path="/bestseller" element={<BestSeller />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/contact" element={<ContactUs />} />
-              <Route path="/delivery" element={<DeliveryStatus />} />
+              {/*<Route path="/delivery" element={<DeliveryStatus />} />*/}
               <Route path="/feedback" element={<FeedbackPage />} />
               <Route path="/login" element={<SignInPage />} />
               <Route
