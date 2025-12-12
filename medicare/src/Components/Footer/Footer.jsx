@@ -206,6 +206,10 @@ export default function Footer() {
                       "&:hover": {
                         transform: "translateY(-4px)",
                       },
+                      "&:hover .name-cloud": {
+                        opacity: 1,
+                        transform: "translate(-50%, -10px)",
+                      },
                     }}
                   >
                     {/* Avatar */}
@@ -221,38 +225,49 @@ export default function Footer() {
                           engineer.gender === "female"
                             ? "2px solid #d669b4"
                             : "2px solid #0067a2",
-                        transition: "all 0.3s",
                       }}
                     />
 
-                    {/* Name tooltip */}
-                    <Typography
+                    {/* Cloud tooltip */}
+                    <Box
+                      className="name-cloud"
                       sx={{
                         position: "absolute",
-                        bottom: -20,
+                        bottom: "100%",
                         left: "50%",
-                        transform: "translateX(-50%)",
-                        fontSize: "0.65rem",
+                        transform: "translate(-50%, 0)",
+                        background: "#fff",
+                        padding: "4px 10px",
+                        borderRadius: "12px",
+                        whiteSpace: "nowrap",
+                        fontSize: "0.7rem",
+                        fontWeight: 600,
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                         color:
                           engineer.gender === "female" ? "#d669b4" : "#0067a2",
-                        fontWeight: 600,
                         opacity: 0,
-                        transition: "opacity 0.3s",
                         pointerEvents: "none",
+                        transition: "opacity 0.3s, transform 0.3s",
                       }}
-                      className="engineer-name"
                     >
-                      {engineer.name}
-                    </Typography>
+                      {engineer.name.split(" ")[0]}
 
-                    {/* Hover effect to show name */}
-                    <Box
-                      sx={{
-                        "&:hover .engineer-name": {
-                          opacity: 1,
-                        },
-                      }}
-                    />
+                      {/* Small arrow triangle */}
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: "100%",
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: 0,
+                          height: 0,
+
+                          borderLeft: "6px solid transparent",
+                          borderRight: "6px solid transparent",
+                          borderTop: "6px solid white",
+                        }}
+                      />
+                    </Box>
                   </Box>
                 ))}
               </Grid>
