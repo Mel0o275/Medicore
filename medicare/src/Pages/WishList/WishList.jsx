@@ -11,7 +11,7 @@ export default function WishList() {
 
     const API = import.meta.env.VITE_API_URL;
     console.log(API);
-    const { count: Wishcount, setCount: setWishCount } = useContext(WishContext);
+    const { count: Wishcount, getUserWish } = useContext(WishContext);
 
 
     const token = localStorage.getItem("token");
@@ -48,17 +48,15 @@ export default function WishList() {
             await axios.delete(`${API}/wish/${itemId}`, {
                 headers: { Authorization: token }
             });
-            setWishCount(prev => prev - 1);
-            setDelete(true);
+            await getUserWish();
             setWishItems(prev => prev.filter(item => item.product_id !== itemId));
-
         } catch (err) {
             console.error(err);
         }
-        finally {
-            setDelete(false)
-        }
     }
+
+    
+
     const { count: count, setCount: setCount } = useContext(CartContext);
 
     async function addToCart(id) {
@@ -126,14 +124,13 @@ export default function WishList() {
                                 />
                                 <div className="flex-1 min-w-0">
                                     <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-800 truncate">
-                                        {item.title}
-                                    </h3>
+                                        {item.title.split(" ").slice(0, 2).join(" ")}                                    </h3>
                                     <p className="text-xs sm:text-sm text-gray-500 mt-1">
                                         {item.price} EGP
                                     </p>
                                 </div>
                             </div>
-    
+
                             <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-3 w-full sm:w-auto">
                                 <button
                                     onClick={() => addToCart(item.product_id)}

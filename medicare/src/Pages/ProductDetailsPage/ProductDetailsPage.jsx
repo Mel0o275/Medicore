@@ -25,17 +25,14 @@ function ProductDetailsPage() {
   const product = data?.data?.product;
   const relatedProducts = data?.data?.relatedProducts;
   const [openmodal, setOpenModal] = useState(false);
-  const [quantity, setQuantity] = useState(1);
-  const [isWished, setIsWished] = useState(false);
 
   const { count: count, setCount: setCount } = useContext(CartContext);
-  const { count: Wishcount, setCount: setWishCount } = useContext(WishContext);
+  const { likedItems, toggleLike } = useContext(WishContext);
+  const isLiked = likedItems.includes(product?._id || id);
 
   const API = import.meta.env.VITE_API_URL;
   console.log(API);
-  const [disabled, setdisabled] = useState(false);
   const token = localStorage.getItem("token");
-
   const navigate = useNavigate();
 
   // async function handleInc() {
@@ -116,40 +113,29 @@ function ProductDetailsPage() {
     } catch (err) {
       console.log(err);
     }
-  }
-
-  async function addToWish() {
+  }  
+  const handleToggleWish = async () => {
     if (!token?.trim()) {
       navigate("/login");
       return;
     }
 
-    try {
-      const { data } = await axios.post(
-        `${API}/wish`,
-        {
-          _id: id,
-        },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      console.log(1);
-      console.log(data);
-      if (data.products.length != -1) {
-        toast(`Product added to wishlist succsessfully✨`, {
-          position: "top-center",
-          duration: 3000,
-        });
-        setWishCount(Wishcount + 1);
-        setIsWished(true);
+    const productId = product?._id || id;
+    if (!productId) return;
+
+    const wasLiked = likedItems.includes(productId);
+    await toggleLike(productId);
+    
+    toast(
+      wasLiked 
+        ? "Product removed from wishlist" 
+        : "Product added to wishlist successfully✨",
+      {
+        position: "top-center",
+        duration: 3000,
       }
-    } catch (err) {
-      console.log(err);
-    }
-  }
+    );
+  };
 
   if (isLoading) return <ShopLoading />;
   if (isError) return <ShopError error={error} />;
@@ -227,15 +213,17 @@ function ProductDetailsPage() {
                 <FaCartPlus />{" "}
                 <span className="hidden lg:block">Add To Cart</span>
               </button>
-              {!isWished && (
-                <button
-                  onClick={addToWish}
-                  className="px-6 lg:px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
-                >
-                  <MdFavorite />{" "}
-                  <span className="hidden lg:block">Add To Wishlist</span>
-                </button>
-              )}
+              <button
+          onClick={handleToggleWish}
+          className={`px-6 lg:px-3 py-1.5 md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row
+            ${isLiked ? 'bg-red-500 text-white' : 'bg-[#00a297] text-white'}`}
+        >
+                <MdFavorite />{" "}
+                <span className="hidden lg:block">
+                  {isLiked ? "In Wishlist" : "Add To Wishlist"}
+                </span>
+              </button>
+
 
               <button
                 className="px-6 lg:px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
