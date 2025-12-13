@@ -1,6 +1,6 @@
 //Checkout
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -32,40 +32,51 @@ export default function Checkout() {
     const API = import.meta.env.VITE_API_URL;
     console.log(API);
     const token = localStorage.getItem("token");
-    const { count, setCount, getUserCart, setCartItems } = useContext(CartContext);
+    const { count, setCount, getUserCart, setCartItems, cartItems } = useContext(CartContext);
     const [loading, setLoading] = useState(false);
+    console.log(count);
+
+    useEffect(() => {
+        console.log("User Cart:", cartItems);
+    }, [cartItems]);
 
 
     async function onsubmit(values) {
         try {
             setLoading(true);
-    
+
             let { data } = await axios.post(`${API}/checkout`, values, {
                 headers: { Authorization: token }
             });
-    
+
             if (data.status === "success") {
-    
+
                 let res = await axios.delete(`${API}/cart`, {
                     headers: { Authorization: token }
                 });
-    
+
                 setCartItems([]);
                 setCount(0);
                 await getUserCart();
-    
+
                 window.location.href = "/Home";
             }
-    
+
         } catch (err) {
             console.log("Checkout Error:", err.response?.data || err);
-    
+
         } finally {
             setLoading(false);
         }
     }
-    
 
+    const subtotal = cartItems.reduce(
+        (total, item) => total + item.price * (item.count || 1),
+        0
+    );
+
+    const discount = 0.05;
+    const totalAfterDiscount = subtotal - subtotal * discount;
 
 
     return (
@@ -166,40 +177,67 @@ export default function Checkout() {
                         <h2 className="text-lg font-semibold text-gray-800 mb-3">
                             Order Summary
                         </h2>
+
                         <div className="divide-y text-base">
-                            <div className="flex justify-between py-1">
-                                <span className="text-gray-700">Panadol (x2)</span>
-                                <span className="text-gray-800 font-medium">
-                                    100 EGP
-                                </span>
-                            </div>
+
+                            {/* Cart Items */}
+                            {cartItems.length > 0 ? (
+                                cartItems.map(item => (
+                                    <div
+                                        key={item.product_id}
+                                        className="flex justify-between py-1"
+                                    >
+                                        <span className="text-gray-700">
+                                        {item.title.split(" ").slice(0, 2).join(" ")} (x{item.count})
+                                        </span>
+                                        <span className="text-gray-800 font-medium">
+                                            {item.price * item.count} EGP
+                                        </span>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-center text-gray-500 py-4">
+                                    Your cart is empty
+                                </p>
+                            )}
+
+                            {/* Subtotal */}
                             <div className="flex justify-between py-1">
                                 <span className="text-gray-700">Subtotal</span>
                                 <span className="text-gray-800 font-medium">
-                                    100 EGP
+                                    {subtotal} EGP
                                 </span>
                             </div>
-                            <div className="flex justify-between py-1">
-                                <span className="text-gray-700">Discount</span>
-                                <span className="text-red-500 font-medium">
-                                    -10 EGP
-                                </span>
-                            </div>
+
+                            {/* Discount */}
+                            {discount > 0 && (
+                                <div className="flex justify-between py-1">
+                                    <span className="text-gray-700">Discount</span>
+                                    <span className="text-red-500 font-medium">
+                                        -{discount} EGP
+                                    </span>
+                                </div>
+                            )}
+
+                            {/* Total */}
                             <div className="flex justify-between py-2 font-semibold text-[#00A297] text-xl">
                                 <span>Total</span>
-                                <span>90 EGP</span>
+                                <span>{totalAfterDiscount} EGP</span>
                             </div>
                         </div>
 
                         <button
-                            disabled={loading}
-                            className={`cursor-pointer w-full mt-4 px-6 py-2.5 rounded-xl text-white text-lg font-medium shadow-md transition 
-        ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-[#00A297] hover:bg-[#00887F]"}`}
+                            disabled={loading || cartItems.length === 0}
+                            className={`cursor-pointer w-full mt-4 px-6 py-2.5 rounded-xl text-white text-lg font-medium shadow-md transition
+                                ${loading || cartItems.length === 0
+                                    ? "bg-gray-400 cursor-not-allowed"
+                                    : "bg-[#00A297] hover:bg-[#00887F]"
+                                }`}
                         >
                             {loading ? "Processing..." : "Place Order"}
                         </button>
-
                     </div>
+
                 </div>
             </div>
         </form>
