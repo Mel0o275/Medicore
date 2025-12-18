@@ -78,7 +78,26 @@ export const signUpSchema = z
       .string()
       .refine((val) => typeof val === "string" && val.trim() !== "", {
         message: "Please provide your date of birth.",
-      }),
+      })
+      .refine(
+        (val) => {
+          if (typeof val !== "string" || val.trim() === "") {
+            return false;
+          }
+          const birthDate = new Date(val);
+          const today = new Date();
+          let age = today.getFullYear() - birthDate.getFullYear();
+          const monthDiff = today.getMonth() - birthDate.getMonth();
+          if (
+            monthDiff < 0 ||
+            (monthDiff === 0 && today.getDate() < birthDate.getDate())
+          ) {
+            age--;
+          }
+          return age >= 18;
+        },
+        { message: "You must be at least 18 years old." }
+      ),
 
     password: z
       .string()
