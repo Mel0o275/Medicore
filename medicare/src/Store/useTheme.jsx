@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import {
   primaryColor,
   primaryText,
@@ -6,27 +7,38 @@ import {
   secondaryText,
 } from "../Constants/Colors";
 
-const useTheme = create((set, get) => ({
-  mode: "Light",
-  primaryColor: primaryColor,
-  secondaryColor: secondaryColor,
-  primaryText: primaryText,
-  secondaryText: secondaryText,
+const useTheme = create(
+  persist(
+    (set, get) => ({
+      mode: "light",
+      primaryColor,
+      secondaryColor,
+      primaryText,
+      secondaryText,
+      saveMode: "#0F172A",
 
-  toggleColors: (pc, sc, pt, st) => {
-    set({
-      primaryColor: pc,
-      secondaryColor: sc,
-      primaryText: pt,
-      secondaryText: st,
-    });
-  },
+      toggleColors: (pc, sc, pt, st) => {
+        set({
+          primaryColor: pc,
+          secondaryColor: sc,
+          primaryText: pt,
+          secondaryText: st,
+        });
+      },
 
-  toggleMode: () => {
-    const { mode } = get();
+      makeSaveMode: (val) => {
+        set({ saveMode: val });
+      },
 
-    set({ mode: mode == "Light" ? "Dark" : "Light" });
-  },
-}));
+      toggleMode: () => {
+        const { mode } = get();
+        set({ mode: mode === "light" ? "dark" : "light" });
+      },
+    }),
+    {
+      name: "theme-settings", //  ده اللي هيتخزن في localStorage
+    }
+  )
+);
 
 export default useTheme;

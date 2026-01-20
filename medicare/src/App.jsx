@@ -56,16 +56,23 @@ import { Toaster } from "react-hot-toast";
 /* -------------------------- Theme --------------------------- */
 import { buildMuiTheme } from "./Themes/Theme";
 import useTheme from "./Store/useTheme";
-import { ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import ProtectedRoute from "./Components/protectedRoute/ProtectedRoute.jsx";
 import axios from "axios";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import AiSwitcher from "./Components/AiSwitcher.jsx";
+import OTPPersonalSecurity from "./Pages/ProfilePages/OTPPersonalSecurity.jsx";
+import InterfaceDash from "./Pages/DashBoardPages/InterfaceDash.jsx";
 const muiTheme = buildMuiTheme();
 
 function App() {
   let query = new QueryClient();
   const { mode } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
+
+  const themeState = useTheme();
+
+  const theme = React.useMemo(() => buildMuiTheme(themeState), [themeState]);
 
   console.log("API URL:", import.meta.env.VITE_API_URL);
 
@@ -80,7 +87,8 @@ function App() {
   console.log("testing hesham");
 
   return (
-    <ThemeProvider theme={muiTheme}>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />{" "}
       <Router>
         <LoadingScreenAnimation
           isVisible={isLoading}
@@ -92,6 +100,8 @@ function App() {
         <ThemeSwitcher />
         <div className="" style={{ minHeight: "100vh" }}>
           <QueryClientProvider client={query}>
+            <AiSwitcher />
+
             <Toaster
               position="top-right"
               reverseOrder={false}
@@ -119,7 +129,7 @@ function App() {
                 <Route path="/Profile" element={<Profile />}>
                   <Route index element={<PersonalInfo />} />
                   <Route path="Info" element={<PersonalInfo />} />
-                  <Route path="Security" element={<PersonalSecurity />} />
+                  <Route path="Security" element={<OTPPersonalSecurity />} />
                   <Route path="Themes" element={<PersonalTheme />} />
                   <Route
                     path="Notifications"
@@ -129,7 +139,9 @@ function App() {
                 <Route path="/checkout" element={<Checkout />} />
               </Route>
               <Route path="/DashBoard" element={<Dashboard />}>
-                <Route index element={<MainDash />} />
+                <Route path="MainDash" element={<MainDash />} />
+                <Route index element={<InterfaceDash />} />
+
                 <Route path="Inventory" element={<InventoryDash />} />
                 <Route path="Orders" element={<OrdersDash />} />
                 <Route path="Users" element={<UsersDash />} />

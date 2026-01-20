@@ -31,6 +31,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   categories,
   elementsItems,
+  menuItems,
   navItems,
 } from "../../Constants/NavPages.jsx";
 /* -------------------------- React-router --------------------------- */
@@ -163,7 +164,62 @@ export default function DrawerNav({ open, toggleDrawer }) {
                   ))}
                 </AccordionDetails>
               </Accordion>
-            ) : (
+            ) : ele === "Dashboard" ? (
+
+               <Accordion
+                sx={{
+                  boxShadow: "none",
+                  "&:before": { display: "none" },
+                  "&.Mui-expanded": { margin: 0 },
+                }}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon sx={{ fontSize: 20 }} />}
+                  aria-controls="panel2-content"
+                  id="panel2-header"
+                  sx={{
+                    px: 2,
+                    minHeight: 48,
+                    "&.Mui-expanded": { minHeight: 48 },
+                    "& .MuiAccordionSummary-content": { my: 1 },
+                  }}
+                >
+                  <Typography sx={{ fontWeight: 500, fontSize: "0.9rem" }}>
+                    {ele}
+                  </Typography>
+                </AccordionSummary>
+                
+
+                <AccordionDetails sx={{ p: 0, bgcolor: "grey.50" }}>
+                  {menuItems.map((item, index) => (
+                    <Button
+                      key={index}
+                      component={Link}
+                      to={item.path}
+                      onClick={toggleDrawer}
+                      sx={{
+                        color: "text.primary",
+                        fontWeight: 400,
+                        width: "100%",
+                        justifyContent: "flex-start",
+                        px: 3,
+                        py: 1.5,
+                        fontSize: "0.85rem",
+                        borderBottom: index < menuItems.length - 1 ? 1 : 0,
+                        borderColor: "grey.200",
+                        borderRadius: 0,
+                        "&:hover": {
+                          bgcolor: "grey.100",
+                        },
+                      }}
+                    >
+                      {item.text}
+                    </Button>
+                  ))}
+                </AccordionDetails>
+              </Accordion>
+             
+            ):(
               <Button
                 component={Link}
                 to={`/${ele}`}

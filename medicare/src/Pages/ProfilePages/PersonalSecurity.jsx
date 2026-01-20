@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {  } from "react";
 /* --------------------------- "Icons" -------------------------------- */
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -17,7 +17,7 @@ import { useUserMutations } from "../../Hooks/reactUser/useUserMutations";
 import ViewButtonLoader from "../../Components/Loades/ViewButtonLoader";
 import toast from "react-hot-toast";
 
-function PersonalSecurity() {
+function PersonalSecurity({setSuccess}) {
   const {
     register,
     handleSubmit,
@@ -46,15 +46,13 @@ function PersonalSecurity() {
           reset();
           console.log("Successfull changing password:");
           toast.success(`User changed password successfully`);
+          setSuccess();
         },
         onError: (error) => {
           const serverMessage =
+            error?.response?.data?.message || "User doessn't changed password";
 
-          error?.response?.data?.message || "User doessn't changed password";
-
-        toast.error(serverMessage);
-        
-
+          toast.error(serverMessage);
         },
       }
     );
@@ -102,7 +100,8 @@ function PersonalSecurity() {
   return (
     <>
       {changePassMutation.isPending && <ViewButtonLoader />}
-      <Grid size={{ xs: 12, md: 9 }}>
+      <>
+
         <Box sx={{ pb: 2 }}>
           <Typography variant="h4" className="text-white font-semibold">
             Security Settings
@@ -257,7 +256,6 @@ function PersonalSecurity() {
                     onClick={handleCancel}
                     type="button"
                     sx={{
-                      
                       borderColor: "gray.500",
                       "&:hover": {
                         borderColor: "gray.300",
@@ -299,7 +297,7 @@ function PersonalSecurity() {
             </form>
           </div>
         </Box>
-      </Grid>
+      </>
     </>
   );
 }

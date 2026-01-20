@@ -519,8 +519,33 @@ const developers = [
     avatar: "/93.png",
   },
 ];
+const menuItems = [
+  {
+    text: "Dashboard",
+    key: "Dashboard",
+    path: "/DashBoard",
+  },
+  { text: "Main Dash", key: "MainDash", path: "/DashBoard/MainDash" },
+  {
+    text: "Inventory Management",
+    key: "Inventory",
+    path: "/DashBoard/Inventory",
+  },
+  {
+    text: "Orders and Purchases",
+    key: "Orders",
+    path: "/DashBoard/Orders",
+  },
+  {
+    text: "Users",
+    key: "Users",
+    path: "/DashBoard/Users",
+  },
+];
+
 
 export {
+  menuItems,
   categories,
   elementsItems,
   navItems,

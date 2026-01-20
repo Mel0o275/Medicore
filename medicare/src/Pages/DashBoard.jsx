@@ -56,7 +56,7 @@ const Dashboard = () => {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
 
-      <AppBar
+      {/* <AppBar
         position="fixed"
         sx={{
           zIndex: theme.zIndex.drawer + 1,
@@ -103,7 +103,7 @@ const Dashboard = () => {
             Admin Panel
           </Typography>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
 
       <Drawer
         sx={{
