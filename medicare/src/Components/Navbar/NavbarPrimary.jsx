@@ -35,7 +35,7 @@ import {
   categories,
   elementsItems,
   navItems,
-  menuItems
+  menuItems,
 } from "../../Constants/NavPages.jsx";
 /* -------------------------- React-router-dom --------------------------- */
 
@@ -122,8 +122,6 @@ export default function NavbarPrimary(props) {
   const handleDashClose = () => {
     setDashAnchor(null);
   };
-
-  
 
   const [openDrawer, setOpenDrawer] = useState(false);
   const user = useAuthStore((state) => state.user);
@@ -228,7 +226,7 @@ export default function NavbarPrimary(props) {
                         open={Boolean(dashAnchor)}
                         onClose={handleDashClose}
                       >
-                        {menuItems.map((item , i) => (
+                        {menuItems.map((item, i) => (
                           <MenuItem key={i} onClick={handleDashClose}>
                             <Button
                               sx={{ color: "black", fontWeight: "600" }}

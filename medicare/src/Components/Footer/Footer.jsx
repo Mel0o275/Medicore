@@ -11,8 +11,10 @@ import Container from "@mui/material/Container";
 
 import { developers } from "../../Constants/NavPages";
 import { Typography } from "@mui/material";
+import useTheme from "../../Store/useTheme";
 
 export default function Footer() {
+  const theme = useTheme();
   return (
     <Box bgcolor="primary.main" sx={{ color: "black" }}>
       <Container>
@@ -32,6 +34,7 @@ export default function Footer() {
                 justifyContent: "space-between",
                 alignItems: { xs: "center", sm: "flex-start" },
                 height: { md: "100%" },
+                color: theme.primaryText,
               }}
             >
               <h5>Pharmacy Info</h5>
@@ -52,6 +55,7 @@ export default function Footer() {
                 justifyContent: "space-between",
                 alignItems: { xs: "center", sm: "flex-start" },
                 height: { md: "100%" },
+                color: theme.primaryText,
               }}
             >
               <h5>Quick Links</h5>
@@ -70,6 +74,7 @@ export default function Footer() {
                 justifyContent: "space-between",
                 alignItems: { xs: "center", sm: "flex-start" },
                 height: { md: "100%" },
+                color: theme.primaryText,
               }}
             >
               <h5>Information</h5>
@@ -90,6 +95,7 @@ export default function Footer() {
                 alignItems: { xs: "center", sm: "flex-start" },
                 height: { md: "100%" },
                 textAlign: { xs: "center", sm: "start" },
+                color: theme.primaryText,
               }}
             >
               <h5>Stay Healthy with Us</h5>
@@ -114,7 +120,10 @@ export default function Footer() {
                   <Button
                     variant="contained"
                     sx={{
-                      bgcolor: "black",
+                      backgroundColor:
+                        theme.mode !== "dark"
+                          ? theme.primaryColor
+                          : theme.secondaryText,
                       fontSize: { md: "0.75rem", xs: "1rem", sm: "0.75rem" },
                     }}
                   >
@@ -132,6 +141,7 @@ export default function Footer() {
             spacing={2}
             sx={{
               justifyContent: "center",
+              color: theme.primaryText,
             }}
           >
             <Grid

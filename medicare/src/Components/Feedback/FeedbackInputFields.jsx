@@ -3,6 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import RatingStars from "./RatingStars.jsx";
 import { feedbackSchema } from "./FeedBackSchema.jsx";
+import useTheme from "../../Store/useTheme.jsx";
 
 export default function FeedbackInputFields({
   selectedCategory,
@@ -35,6 +36,8 @@ export default function FeedbackInputFields({
     await onSubmit?.(data);
   };
 
+
+  const theme = useTheme()
   return (
     <form onSubmit={handleSubmit(submit)} className="flex-1">
       {selectedCategory ? (
@@ -47,7 +50,7 @@ export default function FeedbackInputFields({
         </div>
       )}
 
-      <label htmlFor="fullName" className="block text-sm text-gray-600 mb-2">
+      <label htmlFor="fullName" className="block text-sm  mb-2">
         Full Name
       </label>
       <input
@@ -64,7 +67,7 @@ export default function FeedbackInputFields({
         </div>
       )}
 
-      <label htmlFor="email" className="block text-sm text-gray-600 mt-4 mb-2">
+      <label htmlFor="email" className="block text-sm  mt-4 mb-2">
         Email
       </label>
       <input
@@ -81,7 +84,7 @@ export default function FeedbackInputFields({
 
       <label
         htmlFor="product"
-        className="block text-sm text-gray-600 mt-4 mb-2"
+        className="block text-sm  mt-4 mb-2"
       >
         What would you like to give feedback on?
       </label>
@@ -97,7 +100,7 @@ export default function FeedbackInputFields({
         </div>
       )}
 
-      <label className="block text-sm text-gray-600 mt-4 mb-2">
+      <label className="block text-sm  mt-4 mb-2">
         Your Overall Rating
       </label>
       <Controller
@@ -117,7 +120,7 @@ export default function FeedbackInputFields({
         <div className="text-sm text-red-500 mt-1">{errors.rating.message}</div>
       )}
 
-      <label htmlFor="review" className="block text-sm text-gray-600 mt-4 mb-2">
+      <label htmlFor="review" className="block text-sm  mt-4 mb-2">
         Your Feedback
       </label>
       <textarea
@@ -135,9 +138,14 @@ export default function FeedbackInputFields({
 
       <div className="flex items-center space-x-3 mt-4">
         <button
+          style={{
+          color: theme.mode !== "dark" ? theme.primaryColor : theme.primaryText,
+          backgroundColor:
+            theme.mode !== "dark" ? theme.secondaryText : theme.primaryColor,
+        }}
           type="submit"
           disabled={isSubmitting}
-          className="bg-main text-white px-4 py-2 rounded-md shadow hover:bg-main-hover transform hover:-translate-y-0.5 motion-safe:transition-transform motion-safe:duration-150"
+          className=" text-white px-4 py-2 rounded-md shadow  transform hover:-translate-y-0.5 motion-safe:transition-transform motion-safe:duration-150"
         >
           SUBMIT Feedback
         </button>

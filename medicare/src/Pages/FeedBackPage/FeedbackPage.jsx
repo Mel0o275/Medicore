@@ -3,6 +3,7 @@ import toast, { Toaster } from "react-hot-toast";
 import CategoryButtons from "../../Components/Feedback/CategoryButtons.jsx";
 import FeedbackInputFields from "../../Components/Feedback/FeedbackInputFields.jsx";
 import axios from "axios";
+import useTheme from "../../Store/useTheme.jsx";
 export default function FeedbackPage() {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -37,8 +38,14 @@ export default function FeedbackPage() {
     }
   };
 
+  const theme = useTheme();
   return (
-    <div className="max-w-5xl mx-auto p-8">
+    <div
+      className="max-w-5xl mx-auto p-8"
+      style={{
+        color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+      }}
+    >
       <Toaster position="top-right" />
       <h1 className="text-3xl font-extrabold text-center mb-2">
         We'd Love to Hear From You
@@ -51,7 +58,14 @@ export default function FeedbackPage() {
         <CategoryButtons onSelectCategory={handleSelectCategory} />
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6 border border-gray-100">
+      <div
+        className=" rounded-lg shadow p-6 border border-gray-100"
+        style={{
+          color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+          backgroundColor:
+            theme.mode !== "dark" ? theme.primaryColor : theme.secondaryText,
+        }}
+      >
         <div className="flex flex-col md:flex-row md:items-start gap-6">
           <FeedbackInputFields
             selectedCategory={selectedCategory}
