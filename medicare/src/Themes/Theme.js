@@ -2,13 +2,14 @@ import { createTheme } from "@mui/material/styles";
 import useTheme from "../Store/useTheme";
 
 export const buildMuiTheme = () => {
-  const { primaryColor, secondaryColor, primaryText, secondaryText, mode } =
+  const { primaryColor, secondaryColor, primaryText, secondaryText, mode , saveMode } =
     useTheme.getState();
 
   return createTheme({
     palette: {
-      //   mode: mode === "Light" ? "light" : "dark",
-
+      background: {
+        default: mode === "dark" ? saveMode : "#ffffff",
+      },
       primary: { main: primaryColor },
       secondary: { main: secondaryColor },
       text: {
@@ -26,8 +27,7 @@ export const buildMuiTheme = () => {
       ].join(","),
 
       p: {
-      
-        color: primaryColor,
+        color: secondaryText,
       },
 
       // العناوين الكبيرة
@@ -49,7 +49,7 @@ export const buildMuiTheme = () => {
         fontFamily: "MerriweatherVariable",
         fontSize: "2rem",
         fontWeight: 600,
-        color: secondaryText,
+        color: primaryText,
         lineHeight: 1.4,
       },
       h4: {

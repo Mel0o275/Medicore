@@ -35,6 +35,7 @@ import {
   categories,
   elementsItems,
   navItems,
+  menuItems
 } from "../../Constants/NavPages.jsx";
 /* -------------------------- React-router-dom --------------------------- */
 
@@ -72,26 +73,29 @@ HideOnScroll.propTypes = {
    */
   window: PropTypes.func,
 };
-export default function Navbar(props) {
+export default function NavbarPrimary(props) {
   const [categoriesAnchor, setCategoriesAnchor] = useState(null);
   const [elementsAnchor, setElementsAnchor] = useState(null);
+  const [dashAnchor, setDashAnchor] = useState(null);
 
   //Mai
 
+  // =======
+  const { count: count } = React.useContext(CartContext);
+  const { count: Wishcount } = React.useContext(WishContext);
 
-// =======
-  const {count : count} = React.useContext(CartContext);
-  const {count : Wishcount} = React.useContext(WishContext);
-  
-// >>>>>>> main
+  // >>>>>>> main
   console.log(count);
   console.log(Wishcount);
 
-
-// =======
-  React.useEffect(() => {count})
-  React.useEffect(() => {Wishcount})
-// >>>>>>> main
+  // =======
+  React.useEffect(() => {
+    count;
+  });
+  React.useEffect(() => {
+    Wishcount;
+  });
+  // >>>>>>> main
 
   //
 
@@ -111,11 +115,20 @@ export default function Navbar(props) {
     setElementsAnchor(null);
   };
 
+  const handleDashClick = (event) => {
+    setDashAnchor(event.currentTarget);
+  };
+
+  const handleDashClose = () => {
+    setDashAnchor(null);
+  };
+
+  
+
   const [openDrawer, setOpenDrawer] = useState(false);
   const user = useAuthStore((state) => state.user);
 
   const role = user?.data?.role;
-  
 
   const toggleDrawer = (newOpen) => () => {
     setOpenDrawer(newOpen);
@@ -199,8 +212,36 @@ export default function Navbar(props) {
                         ))}
                       </Menu>
                     </Box>
-                  ) : ele === "Dashboard" && role !== "admin" ? null : (
-                   
+                  ) : ele === "Dashboard" && role !== "admin" ? null : ele ===
+                      "Dashboard" && role === "admin" ? (
+                    <Box>
+                      <Button
+                        onClick={handleDashClick}
+                        endIcon={<KeyboardArrowDownIcon />}
+                        sx={{ color: "black", fontWeight: "600" }}
+                      >
+                        {ele}
+                      </Button>
+
+                      <Menu
+                        anchorEl={dashAnchor}
+                        open={Boolean(dashAnchor)}
+                        onClose={handleDashClose}
+                      >
+                        {menuItems.map((item , i) => (
+                          <MenuItem key={i} onClick={handleDashClose}>
+                            <Button
+                              sx={{ color: "black", fontWeight: "600" }}
+                              component={Link}
+                              to={item.path}
+                            >
+                              {item.text}
+                            </Button>
+                          </MenuItem>
+                        ))}
+                      </Menu>
+                    </Box>
+                  ) : (
                     <Button
                       sx={{ color: "black", fontWeight: "600" }}
                       component={Link}
