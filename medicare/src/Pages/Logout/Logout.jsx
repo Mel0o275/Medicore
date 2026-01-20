@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { Box, Typography, Button, Backdrop, Modal } from "@mui/material";
 import useAuthStore from "../../Store/useAuthStore";
 import { useNavigate } from "react-router-dom";
+import useTheme from "../../Store/useTheme";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const {
@@ -71,6 +72,7 @@ function Logout({ open, handleClose }) {
 
     navigate("/login");
   };
+  const theme = useTheme();
 
   return (
     <>
@@ -98,7 +100,7 @@ function Logout({ open, handleClose }) {
                 component="h2"
                 sx={{
                   fontWeight: 600,
-                  color: "text.primary",
+          color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
                   mb: 1,
                 }}
               >
@@ -108,7 +110,7 @@ function Logout({ open, handleClose }) {
                 id="logout-modal-description"
                 sx={{
                   mt: 2,
-                  color: "text.secondary",
+          color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
                   fontSize: "0.95rem",
                   lineHeight: 1.5,
                 }}
@@ -133,7 +135,7 @@ function Logout({ open, handleClose }) {
                   px: 4,
                   py: 1,
                   borderColor: "grey.300",
-                  color: "text.primary",
+          color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
                   "&:hover": {
                     borderColor: "grey.400",
                     backgroundColor: "grey.50",

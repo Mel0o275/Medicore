@@ -25,6 +25,7 @@ import DeleteProfile from "../ProfilePages/DeleteProfile.jsx";
 
 import { profileList } from "../../Constants/NavPages.jsx";
 import { Outlet, useNavigate } from "react-router-dom";
+import useTheme from "../../Store/useTheme.jsx";
 
 function Profile() {
   const navigate = useNavigate();
@@ -42,8 +43,7 @@ function Profile() {
   }
   const handleClose = () => setOpen(false);
 
- 
-
+  const theme = useTheme();
   return (
     <Box sx={{ minHeight: "100vh", p: 2 }}>
       <Container>
@@ -58,20 +58,28 @@ function Profile() {
               open={open}
               handleClose={handleClose}
             ></DeleteProfile>
-
           ) : openLogout ? (
             <Logout open={openLogout} handleClose={handleCloseLogout}></Logout>
-
           ) : (
             <></>
           )}
           <Grid size={12}>
-            <Typography variant="h3">Account settings</Typography>
+            <Typography
+              variant="h3"
+              sx={{
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+              }}
+            >
+              Account settings
+            </Typography>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <Box
               sx={{
-                border: "1px solid #e5e7eb",
+                border: `1px solid ${theme.mode !== "dark" ? theme.primaryText : theme.primaryColor}`,
                 borderRadius: 2,
                 overflow: "hidden",
                 boxShadow:
@@ -94,19 +102,22 @@ function Profile() {
                       borderBottom: {
                         md:
                           i < profileList.length - 1
-                            ? "1px solid #f3f4f6"
+                            ? `1px solid ${theme.mode !== "dark" ? theme.primaryText : theme.primaryColor}`
                             : "none",
                       },
                       borderRight: {
                         xs:
                           i < profileList.length - 1
-                            ? "1px solid #f3f4f6"
+                            ? `1px solid ${theme.mode !== "dark" ? theme.primaryText : theme.primaryColor}`
                             : "none",
                         md: "none",
                       },
                       flex: { xs: "1 1 50%", sm: "1 1 33%", md: "none" },
                       "&:hover": {
-                        backgroundColor: "#f8fafc",
+                        backgroundColor:
+                          theme.mode !== "dark"
+                            ? theme.primaryColor
+                            : theme.secondaryText,
                       },
                       transition: "background-color 0.2s ease-in-out",
                     }}
@@ -132,7 +143,10 @@ function Profile() {
                       <ListItemIcon
                         sx={{
                           minWidth: { xs: 0, md: 40 },
-                          color: "#6b7280",
+                          color:
+                            theme.mode !== "dark"
+                              ? theme.primaryText
+                              : theme.primaryColor,
                           display: { xs: "none", sm: "none", md: "flex" },
                         }}
                       >
@@ -146,7 +160,10 @@ function Profile() {
                           "& .MuiListItemText-primary": {
                             fontSize: { xs: "0.75rem", sm: "0.875rem" },
                             fontWeight: 500,
-                            color: "#374151",
+                            color:
+                              theme.mode !== "dark"
+                                ? theme.primaryText
+                                : theme.primaryColor,
                           },
                         }}
                       />

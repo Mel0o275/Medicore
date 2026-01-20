@@ -6,6 +6,7 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import MyTable from "../ProductDetails/MyTable";
 import ReviewSection from "../ProductDetails/ReviewSection";
+import useTheme from "../../Store/useTheme";
 
 export default function MyTab({ page, reviews = [], productTitle, productId }) {
   const [value, setValue] = React.useState("1");
@@ -17,8 +18,10 @@ export default function MyTab({ page, reviews = [], productTitle, productId }) {
     setValue(newValue);
   };
 
+  const theme = useTheme();
+
   return (
-    <div className="border-[0.1px] border-stone-200 text-stone-500">
+    <div className="border-[0.1px] ">
       <Box sx={{ width: "100%", typography: "body1" }}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -37,10 +40,16 @@ export default function MyTab({ page, reviews = [], productTitle, productId }) {
                 },
 
                 "& .MuiTab-root.Mui-selected": {
-                  color: "#00a297",
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.secondaryText
+                      : theme.primaryColor,
                 },
                 "& .MuiTabs-indicator": {
-                  backgroundColor: "#00a297",
+                  backgroundColor:
+                    theme.mode !== "dark"
+                      ? theme.primaryColor
+                      : theme.primaryColor,
                 },
               }}
             >
@@ -67,7 +76,15 @@ export default function MyTab({ page, reviews = [], productTitle, productId }) {
           {page === "about" && (
             <>
               {" "}
-              <TabPanel value="1">
+              <TabPanel
+                value="1"
+                sx={{
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.secondaryText
+                      : theme.primaryColor,
+                }}
+              >
                 Contrary to popular belief, Lorem Ipsum is not simply random
                 text. It has roots in a piece of classical Latin literature from
                 45 BC, making it over 2000 years old. Richard McClintock, a
@@ -87,7 +104,15 @@ export default function MyTab({ page, reviews = [], productTitle, productId }) {
                 reproduced in their exact original form, accompanied by English
                 versions from the 1914 translation by H. Rackham.
               </TabPanel>
-              <TabPanel value="2">
+              <TabPanel
+                value="2"
+                sx={{
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.secondaryText
+                      : theme.primaryColor,
+                }}
+              >
                 There are many variations of passages of Lorem Ipsum available,
                 but the majority have suffered alteration in some form, by
                 injected humour, or randomised words which don't look even
@@ -102,7 +127,15 @@ export default function MyTab({ page, reviews = [], productTitle, productId }) {
                 from repetition, injected humour, or non-characteristic words
                 etc.
               </TabPanel>
-              <TabPanel value="3">
+              <TabPanel
+                value="3"
+                sx={{
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.secondaryText
+                      : theme.primaryColor,
+                }}
+              >
                 <span className="font-semibold">Lorem Ipsum</span> is simply
                 dummy text of the printing and typesetting industry. Lorem Ipsum
                 has been the industry's standard dummy text ever since the

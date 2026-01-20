@@ -1,19 +1,26 @@
 import { Avatar, Box, Grid, Typography } from "@mui/material";
 import React from "react";
 import Checkbox from "@mui/material/Checkbox";
+import useTheme from "../../Store/useTheme";
 
 export default function Palette({ item, id, checked, onSelect }) {
-
+  const theme = useTheme();
   const handleChange = (event) => {
     if (event.target.checked) {
-      onSelect(); 
-     
+      onSelect();
     }
   };
   return (
     <Grid container spacing={2} sx={{ justifyContent: "center" }}>
       <Grid size={10} sx={{ justifyContent: "center", alignItems: "center" }}>
-        <Typography variant="p" sx={{ fontSize: "1.2rem" }}>
+        <Typography
+          variant="p"
+          sx={{
+            fontSize: "1.2rem",
+            color:
+              theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+          }}
+        >
           {item.name}
         </Typography>
       </Grid>

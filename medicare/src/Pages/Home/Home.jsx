@@ -30,14 +30,12 @@ import ProductsDiscount from "../../Components/ProductsDiscount";
 /* -------------------------- Toast --------------------------- */
 
 import MotionDiv from "../../Animations/HomeAnimation";
-
-
-
+import useTheme from "../../Store/useTheme";
 
 export default function Home() {
   const [index, setIndex] = useState(0);
 
-
+  const theme = useTheme();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -176,6 +174,12 @@ export default function Home() {
           >
             <Grid size={12}>
               <Typography
+                sx={{
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
+                }}
                 variant="h2"
                 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6"
               >
@@ -201,19 +205,33 @@ export default function Home() {
               },
             ].map((item, index) => (
               <Grid key={index} size={{ xs: 12, sm: 4 }}>
-                <div className="bg-white rounded-2xl  p-6 flex flex-col items-center ">
+                <Box
+                  className=" rounded-2xl  p-6 flex flex-col items-center "
+                  sx={{
+                    backgroundColor:
+                      theme.mode !== "dark"
+                        ? theme.primaryColor
+                        : theme.secondaryText,
+                  }}
+                >
                   <img
                     src={item.logo}
                     alt="brand"
                     className="w-20 h-20 mb-4 object-contain"
                   />
                   <Typography
+                    sx={{
+                      color:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,
+                    }}
                     variant="p"
                     className="text-gray-600 text-sm italic leading-relaxed"
                   >
                     "{item.review}"
                   </Typography>
-                </div>
+                </Box>
               </Grid>
             ))}
           </Grid>
@@ -222,9 +240,13 @@ export default function Home() {
 
         <Box sx={{ mt: 10 }}>
           <Typography
+            sx={{
+              color:
+                theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+              marginBottom: "2rem",
+            }}
             variant="h1"
-            className="text-3xl md:text-4xl font-bold text-center mb-10 text-gray-800 "
-            sx={{ marginBottom: "2rem" }}
+            className="text-3xl md:text-4xl font-bold text-center mb-10  "
           >
             Best Selling Products
           </Typography>
@@ -239,7 +261,10 @@ export default function Home() {
             <Grid
               size={{ xs: 12, md: 8 }}
               sx={{
-                backgroundColor: "#f9f9f9",
+                backgroundColor:
+                  theme.mode !== "dark"
+                    ? theme.primaryColor
+                    : theme.secondaryText,
                 borderRadius: 3,
                 overflow: "hidden",
                 boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
@@ -263,13 +288,25 @@ export default function Home() {
                 <div className="absolute inset-0 flex flex-col justify-center items-center text-center bg-black/10 ">
                   <Typography
                     variant="h5"
-                    className="text-white font-bold mb-3"
+                    className=" font-bold mb-3"
+                    sx={{
+                      color:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,
+                    }}
                   >
                     Your Trusted Online Pharmacy
                   </Typography>
                   <Typography
                     variant="body1"
                     className="text-white/90 mb-5 px-3"
+                    sx={{
+                      color:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,
+                    }}
                   >
                     Explore top-quality medicines, health essentials, and
                     wellness products.
@@ -289,7 +326,10 @@ export default function Home() {
             <Grid
               size={{ xs: 12, md: 4 }}
               sx={{
-                backgroundColor: "#f9f9f9",
+                backgroundColor:
+                  theme.mode !== "dark"
+                    ? theme.primaryColor
+                    : theme.secondaryText,
                 borderRadius: 3,
                 overflow: "hidden",
                 boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
@@ -301,7 +341,7 @@ export default function Home() {
                 width: "100%",
               }}
             >
-              <div className="relative w-full h-80 overflow-hidden rounded-xl group shadow-lg flex flex-col justify-center items-center">
+              <Box className="relative w-full h-80 overflow-hidden rounded-xl group shadow-lg flex flex-col justify-center items-center">
                 {/* Image */}
                 <img
                   src={`/images/CMS-banner-05.png`}
@@ -310,16 +350,27 @@ export default function Home() {
                 />
 
                 {/* Overlay Content */}
-                <div className="absolute inset-0 flex flex-col justify-center items-center text-center bg-black/10 ">
-                  <Typography
-                    variant="h5"
-                    className="text-white font-bold mb-3"
-                  >
+                <Box
+                  sx={{
+                    color:
+                      theme.mode !== "dark"
+                        ? theme.primaryText
+                        : theme.primaryColor,
+                  }}
+                  className="absolute inset-0 flex flex-col justify-center items-center text-center  "
+                >
+                  <Typography variant="h5" className=" font-bold mb-3">
                     Health & Beauty Essentials
                   </Typography>
                   <Typography
                     variant="body1"
-                    className="text-white/90 mb-5 px-3"
+                    className=" mb-5 px-3"
+                    sx={{
+                      color:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,
+                    }}
                   >
                     Discover skincare, supplements, and personal care items at
                     great prices.
@@ -331,8 +382,8 @@ export default function Home() {
                   >
                     Explore More
                   </Button>
-                </div>
-              </div>
+                </Box>
+              </Box>
             </Grid>
           </Grid>
         </Box>
@@ -342,8 +393,12 @@ export default function Home() {
         <Box sx={{ mt: 10 }}>
           <Typography
             variant="h1"
-            className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-800  "
-            sx={{ marginBottom: "2rem" }}
+            className="text-3xl md:text-4xl font-bold text-center mb-8   "
+            sx={{
+              marginBottom: "2rem",
+              color:
+                theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+            }}
           >
             Dont Miss our dicounts !
           </Typography>
@@ -360,7 +415,10 @@ export default function Home() {
                   size={{ xs: 12, md: 4 }}
                   key={i}
                   sx={{
-                    backgroundColor: "#f9f9f9",
+                    backgroundColor:
+                      theme.mode !== "dark"
+                        ? theme.primaryColor
+                        : theme.secondaryText,
                     borderRadius: 3,
                     overflow: "hidden",
                     boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
@@ -384,7 +442,13 @@ export default function Home() {
                     <div className="absolute inset-0 flex flex-col justify-center items-center   ">
                       <Typography
                         variant="body1"
-                        className="text-black text-xl font-semibold mb-3 text-center px-3"
+                        className=" text-xl font-semibold mb-3 text-center px-3"
+                        sx={{
+                          color:
+                            theme.mode !== "dark"
+                              ? theme.primaryText
+                              : theme.primaryColor,
+                        }}
                       >
                         {item.text}
                       </Typography>
@@ -408,7 +472,12 @@ export default function Home() {
         <Box sx={{ mt: 8 }}>
           <Typography
             variant="h1"
-            className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-800  "
+            className="text-3xl md:text-4xl font-bold text-center mb-8   "
+            sx={{
+              marginBottom: "2rem",
+              color:
+                theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+            }}
           >
             Trusted by our Customers
           </Typography>
@@ -418,7 +487,10 @@ export default function Home() {
               <Grid size={{ md: 4, xs: 12 }} key={item.id}>
                 <div
                   style={{
-                    background: "#fff",
+                    backgroundColor:
+                      theme.mode !== "dark"
+                        ? theme.primaryColor
+                        : theme.secondaryText,
                     borderRadius: "16px",
                     padding: "20px",
                     textAlign: "center",
@@ -435,15 +507,19 @@ export default function Home() {
                   <Rating value={item.rating} readOnly />
 
                   {/* Review text */}
-                  <p
-                    style={{
+                  <Typography
+                    sx={{
+                      color:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,
                       fontStyle: "italic",
-                      color: "#555",
+
                       marginTop: "10px",
                     }}
                   >
                     "{item.review}"
-                  </p>
+                  </Typography>
 
                   {/* Avatar + Name */}
                   <Avatar
@@ -451,7 +527,18 @@ export default function Home() {
                     src={item.avatar}
                     sx={{ width: 56, height: 56, margin: "15px auto 5px" }}
                   />
-                  <p style={{ fontWeight: "600", margin: 0 }}>{item.name}</p>
+                  <Typography
+                    sx={{
+                      fontWeight: "600",
+                      margin: 0,
+                      color:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,
+                    }}
+                  >
+                    {item.name}
+                  </Typography>
                 </div>
               </Grid>
             ))}
@@ -483,8 +570,17 @@ export default function Home() {
                 desc: "Pay safely via cards, wallets, or cash on delivery",
               },
             ].map((item, index) => (
-              <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
-                <div className="flex flex-col items-center text-center bg-white p-6 rounded-2xl  ">
+              <Grid
+                key={index}
+                size={{ xs: 12, sm: 6, md: 3 }}
+                sx={{
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
+                }}
+              >
+                <div className="flex flex-col items-center text-center  p-6 rounded-2xl  ">
                   <img
                     src={item.icon}
                     alt={item.title}
@@ -492,11 +588,20 @@ export default function Home() {
                   />
                   <Typography
                     variant="h5"
-                    className="text-lg font-semibold text-gray-800 mb-2"
+                    className="text-lg font-semibold  mb-2"
                   >
                     {item.title}
                   </Typography>
-                  <Typography variant="p" className="text-sm text-gray-500">
+                  <Typography
+                    variant="p"
+                    className="text-sm "
+                    sx={{
+                      color:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,
+                    }}
+                  >
                     {item.desc}
                   </Typography>
                 </div>

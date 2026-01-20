@@ -9,6 +9,7 @@ import ViewButtonLoader from "../../Components/Loades/ViewButtonLoader";
 import toast from "react-hot-toast";
 
 import useAuthStore from "../../Store/useAuthStore";
+import useTheme from "../../Store/useTheme";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const {
@@ -95,6 +96,8 @@ function DeleteProfile({ open, handleClose }) {
     });
   };
 
+  const theme = useTheme();
+
   return (
     <>
       {deleteUserMutation.isPending && <ViewButtonLoader />}
@@ -152,7 +155,10 @@ function DeleteProfile({ open, handleClose }) {
                 id="delete-modal-description"
                 sx={{
                   mt: 2,
-                  color: "text.secondary",
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
                   fontSize: "0.95rem",
                   lineHeight: 1.5,
                 }}
@@ -192,7 +198,10 @@ function DeleteProfile({ open, handleClose }) {
               </Typography>
               <ul
                 style={{
-                  color: "text.secondary",
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
                   fontSize: "0.85rem",
                   paddingLeft: "16px",
                   margin: 0,

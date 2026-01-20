@@ -73,11 +73,7 @@ function AiSwitcher() {
         <Box
           sx={{
             position: "fixed",
-            bottom: 50,
-            right: 120,
-            width: 350,
-            height: 450,
-            zIndex: 1500,
+
             borderRadius: 4,
             overflow: "hidden",
             background: "rgba(20,20,20,0.75)",
@@ -98,12 +94,19 @@ function AiSwitcher() {
               from: { opacity: 1, transform: "translateY(0)" },
               to: { opacity: 0, transform: "translateY(40px)" },
             },
+
+            bottom: { xs: 16, sm: 50 },
+            right: { xs: 8, sm: 120 },
+            width: { xs: "calc(100% - 16px)", sm: 350 },
+            height: { xs: "70vh", sm: 450 },
+            maxHeight: "90vh",
+            zIndex: 1500,
           }}
         >
           {/* ===== Header ===== */}
           <Box
             sx={{
-              p: 2,
+              p: { xs: 1.5, sm: 2 },
               display: "flex",
               alignItems: "center",
               gap: 1.5,
@@ -132,8 +135,9 @@ function AiSwitcher() {
           {/* ===== Messages Area ===== */}
           <Box
             sx={{
+              p: { xs: 1.5, sm: 2 },
               flex: 1,
-              p: 2,
+
               overflowY: "auto",
               display: "flex",
               flexDirection: "column",
@@ -145,11 +149,9 @@ function AiSwitcher() {
                 key={i}
                 sx={{
                   alignSelf: msg.from === "user" ? "flex-end" : "flex-start",
-                  maxWidth: "80%",
                   p: 1.2,
                   px: 2,
                   borderRadius: 3,
-                  fontSize: 14,
                   color: "#fff",
                   background:
                     msg.from === "user"
@@ -157,6 +159,10 @@ function AiSwitcher() {
                       : "rgba(255,255,255,0.15)",
                   backdropFilter: "blur(6px)",
                   boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+
+                  maxWidth: { xs: "90%", sm: "80%" },
+
+                  fontSize: { xs: 13, sm: 14 },
                 }}
               >
                 {msg.text}
@@ -170,7 +176,7 @@ function AiSwitcher() {
             component="form"
             onSubmit={handleSubmit(onSubmit)}
             sx={{
-              p: 1.5,
+              p: { xs: 1, sm: 1.5 },
               display: "flex",
               gap: 1,
               borderTop: "1px solid rgba(255,255,255,0.1)",
@@ -184,7 +190,7 @@ function AiSwitcher() {
               variant="outlined"
               size="small"
               sx={{
-                input: { color: "#fff" },
+                input: { color: "#fff", fontSize: { xs: 13, sm: 14 } },
                 fieldset: { borderColor: "rgba(255,255,255,0.2)" },
               }}
             />
@@ -192,7 +198,7 @@ function AiSwitcher() {
             <Button
               type="submit"
               sx={{
-                minWidth: 48,
+                minWidth: { xs: 44, sm: 48 },
                 borderRadius: 2,
                 color: theme.primaryText,
                 background: `linear-gradient(45deg, ${theme.primaryColor}, ${theme.secondaryColor})`,
@@ -212,18 +218,20 @@ function AiSwitcher() {
       <Box
         sx={{
           position: "fixed",
-          bottom: 24,
-          right: 24,
-          zIndex: 1000,
-          width: 80,
-          height: 80,
-          borderRadius: "50%",
+
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           cursor: "pointer",
           transition: "all 0.3s ease",
           animation: "pulse 2.5s infinite",
+
+          bottom: { xs: 16, sm: 24 },
+          right: { xs: 16, sm: 24 },
+          zIndex: 1000,
+          width: { xs: 64, sm: 80 },
+          height: { xs: 64, sm: 80 },
+          borderRadius: "50%",
 
           "&:hover": {
             transform: "translateY(-6px)",

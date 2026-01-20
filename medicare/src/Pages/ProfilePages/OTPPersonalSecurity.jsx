@@ -68,16 +68,43 @@ export default function OTPPersonalSecurity() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <Typography variant="h4" fontWeight="bold" mb={1}>
+            <Typography
+              variant="h4"
+              fontWeight="bold"
+              mb={1}
+              sx={{
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+              }}
+            >
               Secure Your Account 🔐
             </Typography>
 
-            <Typography color="text.secondary" mb={3}>
+            <Typography
+              mb={3}
+              sx={{
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+              }}
+            >
               We’ll send a one-time password (OTP) to your registered email
               address to verify your identity.
             </Typography>
 
-            <Typography variant="body2" color="text.secondary" mb={2}>
+            <Typography
+              variant="body2"
+              mb={2}
+              sx={{
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+              }}
+            >
               • The OTP is valid for <strong>180 seconds</strong>.<br />
               • Do not share this code with anyone.
               <br />• If you don’t receive the email, please check your spam
@@ -109,7 +136,10 @@ export default function OTPPersonalSecurity() {
                   fontWeight: "bold",
                   borderRadius: 3,
                   background: `linear-gradient(90deg,${theme.primaryColor},${theme.primaryText})`,
-                  color: "#fff",
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
                   ":hover": { opacity: 0.9 },
                 }}
               >
@@ -186,7 +216,10 @@ export default function OTPPersonalSecurity() {
                 py: 1.3,
                 borderRadius: 3,
                 background: `linear-gradient(90deg,${theme.primaryColor},${theme.primaryText})`,
-                color: "#fff",
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
               }}
             >
               Verify

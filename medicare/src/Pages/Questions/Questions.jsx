@@ -11,6 +11,7 @@ import AccordionDetails, {
 } from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Fade from "@mui/material/Fade";
+import useTheme from "../../Store/useTheme";
 
 const steps = Object.keys(questionFaq);
 
@@ -60,30 +61,37 @@ export default function Questions() {
         root: scrollContainerRef.current,
         rootMargin: "-20% 0px -60% 0px",
         threshold: [0, 0.1, 0.5, 1],
-      }
+      },
     );
 
     sectionRefs.current.forEach((ref) => ref && observer.observe(ref));
     return () => observer.disconnect();
   }, []);
 
+  const theme = useTheme();
+
   return (
-    <Container sx={{ p: 2  , minHeight:"100vh"}}>
+    <Container sx={{ p: 2, minHeight: "100vh" }}>
       <Grid container spacing={3}>
         {/* Left: Static Stepper */}
         <Grid size={{ md: 4, xs: 12 }}>
           <Typography
             variant="h4"
-            sx={{ mb: 3, textAlign: "center", fontWeight: "bold" }}
+            sx={{
+              mb: 3,
+              textAlign: "center",
+              fontWeight: "bold",
+              color:
+                theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+            }}
           >
             Frequently Asked Questions
           </Typography>
           <Box
-            bgcolor=""
             sx={{
               position: "sticky",
               top: 20,
-           
+
               zIndex: 10,
               p: 3,
               borderRadius: 3,
@@ -101,30 +109,57 @@ export default function Questions() {
                   borderRadius: "8px",
                   transition: "all 0.3s ease",
                   "&:hover": {
-                    backgroundColor: "rgba(25, 118, 210, 0.08)",
+                    backgroundColor:
+                      theme.mode !== "dark"
+                        ? theme.primaryColor
+                        : theme.secondaryText,
                     transform: "translateX(4px)",
                   },
                 },
                 "& .MuiStepLabel-label": {
                   fontSize: "1rem",
                   fontWeight: 600,
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
                 },
                 "& .MuiStepIcon-root": {
-                  color: "#ccc",
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
                   "&.Mui-active": {
+                    color:
+                      theme.mode !== "dark"
+                        ? theme.primaryText
+                        : theme.primaryColor,
                   },
                   "&.Mui-completed": {
-                    color: "#4caf50",
+                    color:
+                      theme.mode !== "dark"
+                        ? theme.primaryText
+                        : theme.primaryColor,
                   },
                 },
                 "& .MuiStepLabel-label.Mui-active": {
                   fontWeight: "bold",
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
                 },
               }}
             >
               {steps.map((label, index) => (
                 <Step key={label}>
                   <StepLabel
+                    sx={{
+                      color:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,
+                    }}
                     onClick={() => handleStepClick(index)}
                     StepIconComponent={"none"}
                   >
@@ -149,14 +184,23 @@ export default function Questions() {
                 width: 8,
               },
               "&::-webkit-scrollbar-track": {
-                background: "#f1f1f1",
+                backgroundColor:
+                  theme.mode !== "dark"
+                    ? theme.primaryColor
+                    : theme.secondaryText,
                 borderRadius: 4,
               },
               "&::-webkit-scrollbar-thumb": {
-                background: "#c1c1c1",
+                backgroundColor:
+                  theme.mode !== "dark"
+                    ? theme.primaryColor
+                    : theme.secondaryText,
                 borderRadius: 4,
                 "&:hover": {
-                  background: "#a8a8a8",
+                  backgroundColor:
+                    theme.mode !== "dark"
+                      ? theme.primaryColor
+                      : theme.secondaryText,
                 },
               },
             }}
@@ -179,17 +223,21 @@ export default function Questions() {
                   sx={{
                     mb: 2,
                     mt: i === 0 ? 0 : 4,
+                    color:
+                      theme.mode !== "dark"
+                        ? theme.primaryText
+                        : theme.primaryColor,
 
                     padding: "12px 16px",
                     backgroundColor:
                       activeStep === i
-                        ? "rgba(25, 118, 210, 0.08)"
+                        ? theme.mode !== "dark"
+                          ? theme.primaryColor
+                          : theme.secondaryText
                         : "transparent",
                     borderRadius: 2,
                     borderLeft:
-                      activeStep === i
-                        ? "4px solid "
-                        : "4px solid transparent",
+                      activeStep === i ? "4px solid " : "4px solid transparent",
                     transition: "all 0.3s ease",
                   }}
                 >
@@ -206,7 +254,10 @@ export default function Questions() {
                       slots={{ transition: Fade }}
                       slotProps={{ transition: { timeout: 400 } }}
                       sx={[
-                        {
+                        {  backgroundColor:
+                      theme.mode !== "dark"
+                        ? theme.primaryColor
+                        : theme.secondaryText,
                           mb: 1,
                           borderRadius: 2,
                           boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
@@ -225,7 +276,10 @@ export default function Questions() {
                               [`& .${accordionDetailsClasses.root}`]: {
                                 display: "block",
                               },
-                              backgroundColor: "rgba(25, 118, 210, 0.04)",
+                              backgroundColor:
+                                theme.mode !== "dark"
+                                  ? theme.primaryColor
+                                  : theme.secondaryText,
                               border: "1px solid rgba(25, 118, 210, 0.2)",
                             }
                           : {
@@ -248,7 +302,16 @@ export default function Questions() {
                             },
                         }}
                       >
-                        <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                        <Typography
+                          variant="h5"
+                          sx={{
+                            fontWeight: 600,
+                            color:
+                              theme.mode !== "dark"
+                                ? theme.primaryText
+                                : theme.primaryColor,
+                          }}
+                        >
                           {item[0]}
                         </Typography>
                       </AccordionSummary>
@@ -257,7 +320,10 @@ export default function Questions() {
                           variant="body1"
                           sx={{
                             lineHeight: 1.6,
-                            color: "text.secondary",
+                            color:
+                              theme.mode !== "dark"
+                                ? theme.primaryText
+                                : theme.primaryColor,
                           }}
                         >
                           {item[1]}

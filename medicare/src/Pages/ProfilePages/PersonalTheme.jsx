@@ -10,7 +10,14 @@ function PersonalTheme() {
     return saved !== null ? Number(saved) : null;
   });
 
-  const { toggleColors, makeSaveMode, primaryColor } = useTheme();
+  const {
+    toggleColors,
+    makeSaveMode,
+    primaryColor,
+    mode,
+    secondaryText,
+    primaryText,
+  } = useTheme();
 
   useEffect(() => {
     if (activeId !== null) {
@@ -21,10 +28,18 @@ function PersonalTheme() {
   return (
     <Grid size={{ xs: 12, md: 9 }}>
       <Container>
-        <Typography variant="h3">Themes</Typography>
+        <Typography
+          variant="h3"
+          sx={{ color: mode !== "dark" ? primaryText : primaryColor }}
+        >
+          Themes
+        </Typography>
         <Divider sx={{ width: "100%" }} />
         <br />
-        <Typography variant="p">
+        <Typography
+          variant="p"
+          sx={{ color: mode !== "dark" ? primaryText : primaryColor }}
+        >
           Choose the theme form our theme library{" "}
         </Typography>
         <br /> <br />
@@ -35,7 +50,7 @@ function PersonalTheme() {
               size={{ md: 4, sm: 6 }}
               sx={{
                 border: "1px solid",
-                borderColor: primaryColor,
+                backgroundColor: mode !== "dark" ? primaryColor : secondaryText,
                 borderRadius: "10px",
                 p: 2,
                 transition: "all 0.35s ease",
@@ -57,7 +72,7 @@ function PersonalTheme() {
                     item.primaryColor,
                     item.secondaryColor,
                     item.primaryText,
-                    item.secondaryText
+                    item.secondaryText,
                   );
                   makeSaveMode(item.darkTheme);
                 }}

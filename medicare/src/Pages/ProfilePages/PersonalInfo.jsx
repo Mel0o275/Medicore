@@ -29,6 +29,7 @@ import toast from "react-hot-toast";
 import { useUser } from "../../Hooks/reactUser/useUserSelected";
 
 import useAuthStore from "../../Store/useAuthStore";
+import useTheme from "../../Store/useTheme";
 
 function PersonalInfo() {
   const [isEditing, setIsEditing] = useState(false);
@@ -147,6 +148,8 @@ function PersonalInfo() {
     return d.toISOString().split("T")[0];
   };
 
+  const theme = useTheme();
+
   return (
     <>
       {uploadAvatarMutation.isPending && <ViewButtonLoader />}
@@ -154,10 +157,22 @@ function PersonalInfo() {
 
       <Grid size={{ xs: 12, md: 9 }}>
         <Box sx={{ pb: 2 }}>
-          <Typography variant="h4" className="text-white font-semibold">
+          <Typography
+            variant="h4"
+            sx={{
+              color:
+                theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+            }}
+          >
             Personal Information
           </Typography>
-          <Typography variant="body2" className="text-gray-400 mt-1">
+          <Typography
+            variant="body2"
+            sx={{
+              color:
+                theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+            }}
+          >
             Use a permanent address where you can receive mail.
           </Typography>
         </Box>
@@ -173,11 +188,16 @@ function PersonalInfo() {
             {/* Take the pic from rahma */}
             <Avatar
               alt="Profile avatar"
-              src={selectedImg || userDate?.profilePic || "/static/images/avatar/1.jpg"}
+              src={
+                selectedImg ||
+                userDate?.profilePic ||
+                "/static/images/avatar/1.jpg"
+              }
               sx={{
                 width: 80,
                 height: 80,
-                border: "3px solid #e5e7eb",
+                border: `3px solid ${theme.mode !== "dark" ? theme.primaryText : theme.primaryColor}`,
+                 
                 boxShadow:
                   "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
               }}
@@ -222,7 +242,6 @@ function PersonalInfo() {
               width: { xs: "100%", sm: "auto" },
             }}
           >
-            
             <Button
               variant="contained"
               onClick={handleEditToggle}
@@ -263,6 +282,12 @@ function PersonalInfo() {
                 onSubmit(data);
               })}
               className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
+              style={{
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+              }}
             >
               <div className="sm:col-span-3">
                 <label
@@ -287,8 +312,8 @@ function PersonalInfo() {
                       !isEditing
                         ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
                         : errors.firstName
-                        ? "border-red-500 bg-white text-gray-900"
-                        : "border-gray-300 bg-white text-gray-900"
+                          ? "border-red-500 bg-white text-gray-900"
+                          : "border-gray-300 bg-white text-gray-900"
                     }`}
                     {...register("firstName", {
                       required: "First name is required",
@@ -329,8 +354,8 @@ function PersonalInfo() {
                       !isEditing
                         ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
                         : errors.secondName
-                        ? "border-red-500 bg-white text-gray-900"
-                        : "border-gray-300 bg-white text-gray-900"
+                          ? "border-red-500 bg-white text-gray-900"
+                          : "border-gray-300 bg-white text-gray-900"
                     }`}
                     {...register("secondName", {
                       required: "Second name is required",
@@ -349,10 +374,7 @@ function PersonalInfo() {
               </div>
 
               <div className="sm:col-span-4">
-                <label
-                  htmlFor="email"
-                  className="block text-sm/6 font-medium "
-                >
+                <label htmlFor="email" className="block text-sm/6 font-medium ">
                   Email address
                 </label>
                 <div className="mt-2">
@@ -371,8 +393,8 @@ function PersonalInfo() {
                       !isEditing
                         ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
                         : errors.email
-                        ? "border-red-500 bg-white text-gray-900"
-                        : "border-gray-300 bg-white text-gray-900"
+                          ? "border-red-500 bg-white text-gray-900"
+                          : "border-gray-300 bg-white text-gray-900"
                     }`}
                     {...register("email", {
                       required: "Email is required",
@@ -413,8 +435,8 @@ function PersonalInfo() {
                       !isEditing
                         ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
                         : errors.phoneNumber
-                        ? "border-red-500 bg-white text-gray-900"
-                        : "border-gray-300 bg-white text-gray-900"
+                          ? "border-red-500 bg-white text-gray-900"
+                          : "border-gray-300 bg-white text-gray-900"
                     }`}
                     {...register("phoneNumber", {
                       required: "phoneNumber number is required",
@@ -454,8 +476,8 @@ function PersonalInfo() {
                       !isEditing
                         ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
                         : errors.dateOfBirth
-                        ? "border-red-500 bg-white text-gray-900"
-                        : "border-gray-300 bg-white text-gray-900"
+                          ? "border-red-500 bg-white text-gray-900"
+                          : "border-gray-300 bg-white text-gray-900"
                     }`}
                     {...register("dateOfBirth", {
                       required: "Date of birth is required",
@@ -496,8 +518,8 @@ function PersonalInfo() {
                       !isEditing
                         ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
                         : errors.gender
-                        ? "border-red-500 bg-white text-gray-900"
-                        : "border-gray-300 bg-white text-gray-900"
+                          ? "border-red-500 bg-white text-gray-900"
+                          : "border-gray-300 bg-white text-gray-900"
                     }`}
                     {...register("gender", { required: "Gender is required" })}
                     onChange={(e) => {
