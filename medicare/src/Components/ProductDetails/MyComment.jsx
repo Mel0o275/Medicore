@@ -13,8 +13,10 @@ import { useState } from "react";
 import EditReviewModal from "./EditReviewModal";
 
 import useDeleteReview from "../../Hooks/review/useDeleteReview";
+import useTheme from "../../Store/useTheme";
 
 function MyComment({ review, userId }) {
+  const theme = useTheme();
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const { deleteReview } = useDeleteReview();
@@ -30,7 +32,14 @@ function MyComment({ review, userId }) {
 
   const handleCloseEditModal = () => setOpenEditModal(false);
   return (
-    <div className="bg-white border border-gray-200  p-4 md:p-6 flex flex-col gap-3">
+    <div
+      className=" border   p-4 md:p-6 flex flex-col gap-3"
+      style={{
+        borderColor:
+          theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+        color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+      }}
+    >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <img
@@ -39,15 +48,15 @@ function MyComment({ review, userId }) {
             className="rounded-full w-[50px] h-[50px] object-cover"
           />
           <div>
-            <h1 className="font-semibold text-gray-700">
+            <h1 className="font-semibold ">
               {review?.userId?.firstName + " " + review?.userId?.secondName}
             </h1>
             <div className="flex justify-between items-center gap-2 flex-wrap">
-              <h3 className="text-sm text-gray-400">
+              <h3 className="text-sm ">
                 {new Date(review?.updatedAt).toLocaleString()}
               </h3>
               {review.updatedAt > review.createdAt && (
-                <h6 className="text-xs text-[#00a297]/50 flex items-center justify-center gap-1">
+                <h6 className="text-xs  flex items-center justify-center gap-1">
                   Edited
                   <MdEdit />
                 </h6>
@@ -60,12 +69,12 @@ function MyComment({ review, userId }) {
           <div className="flex gap-2">
             <button
               onClick={() => setOpenDeleteModal(true)}
-              className="w-8 text-xl h-8 p-1  bg-stone-100/50 hover:bg-stone-100/90 flex justify-center items-center rounded-full"
+              className="w-8 text-xl h-8 p-1   hover:bg-stone-100/90 flex justify-center items-center rounded-full"
             >
               <MdDelete />
             </button>
             <button
-              className="w-8 text-xl h-8 p-1  bg-stone-100/50 hover:bg-stone-100/90 flex justify-center items-center rounded-full"
+              className="w-8 text-xl h-8 p-1   hover:bg-stone-100/90 flex justify-center items-center rounded-full"
               onClick={() => setOpenEditModal(true)}
             >
               <MdEdit />
@@ -74,7 +83,7 @@ function MyComment({ review, userId }) {
         )}
       </div>
       <div className="flex justify-between gap-2 flex-wrap">
-        <Typography variant="h5" className="text-[#00a297] leading-relaxed">
+        <Typography variant="h5" className="leading-relaxed">
           {review?.title}
         </Typography>
         <Rating

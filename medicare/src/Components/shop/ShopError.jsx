@@ -1,21 +1,69 @@
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
+import { Typography, Button, Box } from "@mui/material";
+import useTheme from "../../Store/useTheme";
+
 function ShopError({ error }) {
+  const theme = useTheme();
+
+  const mainColor =
+    theme.mode !== "dark" ? theme.primaryText : theme.primaryColor;
+
   return (
     <section className="flex flex-col items-center justify-center h-[70vh] gap-6 text-center p-6 rounded-lg mx-8 md:mx-24">
-      <MdOutlineReportGmailerrorred className="text-6xl text-[#00a297cc]" />
-      <h2 className="text-3xl font-bold text-[#00a297cc]">
+      {/* Icon */}
+      <Box
+        sx={{
+          color: mainColor,
+          fontSize: "4rem",
+          opacity: 0.8,
+        }}
+      >
+        <MdOutlineReportGmailerrorred />
+      </Box>
+
+      {/* Title */}
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: 700,
+          color: mainColor,
+        }}
+      >
         Oops! Something went wrong.
-      </h2>
-      <p className="text-stone-600 text-lg">
+      </Typography>
+
+      {/* Message */}
+      <Typography
+        variant="body1"
+        sx={{
+          color:
+            theme.mode !== "dark" ? theme.secondaryText : theme.primaryText,
+          fontSize: "1.1rem",
+        }}
+      >
         {error?.response?.data?.message ||
           "Unable to load the data. Please try again later."}
-      </p>
-      <button
+      </Typography>
+
+      {/* Button */}
+      <Button
         onClick={() => window.location.reload()}
-        className="px-6 py-3 bg-[#00a297] text-white rounded-md hover:bg-[#008377] transition"
+        variant="contained"
+        sx={{
+          px: 3,
+          py: 1.5,
+          borderRadius: "6px",
+          backgroundColor: mainColor,
+          color: theme.mode !== "dark" ? "#fff" : theme.secondaryText,
+          transition: "all 0.3s",
+          "&:hover": {
+            backgroundColor: mainColor,
+            opacity: 0.85,
+          },
+        }}
       >
         Retry
-      </button>
+      </Button>
     </section>
   );
 }

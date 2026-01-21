@@ -1,4 +1,4 @@
-import React , {useState} from "react";
+import React, { useState } from "react";
 /* --------------------------- "Icons" -------------------------------- */
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import SecurityIcon from "@mui/icons-material/Security";
@@ -14,7 +14,6 @@ import ClearAllIcon from "@mui/icons-material/ClearAll";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
-
 
 /* --------------------------- "MUI" -------------------------------- */
 
@@ -34,8 +33,10 @@ import { useNoti } from "../../Hooks/reactNoti/useNoti";
 import { useNotiMutations } from "../../Hooks/reactNoti/useNotiMutations";
 import toast from "react-hot-toast";
 import ViewButtonLoader from "../../Components/Loades/ViewButtonLoader";
+import useTheme from "../../Store/useTheme";
 
 function PersonalNotifications() {
+  const theme = useTheme();
 
   const [page, setPage] = useState(1);
   const limit = 10;
@@ -125,7 +126,7 @@ function PersonalNotifications() {
     });
 
     console.log("Clear all notifications clicked");
-  }
+  };
 
   const handleDeleteNotification = (id) => {
     console.log(`Delete notification with id: ${id}`);
@@ -142,8 +143,6 @@ function PersonalNotifications() {
       },
     });
   };
-
-  
 
   if (isLoading) {
     return (
@@ -166,12 +165,18 @@ function PersonalNotifications() {
     );
   }
 
-
   return (
     <>
       <Grid size={{ xs: 12, md: 9 }}>
         <Box sx={{ pb: 2 }}>
-          <Typography variant="h4" className="text-white font-semibold">
+          <Typography
+            variant="h4"
+            sx={{
+              color:
+                theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+            }}
+            className="text-white font-semibold"
+          >
             Notifications
           </Typography>
         </Box>
@@ -189,10 +194,14 @@ function PersonalNotifications() {
             startIcon={<ClearAllIcon />}
             onClick={handleClearAll}
             sx={{
-              color: "#6b7280",
+              color:
+                theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
               borderColor: "#6b7280",
               "&:hover": {
-                backgroundColor: "#374151",
+                backgroundColor:
+                  theme.mode !== "dark"
+                    ? theme.primaryColor
+                    : theme.secondaryText,
                 borderColor: "#9ca3af",
                 color: "white",
               },
@@ -202,25 +211,28 @@ function PersonalNotifications() {
           </Button>
         </Box>
 
-      
-
         <Box
           className="space-y-4"
           sx={{
             maxHeight: "400px",
             overflowY: "auto",
             pr: 1.5,
-            border: "1px solid #e5e7eb",
+            border: "1px solid ",
+            borderColor:
+              theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+
             borderRadius: 2,
             p: 2,
-            backgroundColor: "#f9fafb",
             boxShadow:
               "0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)",
             "&::-webkit-scrollbar": {
               width: "8px",
             },
             "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "#9ca3af",
+              backgroundColor:
+                theme.mode !== "dark"
+                  ? theme.primaryColor
+                  : theme.secondaryText,
               borderRadius: "4px",
             },
             "&::-webkit-scrollbar-thumb:hover": {
@@ -228,10 +240,10 @@ function PersonalNotifications() {
             },
           }}
         >
-{/* <<<<<<< HEAD */}
+          {/* <<<<<<< HEAD */}
           {notifications.length === 0 ? (
             <Box textAlign="center" py={4}>
-              <Typography variant="body1" className="text-gray-500">
+              <Typography variant="h5" className="text-gray-500">
                 No notifications found.
               </Typography>
             </Box>
@@ -271,6 +283,17 @@ function PersonalNotifications() {
                   className={`border rounded-lg p-4 ${
                     colorClasses[color] || colorClasses.blue
                   }`}
+                  style={{
+                    backgroundColor:
+                      theme.mode !== "dark"
+                        ? theme.primaryColor
+                        : theme.secondaryText,
+
+                    borderColor:
+                      theme.mode !== "dark"
+                        ? theme.primaryText
+                        : theme.primaryColor,
+                  }}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-3 flex-1">
@@ -294,14 +317,14 @@ function PersonalNotifications() {
                             color === "green"
                               ? "text-green-700"
                               : color === "blue"
-                              ? "text-blue-700"
-                              : color === "purple"
-                              ? "text-purple-700"
-                              : color === "gray"
-                              ? "text-gray-700"
-                              : color === "red"
-                              ? "text-red-700"
-                              : "text-yellow-700"
+                                ? "text-blue-700"
+                                : color === "purple"
+                                  ? "text-purple-700"
+                                  : color === "gray"
+                                    ? "text-gray-700"
+                                    : color === "red"
+                                      ? "text-red-700"
+                                      : "text-yellow-700"
                           }`}
                         >
                           {notification.message || "No message content"}
@@ -311,14 +334,14 @@ function PersonalNotifications() {
                             color === "green"
                               ? "text-green-600"
                               : color === "blue"
-                              ? "text-blue-600"
-                              : color === "purple"
-                              ? "text-purple-600"
-                              : color === "gray"
-                              ? "text-gray-600"
-                              : color === "red"
-                              ? "text-red-600"
-                              : "text-yellow-600"
+                                ? "text-blue-600"
+                                : color === "purple"
+                                  ? "text-purple-600"
+                                  : color === "gray"
+                                    ? "text-gray-600"
+                                    : color === "red"
+                                      ? "text-red-600"
+                                      : "text-yellow-600"
                           }`}
                         >
                           {formatTime(notification.createdAt)}
@@ -351,7 +374,6 @@ function PersonalNotifications() {
               );
             })
           )}
-
         </Box>
 
         {/* <Box
@@ -399,6 +421,5 @@ function PersonalNotifications() {
     </>
   );
 }
-
 
 export default PersonalNotifications;

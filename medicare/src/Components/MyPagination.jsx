@@ -2,34 +2,47 @@ import * as React from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import useTheme from "../Store/useTheme";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#00a297",
+export default function MyPagination({ count, page, onChange }) {
+  const appTheme = useTheme();
+
+  const mainColor =
+    appTheme.mode !== "dark" ? appTheme.primaryText : appTheme.primaryColor;
+
+  const paginationTheme = createTheme({
+    palette: {
+      primary: {
+        main: mainColor,
+      },
     },
-  },
-  components: {
-    MuiPaginationItem: {
-      styleOverrides: {
-        root: {
-          "&.Mui-selected": {
-            backgroundColor: "#00a297",
-            color: "#fff",
+    components: {
+      MuiPaginationItem: {
+        styleOverrides: {
+          root: {
+            transition: "all 0.3s",
             "&:hover": {
-              backgroundColor: "#009084",
+              backgroundColor: mainColor,
+              color: "#fff",
+              opacity: 0.85,
+            },
+            "&.Mui-selected": {
+              backgroundColor: mainColor,
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: mainColor,
+                opacity: 0.9,
+              },
             },
           },
         },
       },
     },
-  },
-});
+  });
 
-export default function MyPagination({ count, page, onChange }) {
   return (
     <div className="self-center">
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={paginationTheme}>
         <Stack spacing={2}>
           <Pagination
             count={count}

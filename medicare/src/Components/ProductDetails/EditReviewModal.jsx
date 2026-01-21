@@ -36,16 +36,19 @@ function EditReviewModal({ open, handleClose, selectedReview }) {
       setRating(selectedReview.rating);
     }
   }, [selectedReview, reset, open]);
+
   const handleCloseAndExit = () => {
     reset();
     setRating(0);
     handleClose();
   };
+
   const { updateReview, onSubmit } = useEditReview(
     selectedReview,
     rating,
     handleCloseAndExit
   );
+
   return (
     <Modal
       open={open}
@@ -59,40 +62,51 @@ function EditReviewModal({ open, handleClose, selectedReview }) {
       }}
     >
       <Paper
-        sx={{
+        sx={(theme) => ({
           width: { xs: "100%", sm: 450, md: 500 },
           maxHeight: "90vh",
           overflowY: "auto",
           p: 3,
           borderRadius: 3,
-          boxShadow: "0 6px 20px rgba(0,0,0,0.2)",
-        }}
+          boxShadow: theme.mode !== "dark"
+            ? "0 6px 20px rgba(0,0,0,0.2)"
+            : "0 6px 20px rgba(0,0,0,0.6)",
+          color:
+            theme.mode !== "dark"
+              ? theme.primaryText
+              : theme.primaryColor,
+        })}
       >
         <Typography
           id="product-modal-title"
           variant="h6"
           fontWeight="bold"
           mb={2}
+          sx={(theme) => ({
+            color:
+              theme.mode !== "dark"
+                ? theme.primaryText
+                : theme.primaryColor,
+          })}
         >
           Edit Review
         </Typography>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="p-6 bg-white shadow border border-gray-200"
+          className="p-6 shadow border border-gray-200"
         >
-          <p className="text-sm text-gray-500 mb-4">
-            Required fields are marked <span className="text-red-500">*</span>
-          </p>
-
           <div className="mb-4">
-            <label className="block font-medium text-gray-700 mb-1">
-              Your Rating <span className="text-red-500">*</span>
-            </label>
             <Rating
               value={rating}
               onChange={(e, newValue) => setRating(newValue)}
               size="large"
+              sx={(theme) => ({
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+              })}
             />
           </div>
 
@@ -104,6 +118,20 @@ function EditReviewModal({ open, handleClose, selectedReview }) {
               {...register("title", { required: "Title is required" })}
               error={!!errors.title}
               helperText={errors.title?.message}
+              sx={(theme) => ({
+                "& .MuiInputBase-root": {
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
+                },
+                "& .MuiInputLabel-root": {
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
+                },
+              })}
             />
           </div>
 
@@ -117,8 +145,23 @@ function EditReviewModal({ open, handleClose, selectedReview }) {
               {...register("review", { required: "Review is required" })}
               error={!!errors.review}
               helperText={errors.review?.message}
+              sx={(theme) => ({
+                "& .MuiInputBase-root": {
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
+                },
+                "& .MuiInputLabel-root": {
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
+                },
+              })}
             />
           </div>
+
           <Box
             sx={{
               display: "flex",
@@ -131,14 +174,20 @@ function EditReviewModal({ open, handleClose, selectedReview }) {
               onClick={handleClose}
               variant="text"
               disabled={updateReview.isPending}
-              sx={{
+              sx={(theme) => ({
                 width: "fit-content",
-                color: "oklch(50.5% 0.213 27.518)",
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
                 "&:hover": {
-                  backgroundColor: "oklch(93.6% 0.032 17.717)",
+                  backgroundColor:
+                    theme.mode !== "dark"
+                      ? `${theme.primaryText}22`
+                      : `${theme.primaryColor}22`,
                 },
                 fontWeight: 600,
-              }}
+              })}
             >
               Close
             </Button>
@@ -147,14 +196,24 @@ function EditReviewModal({ open, handleClose, selectedReview }) {
               type="submit"
               disabled={updateReview.isPending}
               variant="contained"
-              sx={{
+              sx={(theme) => ({
                 width: "fit-content",
-                backgroundColor: "#00a297",
-                color: "white",
+                backgroundColor:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryColor
+                    : theme.primaryText,
                 "&:hover": {
-                  backgroundColor: "#008b82",
+                  backgroundColor:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
+                  opacity: 0.9,
                 },
-              }}
+              })}
             >
               {updateReview.isPending ? "Saving..." : "Save Changes"}
             </Button>
