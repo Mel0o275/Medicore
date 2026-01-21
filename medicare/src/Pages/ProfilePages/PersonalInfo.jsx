@@ -197,7 +197,7 @@ function PersonalInfo() {
                 width: 80,
                 height: 80,
                 border: `3px solid ${theme.mode !== "dark" ? theme.primaryText : theme.primaryColor}`,
-                 
+
                 boxShadow:
                   "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
               }}
@@ -308,9 +308,15 @@ function PersonalInfo() {
                     type="text"
                     autoComplete="given-name"
                     disabled={!isEditing}
+                    style={{
+                      borderColor:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,
+                    }}
                     className={`block w-full rounded-md border px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6 ${
                       !isEditing
-                        ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
+                        ? " cursor-not-allowed"
                         : errors.firstName
                           ? "border-red-500 bg-white text-gray-900"
                           : "border-gray-300 bg-white text-gray-900"
@@ -350,9 +356,15 @@ function PersonalInfo() {
                     type="text"
                     autoComplete="family-name"
                     disabled={!isEditing}
+                    style={{
+                      borderColor:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,
+                    }}
                     className={`block w-full rounded-md border px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6 ${
                       !isEditing
-                        ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
+                        ? " cursor-not-allowed  "
                         : errors.secondName
                           ? "border-red-500 bg-white text-gray-900"
                           : "border-gray-300 bg-white text-gray-900"
@@ -389,9 +401,15 @@ function PersonalInfo() {
                     type="email"
                     autoComplete="email"
                     disabled={!isEditing}
+                    style={{
+                      borderColor:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,
+                    }}
                     className={`block w-full rounded-md border px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6 ${
                       !isEditing
-                        ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
+                        ? " cursor-not-allowed "
                         : errors.email
                           ? "border-red-500 bg-white text-gray-900"
                           : "border-gray-300 bg-white text-gray-900"
@@ -431,9 +449,15 @@ function PersonalInfo() {
                     type="tel"
                     autoComplete="tel"
                     disabled={!isEditing}
+                    style={{
+                      borderColor:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,
+                    }}
                     className={`block w-full rounded-md border px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6 ${
                       !isEditing
-                        ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
+                        ? "cursor-not-allowed "
                         : errors.phoneNumber
                           ? "border-red-500 bg-white text-gray-900"
                           : "border-gray-300 bg-white text-gray-900"
@@ -472,9 +496,15 @@ function PersonalInfo() {
                     id="dateOfBirth"
                     type="date"
                     disabled={!isEditing}
+                    style={{
+                      borderColor:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,
+                    }}
                     className={`block w-full rounded-md border px-3 py-1.5 text-base outline-none placeholder:text-gray-500 focus:border-gray-500 sm:text-sm/6 ${
                       !isEditing
-                        ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
+                        ? " cursor-not-allowed "
                         : errors.dateOfBirth
                           ? "border-red-500 bg-white text-gray-900"
                           : "border-gray-300 bg-white text-gray-900"
@@ -514,9 +544,17 @@ function PersonalInfo() {
                   <select
                     id="gender"
                     disabled={!isEditing}
-                    className={`col-start-1 row-start-1 w-full appearance-none rounded-md border py-1.5 pr-8 pl-3 text-base outline-none focus:border-gray-500 sm:text-sm/6 ${
+                    style={{
+                      borderColor:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,
+                      backgroundColor:
+                        theme.mode !== "dark" ? "transparent" : "#878b95",
+                    }}
+                    className={`col-start-1 row-start-1 w-full appearance-none rounded-md border py-1.5 pr-8 pl-3 text-base outline-none  sm:text-sm/6 ${
                       !isEditing
-                        ? "bg-gray-100 cursor-not-allowed border-gray-300 text-gray-500"
+                        ? "cursor-not-allowed "
                         : errors.gender
                           ? "border-red-500 bg-white text-gray-900"
                           : "border-gray-300 bg-white text-gray-900"

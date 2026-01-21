@@ -8,40 +8,12 @@ import {
   Button,
 } from "@mui/material";
 import useCreateReview from "../../Hooks/review/useCreateReview";
-const theme = createTheme({
-  components: {
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          "& label.Mui-focused": {
-            color: "#00a297",
-          },
-          "& .MuiOutlinedInput-root": {
-            "&:hover fieldset": {
-              borderColor: "#00a297",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "#00a297",
-            },
-          },
-        },
-      },
-    },
-    MuiCheckbox: {
-      styleOverrides: {
-        root: {
-          color: "#00a297",
-          "&.Mui-checked": {
-            color: "#00a297",
-          },
-        },
-      },
-    },
-  },
-});
+import useTheme from "../../Store/useTheme";
 
 export default function ReviewForm({ productId }) {
+  const theme = useTheme(); // <-- هنا ناخد theme
   const [rating, setRating] = useState(0);
+
   const {
     handleSubmit,
     register,
@@ -53,24 +25,96 @@ export default function ReviewForm({ productId }) {
       review: "",
     },
   });
+
   const handleClose = () => {
     reset();
     setRating(0);
   };
+
   const { addReview, onSubmit } = useCreateReview(productId, handleClose);
 
+  const dynamicTheme = createTheme({
+    palette: {
+      primary: {
+        main: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+      },
+    },
+    components: {
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            "& label.Mui-focused": {
+              color:
+                theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+            },
+            "& .MuiOutlinedInput-root": {
+              "&:hover fieldset": {
+                borderColor:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+              },
+              "&.Mui-focused fieldset": {
+                borderColor:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+              },
+            },
+          },
+        },
+      },
+      MuiRating: {
+        styleOverrides: {
+          iconFilled: {
+            color:
+              theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+          },
+          iconHover: {
+            color:
+              theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+          },
+        },
+      },
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            backgroundColor:
+              theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+            color: "#fff",
+            "&:hover": {
+              backgroundColor:
+                theme.mode !== "dark" ? theme.secondaryText : theme.primaryText,
+            },
+            "&.Mui-disabled": {
+              backgroundColor:
+                theme.mode !== "dark" ? theme.secondaryText : theme.primaryText,
+              color: "#ffffff",
+            },
+          },
+        },
+      },
+    },
+  });
+
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={dynamicTheme}>
       <form
         onSubmit={handleSubmit((data) => onSubmit(data, rating))}
-        className="p-6 bg-white shadow border border-gray-200"
+        className="p-6 shadow border border-gray-200"
       >
-        <p className="text-sm text-gray-500 mb-4">
+        <p className="text-sm -500 mb-4">
           Required fields are marked <span className="text-red-500">*</span>
         </p>
 
-        <div className="mb-4">
-          <label className="block font-medium text-gray-700 mb-1">
+        <div
+          className="mb-4"
+          style={{
+            color:
+              theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+          }}
+        >
+          <label className="block font-medium  mb-1">
             Your Rating <span className="text-red-500">*</span>
           </label>
           <Rating
@@ -89,6 +133,44 @@ export default function ReviewForm({ productId }) {
             {...register("title", { required: "Title is required" })}
             error={!!errors.title}
             helperText={errors.title?.message}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+                "& fieldset": {
+                  borderColor:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
+                },
+                "&:hover fieldset": {
+                  borderColor:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
+                },
+              },
+              "& .MuiInputLabel-root": {
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+              },
+              "& .MuiInputLabel-root.Mui-focused": {
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+              },
+            }}
           />
         </div>
 
@@ -102,14 +184,51 @@ export default function ReviewForm({ productId }) {
             {...register("review", { required: "Review is required" })}
             error={!!errors.review}
             helperText={errors.review?.message}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+                "& fieldset": {
+                  borderColor:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
+                },
+                "&:hover fieldset": {
+                  borderColor:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
+                },
+              },
+              "& .MuiInputLabel-root": {
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+              },
+              "& .MuiInputLabel-root.Mui-focused": {
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+              },
+            }}
           />
         </div>
 
         <Button
           type="submit"
           disabled={addReview.isPending}
-          sx={{ background: "#00a297" }}
-          className=" !text-white rounded-md px-6 py-1 text-lg cursor-pointer"
+          className="!text-white rounded-md px-6 py-1 text-lg cursor-pointer"
         >
           {addReview.isPending ? "Submitting..." : "Submit"}
         </Button>

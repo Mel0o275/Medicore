@@ -386,17 +386,17 @@ const generalRows = [
 const features = [
   {
     id: 1,
-    icon: <FaShieldAlt className="w-6 h-6 text-[#00a297]" />,
+    icon: <FaShieldAlt className="w-6 h-6 " />,
     text: "101% Original",
   },
   {
     id: 2,
-    icon: <FaCoins className="w-6 h-6 text-[#00a297]" />,
+    icon: <FaCoins className="w-6 h-6 " />,
     text: "Lowest Price",
   },
   {
     id: 3,
-    icon: <FaShippingFast className="w-6 h-6 text-[#00a297]" />,
+    icon: <FaShippingFast className="w-6 h-6 " />,
     text: "Free Shipping",
   },
 ];

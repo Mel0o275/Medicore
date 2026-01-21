@@ -12,8 +12,10 @@ import { useEffect, useState } from "react";
 import useAllProducts from "../../Hooks/useAllProducts";
 import ShopError from "../../Components/shop/ShopError";
 import ShopLoading from "../../Components/shop/ShopLoading";
+import useTheme from "../../Store/useTheme";
 const accent = "#00a297";
 function Shop() {
+  const theme = useTheme();
   const { filters, clearAll } = useShopFilters();
   const { data, isLoading, isError, error } = useAllProducts(filters);
   const products = data?.data?.products;
@@ -47,13 +49,18 @@ function Shop() {
   if (isError) return <ShopError error={error} />;
 
   return (
-    <section className="pb-14 bg-stone-100/50">
+    <section
+      className="pb-14"
+      style={{
+        color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+      }}
+    >
       <ScrollButton />
       <PageTitle title="shop" />
       <div className="w-max mb-5 mt-14 mx-8 md:mx-24 flex gap-5 ">
         <>
           <button
-            className="w-max bg-[#00a297] text-white rounded-md px-6 text-lg cursor-pointer "
+            className="w-max rounded-md px-6 text-lg cursor-pointer "
             onClick={() => setShowFilters((prev) => !prev)}
           >
             {showFilters ? "Hide Filters" : "Show Filters"}
@@ -83,7 +90,7 @@ function Shop() {
         >
           <div>
             <div className="flex items-center justify-between w-full mb-10">
-              <p className="text-[#00a297]/80 font-medium pl-4">
+              <p className=" font-medium pl-4">
                 Showing {data?.data?.products?.length > 0 ? start + 1 : 0}–
                 {Math.min(end, data?.data?.products?.length) || 0} of{" "}
                 {data?.data?.products?.length || 0} results
@@ -105,24 +112,29 @@ function Shop() {
       "
                 style={{
                   borderColor: accent,
-                  backgroundColor: `${accent}15`,
+                  backgroundColor:
+                    theme.mode !== "dark"
+                      ? theme.primaryColor
+                      : theme.secondaryText,
                 }}
               >
                 <div
                   className="w-20 h-20 rounded-full flex items-center justify-center mb-5 shadow"
-                  style={{ backgroundColor: `${accent}22` }}
+                  style={{
+                    backgroundColor:
+                      theme.mode !== "dark"
+                        ? theme.primaryColor
+                        : theme.secondaryText,
+                  }}
                 >
-                  <GiMedicines className={`text-4xl text-[${accent}]`} />
+                  <GiMedicines className={`text-4xl `} />
                 </div>
 
-                <h2
-                  className="text-2xl font-semibold mb-2"
-                  style={{ color: accent }}
-                >
+                <h2 className="text-2xl font-semibold mb-2">
                   No Products Found
                 </h2>
 
-                <p className="text-sm text-gray-700 max-w-md">
+                <p className="text-sm  max-w-md">
                   Try changing filters or search for something else.
                 </p>
               </div>

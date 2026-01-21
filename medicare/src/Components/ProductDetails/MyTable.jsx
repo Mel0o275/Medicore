@@ -5,14 +5,19 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { grey } from "@mui/material/colors";
+import useTheme from "../../Store/useTheme";
 import { generalRows, productRows } from "../../Constants/NavPages";
+
 export default function MyTable({ name }) {
-  const BORDER_COLOR = grey[200];
-  const TEXT_COLOR = grey[700];
+  const theme = useTheme();
+
+  const BORDER_COLOR =
+    theme.mode !== "dark" ? theme.secondaryText : theme.primaryColor;
+  const TEXT_COLOR =
+    theme.mode !== "dark" ? theme.primaryText : theme.primaryColor;
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{backgroundColor:"transparent"}}>
       <Table
         sx={{
           minWidth: 300,

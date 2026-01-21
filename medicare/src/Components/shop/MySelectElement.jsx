@@ -3,35 +3,62 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
 import useSearchStore from "../../Store/useSearchStore";
+import useTheme from "../../Store/useTheme";
 
 export default function MySelectElement() {
+  const theme = useTheme();
+
   const sort = useSearchStore((state) => state.sort);
   const setSort = useSearchStore((state) => state.setSort);
+
   const handleChange = (e) => {
     setSort(e.target.value);
   };
+
+  const dynamicColor =
+    theme.mode !== "dark" ? theme.primaryText : theme.primaryColor;
 
   return (
     <Box sx={{ minWidth: 180 }}>
       <FormControl
         fullWidth
+        variant="standard"
         sx={{
-          color: "#00a297",
-          "& .MuiInputBase-root:hover": { color: "#00a297" },
-          "& .MuiNativeSelect-icon": { color: "#00a297" },
-          "& .MuiInput-underline:hover:before": {
-            borderBottomColor: "#00a297",
+          "& .MuiInputBase-root": {
+            color: dynamicColor,
+            transition: "all 0.3s",
           },
-          "& .MuiInput-underline:after": { borderBottomColor: "#00a297" },
+
+          "& .MuiInputBase-root:hover": {
+            color: dynamicColor,
+          },
+
+          "& .MuiNativeSelect-icon": {
+            color: dynamicColor,
+          },
+
+          "& .MuiInput-underline:before": {
+            borderBottomColor: dynamicColor,
+          },
+
+          "& .MuiInput-underline:hover:before": {
+            borderBottomColor: dynamicColor,
+          },
+
+          "& .MuiInput-underline:after": {
+            borderBottomColor: dynamicColor,
+          },
         }}
       >
         <InputLabel
-          variant="standard"
           htmlFor="sort-native"
-          shrink={true}
+          shrink
           sx={{
-            color: "#00a297",
-            "&.Mui-focused": { color: "#00a297" },
+            color: dynamicColor,
+            transition: "all 0.3s",
+            "&.Mui-focused": {
+              color: dynamicColor,
+            },
           }}
         >
           Sort
@@ -43,7 +70,13 @@ export default function MySelectElement() {
           onChange={handleChange}
           inputProps={{
             name: "sort",
-            id: "uncontrolled-native",
+          }}
+          sx={{
+            "& option": {
+              color: theme.primaryText,
+              backgroundColor:
+                theme.mode !== "dark" ? "#fff" : theme.secondaryText,
+            },
           }}
         >
           <option value="">Default Sorting</option>

@@ -22,8 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation";
 import ProductCard from "../../Components/Products/ProductCard";
-
-const PRIMARY_COLOR = "#00a297";
+import useTheme from "../../Store/useTheme";
 
 const fetchProducts = async () => {
   const url = import.meta.env.VITE_API_URL;
@@ -31,6 +30,8 @@ const fetchProducts = async () => {
   return data;
 };
 const BestSeller = () => {
+  const theme = useTheme();
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ["bestSeller"],
     queryFn: fetchProducts,
@@ -39,11 +40,13 @@ const BestSeller = () => {
   const popularProducts = data?.data?.products;
   const swiperRef = useRef(null);
   if (isLoading) return <LoadingScreenAnimation />;
+
   return (
     <Container maxWidth="xl" sx={{ py: 5 }}>
       <Box
         sx={{
-          bgcolor: "#f5f5f5f8",
+          backgroundColor:
+            theme.mode !== "dark" ? theme.primaryColor : theme.secondaryText,
           p: 4,
           borderRadius: 2,
           display: "flex",
@@ -64,11 +67,17 @@ const BestSeller = () => {
           <Button
             variant="outlined"
             sx={{
-              borderColor: PRIMARY_COLOR,
-              color: PRIMARY_COLOR,
+              color:
+                theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+
               alignSelf: "flex-start",
               width: "fit-content",
-              "&:hover": { bgcolor: `${PRIMARY_COLOR}10` },
+              "&:hover": {
+                backgroundColor:
+                  theme.mode !== "dark"
+                    ? theme.secondaryText
+                    : theme.primaryColor,
+              },
             }}
           >
             View More
@@ -77,7 +86,7 @@ const BestSeller = () => {
 
         <Box sx={{ width: "40%", textAlign: "center" }}>
           <img
-            src="../../../public/Jolie/forpressuremonitor.jpg"
+            src="/Jolie/forpressuremonitor.jpg"
             alt="Pressure Monitor"
             style={{ maxWidth: "100%", height: "auto", maxHeight: "400px" }}
           />
@@ -91,7 +100,14 @@ const BestSeller = () => {
           alignItems="center"
           sx={{ mb: 3 }}
         >
-          <Typography variant="h3" color="#00a297" fontWeight="bold">
+          <Typography
+            variant="h3"
+            sx={{
+              color:
+                theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+            }}
+            fontWeight="bold"
+          >
             Popular Products
           </Typography>
         </Stack>
@@ -99,7 +115,9 @@ const BestSeller = () => {
         {isError ? (
           <Box
             sx={{
-              color: "#00a297",
+              color:
+                theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+
               p: 4,
               borderRadius: 2,
               textAlign: "center",
@@ -111,16 +129,38 @@ const BestSeller = () => {
             }}
           >
             <MdOutlineReportGmailerrorred
-              style={{ fontSize: 60, color: "#00a297" }}
+              style={{
+                fontSize: 60,
+
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+              }}
             />
             <Typography
               variant="h6"
               fontWeight="bold"
-              sx={{ color: "#00a297" }}
+              sx={{
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+              }}
             >
               Failed to load products
             </Typography>
-            <Typography variant="body2" sx={{ mt: 1, color: "#00a297" }}>
+            <Typography
+              variant="body2"
+              sx={{
+                mt: 1,
+
+                color:
+                  theme.mode !== "dark"
+                    ? theme.primaryText
+                    : theme.primaryColor,
+              }}
+            >
               We’re having trouble loading products. Please try again.
             </Typography>
           </Box>
@@ -157,13 +197,26 @@ const BestSeller = () => {
             >
               <IconButton
                 onClick={() => swiperRef.current?.slidePrev()}
-                sx={{ border: "1px solid #e0e0e0", mr: 1 }}
+                sx={{
+                  border: "1px solid #e0e0e0",
+                  mr: 1,
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
+                }}
               >
                 <ArrowBackIosNewIcon fontSize="small" />
               </IconButton>
               <IconButton
                 onClick={() => swiperRef.current?.slideNext()}
-                sx={{ border: "1px solid #e0e0e0" }}
+                sx={{
+                  border: "1px solid #e0e0e0",
+                  color:
+                    theme.mode !== "dark"
+                      ? theme.primaryText
+                      : theme.primaryColor,
+                }}
               >
                 <ArrowForwardIosIcon fontSize="small" />
               </IconButton>

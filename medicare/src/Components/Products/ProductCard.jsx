@@ -4,10 +4,12 @@ import { MdFavorite } from "react-icons/md";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { WishContext } from "../../Context/wishContext";
+import useTheme from "../../Store/useTheme";
 
 const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
   const navigate = useNavigate();
   const { likedItems, toggleLike } = useContext(WishContext);
+  const theme = useTheme();
 
   const handleLike = () => {
     const token = localStorage.getItem("token");
@@ -20,11 +22,14 @@ const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
     toggleLike(_id);
 
     const action = currentlyLiked ? "removed from" : "added to";
-    toast(`Product ${action} wishlist ✨`, { position: "top-center", duration: 2000 });
+    toast(`Product ${action} wishlist ✨`, {
+      position: "top-center",
+      duration: 2000,
+    });
   };
 
   return (
-    <div className="w-full rounded-lg border border-stone-200 overflow-hidden group cursor-pointer shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col h-[400px]">
+    <div className="w-full rounded-lg border  overflow-hidden group cursor-pointer shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col h-[400px]">
       <div className="relative h-48 sm:h-52 md:h-56 flex-shrink-0">
         <img
           src={images[0].url}
@@ -40,25 +45,57 @@ const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
           <MdFavorite
             onClick={handleLike}
             className={`cursor-pointer text-3xl p-1.5 rounded-full transition-colors duration-500
-              ${likedItems.includes(_id) ? "bg-[#00a297] text-white" : "bg-gray-300 text-black"}
-              hover:bg-[#00a297] hover:text-white`}
+              ${
+                likedItems.includes(_id)
+                  ? ` color:${theme.mode !== "dark" ? theme.primaryText : theme.primaryColor}
+                    backgroundColor: ${
+                      theme.mode !== "dark"
+                        ? theme.primaryColor
+                        : theme.secondaryText
+                    }
+                `
+                  : `color:${theme.mode !== "dark" ? theme.primaryText : theme.primaryColor}
+                    backgroundColor: ${
+                      theme.mode !== "dark"
+                        ? theme.primaryColor
+                        : theme.secondaryText
+                    }`
+              }
+             hover:text-white`}
           />
         </div>
       </div>
 
-      <div className="p-3 flex flex-col flex-1">
-        <h3 className="font-semibold mb-1 text-sm md:text-base line-clamp-2">{title}</h3>
+      <div
+        className="p-3 flex flex-col flex-1 "
+        style={{
+          backgroundColor:
+            theme.mode !== "dark" ? theme.primaryColor : theme.secondaryText,
+          color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+        }}
+      >
+        <h3 className="font-semibold mb-1 text-sm md:text-base line-clamp-2 ">
+          {title}
+        </h3>
         <div className="py-2">
           <MyRating value={ratings} />
         </div>
-        <p className="text-gray-700 text-sm md:text-base font-bold">{price} L.E</p>
+        <p className="text-gray-700 text-sm md:text-base font-bold">
+          {price} L.E
+        </p>
         <div className="mt-auto flex justify-center items-center">
           <NavLink
             to={`/shop/productdetails/${_id}`}
             onClick={() => window.scrollTo(0, 0)}
-            className="px-3 py-1.5 bg-[#00a297] text-white text-sm rounded-md 
-                        transform transition-all duration-300 
-                        translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
+            style={{
+              backgroundColor:
+                theme.mode !== "dark"
+                  ? theme.secondaryText
+                  : theme.primaryColor,
+              color:
+                theme.mode !== "dark" ? theme.primaryText : theme.secondaryText,
+            }}
+            className="px-3 py-1.5 text-sm rounded-md transform transition-all duration-300 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
           >
             View Product
           </NavLink>

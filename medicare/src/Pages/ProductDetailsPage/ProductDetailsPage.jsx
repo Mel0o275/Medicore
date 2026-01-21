@@ -17,21 +17,28 @@ import useViewProduct from "../../Hooks/product/useViewProduct";
 import ShopError from "../../Components/shop/ShopError";
 import ShopLoading from "../../Components/shop/ShopLoading";
 import MyRating from "../../Components/MyRating/MyRating";
+import useTheme from "../../Store/useTheme";
 
 function ProductDetailsPage() {
+  const theme = useTheme();
+
+  const mainColor =
+    theme.mode !== "dark" ? theme.primaryText : theme.primaryColor;
+
+  const softBg = `${mainColor}33`; // 20%
+  const softBorder = `${mainColor}66`; // 40%
+
   const { id } = useParams();
-  console.log(id);
   const { data, isLoading, isError, error } = useViewProduct(id);
   const product = data?.data?.product;
   const relatedProducts = data?.data?.relatedProducts;
   const [openmodal, setOpenModal] = useState(false);
 
-  const { count: count, setCount: setCount } = useContext(CartContext);
+  const { count, setCount } = useContext(CartContext);
   const { likedItems, toggleLike } = useContext(WishContext);
   const isLiked = likedItems.includes(product?._id || id);
 
   const API = import.meta.env.VITE_API_URL;
-  console.log(API);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -92,19 +99,12 @@ function ProductDetailsPage() {
     try {
       const { data } = await axios.post(
         `${API}/cart`,
-        {
-          _id: id,
-        },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
+        { _id: id },
+        { headers: { Authorization: token } },
       );
-      console.log(1);
-      console.log(data);
-      if (data.products.length != -1) {
-        toast(`Product added to cart succsessfully✨`, {
+
+      if (data.products.length !== -1) {
+        toast("Product added to cart succsessfully✨", {
           position: "top-center",
           duration: 3000,
         });
@@ -113,7 +113,8 @@ function ProductDetailsPage() {
     } catch (err) {
       console.log(err);
     }
-  }  
+  }
+
   const handleToggleWish = async () => {
     if (!token?.trim()) {
       navigate("/login");
@@ -125,22 +126,20 @@ function ProductDetailsPage() {
 
     const wasLiked = likedItems.includes(productId);
     await toggleLike(productId);
-    
+
     toast(
-      wasLiked 
-        ? "Product removed from wishlist" 
+      wasLiked
+        ? "Product removed from wishlist"
         : "Product added to wishlist successfully✨",
-      {
-        position: "top-center",
-        duration: 3000,
-      }
+      { position: "top-center", duration: 3000 },
     );
   };
 
   if (isLoading) return <ShopLoading />;
   if (isError) return <ShopError error={error} />;
+
   return (
-    <section className="pb-14 bg-stone-100/50">
+    <section className="pb-14 ">
       <ScrollButton />
       {openmodal && (
         <ShareModal
@@ -149,6 +148,7 @@ function ProductDetailsPage() {
           shareUrl={window.location.href}
         />
       )}
+
       <PageTitle title="Product Detail" />
 
       <div className="mx-8 md:mx-24">
@@ -167,30 +167,49 @@ function ProductDetailsPage() {
               />
             </div>
 
-            <div className="grid grid-cols-3 text-center bg-[#00a297]/20 border rounded-lg divide-x divide-[#00a297]/40">
+            <div
+              className="grid grid-cols-3 text-center border rounded-lg divide-x"
+              style={{
+                backgroundColor: softBg,
+                borderColor: softBorder,
+                divideColor: softBorder,
+              }}
+            >
               {features.map((f) => (
                 <div
                   key={f.id}
                   className="flex items-center justify-center gap-2 py-4 px-10"
+                  style={{ color: mainColor }}
                 >
                   {f.icon}
-                  <span className="font-medium text-[#00a297]">{f.text}</span>
+                  <span className="font-medium" style={{ color: mainColor }}>
+                    {f.text}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="flex-1 flex flex-col gap-4">
-            <span className="bg-[#00a297] text-white w-max text-xs px-2 py-1 rounded-md">
+          <div
+            className="flex-1 flex flex-col gap-4"
+            style={{ color: mainColor }}
+          >
+            <span
+              className="text-white w-max text-xs px-2 py-1 rounded-md"
+              style={{ backgroundColor: mainColor }}
+            >
               -13%
             </span>
+
             <p className="text-stone-400 font-semibold">
-              Brand: <span className="text-[#00a297]">{product.brand}</span>
+              Brand: <span style={{ color: mainColor }}>{product.brand}</span>
             </p>
+
             <p className="text-stone-400 font-semibold">
               Category:{" "}
-              <span className="text-[#00a297]">{product.category}</span>
+              <span style={{ color: mainColor }}>{product.category}</span>
             </p>
+
             <h2 className="text-3xl font-semibold">{product.title}</h2>
 
             <div className="flex items-center w-full gap-10">
@@ -198,42 +217,49 @@ function ProductDetailsPage() {
               <MyRating value={product.ratings} />
             </div>
 
-            <div className="mt-4 space-y-1 text-gray-500 text-xl">
+            <div className="mt-4 space-y-1  text-xl">
               <p>{product.desc}.</p>
               <p className="flex items-center gap-3 pt-4">
-                <FaRegEye className=" text-xl text-[#00a297]" />{" "}
+                <FaRegEye className="text-xl" style={{ color: mainColor }} />
                 {product.visits} people visited this page
               </p>
             </div>
+
             <div className="flex gap-5 justify-center">
               <button
                 onClick={addToCart}
-                className="px-6 lg:px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
+                className="px-6 lg:px-3 py-1.5 text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
+                style={{ backgroundColor: mainColor }}
               >
-                <FaCartPlus />{" "}
+                <FaCartPlus />
                 <span className="hidden lg:block">Add To Cart</span>
               </button>
+
               <button
-          onClick={handleToggleWish}
-          className={`px-6 lg:px-3 py-1.5 md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row
-            ${isLiked ? 'bg-red-500 text-white' : 'bg-[#00a297] text-white'}`}
-        >
-                <MdFavorite />{" "}
+                onClick={handleToggleWish}
+                className="px-6 lg:px-3 py-1.5 md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row text-white"
+                style={{
+                  backgroundColor: isLiked ? "#ef4444" : mainColor,
+                }}
+              >
+                <MdFavorite />
                 <span className="hidden lg:block">
                   {isLiked ? "In Wishlist" : "Add To Wishlist"}
                 </span>
               </button>
 
-
               <button
-                className="px-6 lg:px-3 py-1.5 bg-[#00a297] text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
+                className="px-6 lg:px-3 py-1.5 text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
+                style={{ backgroundColor: mainColor }}
                 onClick={() => setOpenModal(true)}
               >
-                <FaShareAlt /> <span className="hidden lg:block">Share</span>
+                <FaShareAlt />
+                <span className="hidden lg:block">Share</span>
               </button>
             </div>
           </div>
         </div>
+
         <div className="mt-8 mb-10">
           <MyTab
             page="details"
@@ -242,13 +268,16 @@ function ProductDetailsPage() {
             productId={product._id}
           />
         </div>
-        {relatedProducts && relatedProducts.length != 0 && (
+
+        {relatedProducts && relatedProducts.length !== 0 && (
           <>
-            <h3 className="text-xl mb-5 font-semibold">Related Products</h3>
-            <div className=" flex gap-3 overflow-x-auto hide-scrollbar">
+            <h3 className="text-xl mb-5 font-semibold"  style={{
+          color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+        }}>Related Products</h3>
+            <div className="flex gap-3 overflow-x-auto hide-scrollbar">
               {relatedProducts.map((product, i) => (
                 <div className="w-full md:w-[30%]" key={i}>
-                  <ProductCard key={i} product={product} />
+                  <ProductCard product={product} />
                 </div>
               ))}
             </div>

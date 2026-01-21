@@ -13,7 +13,7 @@ function ReviewSection({ productTitle, productId }) {
   if (isLoading)
     return (
       <div className="flex justify-center items-center w-full py-5">
-        <div className="w-10 h-10 border-4 border-t-transparent border-[#00a297] rounded-full animate-spin"></div>
+        <div className="w-10 h-10 border-4 border-t-transparent  rounded-full animate-spin"></div>
       </div>
     );
   if (isError)
