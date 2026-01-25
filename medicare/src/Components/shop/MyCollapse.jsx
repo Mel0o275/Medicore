@@ -102,7 +102,8 @@ const MyCollapse = ({ title }) => {
                   id={item}
                   checked={activeValue.includes(item)}
                   onChange={() => handleCheckboxChange(item)}
-                  className="w-4 h-4 border border-gray-400 rounded-none cursor-pointer accent-[#00a297]"
+                  className="w-4 h-4 border border-gray-400 rounded-none cursor-pointer "
+                   style={{ accentColor: theme.primaryColor }}
                 />
 
                 <Typography

@@ -29,7 +29,12 @@ const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
   };
 
   return (
-    <div className="w-full rounded-lg border  overflow-hidden group cursor-pointer shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col h-[400px]">
+    <div className="w-full rounded-lg   overflow-hidden group cursor-pointer shadow-lg hover:shadow-lg transition-shadow duration-300 flex flex-col h-[400px]"  style={{
+            border:'1px solid',
+            borderColor:theme.mode!=='dark' ?'':theme.primaryColor,
+              color:
+                theme.mode !== "dark" ? 'white' : "#0F172A",
+            }}>
       <div className="relative h-48 sm:h-52 md:h-56 flex-shrink-0">
         <img
           src={images[0].url}
@@ -67,10 +72,8 @@ const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
       </div>
 
       <div
-        className="p-3 flex flex-col flex-1 "
+        className="p-3 flex flex-col flex-1 shadow-inner "
         style={{
-          backgroundColor:
-            theme.mode !== "dark" ? theme.primaryColor : theme.secondaryText,
           color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
         }}
       >
@@ -80,7 +83,7 @@ const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
         <div className="py-2">
           <MyRating value={ratings} />
         </div>
-        <p className="text-gray-700 text-sm md:text-base font-bold">
+        <p className="text-gray-500 text-sm md:text-base font-bold">
           {price} L.E
         </p>
         <div className="mt-auto flex justify-center items-center">
@@ -88,12 +91,9 @@ const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
             to={`/shop/productdetails/${_id}`}
             onClick={() => window.scrollTo(0, 0)}
             style={{
-              backgroundColor:
-                theme.mode !== "dark"
-                  ? theme.secondaryText
-                  : theme.primaryColor,
+              backgroundColor:theme.primaryColor,
               color:
-                theme.mode !== "dark" ? theme.primaryText : theme.secondaryText,
+                theme.mode !== "dark" ? 'white' : "#0F172A",
             }}
             className="px-3 py-1.5 text-sm rounded-md transform transition-all duration-300 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
           >

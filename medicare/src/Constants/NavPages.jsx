@@ -353,17 +353,17 @@ const stats = [
 ];
 const aboutCards = [
   {
-    icon: <AiOutlineCheckCircle className="text-5xl mx-auto text-[#00a297]" />,
+    icon: <AiOutlineCheckCircle className="text-5xl mx-auto " />,
     title: "Submit a task",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus.",
   },
   {
-    icon: <AiOutlineMessage className="text-5xl mx-auto text-[#00a297]" />,
+    icon: <AiOutlineMessage className="text-5xl mx-auto " />,
     title: "Send message",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus.",
   },
   {
-    icon: <AiOutlineUser className="text-5xl mx-auto text-[#00a297]" />,
+    icon: <AiOutlineUser className="text-5xl mx-auto " />,
     title: "Trusted experience",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus.",
   },
