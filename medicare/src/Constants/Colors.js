@@ -40,67 +40,73 @@ const secondaryText = "#101010";
 export const arrOfColors = [
   {
     name: "Default",
-    primaryColor: "#33B8AC",
-    secondaryColor: "#008578",
-    primaryText: "#008578",
-    secondaryText: "#00B285",
-    darkTheme: "#0F172A", // darker (body)
+    primaryColor,
+    secondaryColor,
+    primaryText,
+    secondaryText,
+    darkTheme: "#0F172A", 
   },
   {
     name: "Green",
-    primaryColor: "#9eed4c",
-    secondaryColor: "#68edcb",
-    primaryText: "#ff40a8",
-    secondaryText: "#00f9ff",
-    darkTheme: "#111827", // dark (neutral + مريح)
+    primaryColor: "#9EED4C",
+    secondaryColor: "#68EDCB",
+    primaryText: "#14532D",   // deep green
+    secondaryText: "#166534",
+    darkTheme: "#0F172A",
   },
+
   {
-    name: "Violate",
-    primaryColor: "#cd78e9",
-    secondaryColor: "#ffa975",
-    primaryText: "#ffd162",
-    secondaryText: "#007e9c",
-    darkTheme: "#0A0F1E", // darkest (لايق مع البنفسجي)
+    name: "Violet",
+    primaryColor: "#C77DFF",
+    secondaryColor: "#FFB703",
+    primaryText: "#3B0764",   // dark violet (not black)
+    secondaryText: "#5B21B6",
+      darkTheme: "#0F172A", 
   },
+
   {
     name: "Orange",
-    primaryColor: "#ffc20e",
-    secondaryColor: "#fcd5ce",
-    primaryText: "#94021d",
-    secondaryText: "#ed6d50",
-    darkTheme: "#111827", // dark (يوازن البرتقاني)
+    primaryColor: "#FBBF24",
+    secondaryColor: "#FED7AA",
+    primaryText: "#7C2D12",   // warm brown-red
+    secondaryText: "#9A3412",
+    darkTheme: "#0F172A", 
   },
+
   {
     name: "Blue",
-    primaryColor: "#3b3bb1",
-    secondaryColor: "#e0aaff",
-    primaryText: "#9f86c0",
-    secondaryText: "#480ca8",
-    darkTheme: "#0A0F1E", // darkest (blue + navy perfect)
+    primaryColor: "#4F46E5",
+    secondaryColor: "#C7D2FE",
+    primaryText: "#1E3A8A",   // deep blue (better than white)
+    secondaryText: "#1D4ED8",
+     darkTheme: "#0F172A", 
   },
+
   {
     name: "Red",
-    primaryColor: "#880D1E",
-    secondaryColor: "#dd2d4a",
-    primaryText: "#F26A8D",
-    secondaryText: "#cbeef3",
-    darkTheme: "#0F172A", // darker (يهدّي الأحمر)
+    primaryColor: "#9F1239",
+    secondaryColor: "#FB7185",
+    primaryText: "#7F1D1D",   // dark red
+    secondaryText: "#991B1B",
+    darkTheme: "#0F172A", 
   },
+
   {
-    name: "Light violate",
-    primaryColor: "#b58db6",
-    secondaryColor: "#ad6a6c",
-    primaryText: "#5d2e46",
-    secondaryText: "#2d355c",
-    darkTheme: "#1E293B", // base (soft dark)
+    name: "Soft",
+    primaryColor: "#C4A1D8",
+    secondaryColor: "#E9D5FF",
+    primaryText: "#3B0764",   // soft but readable
+    secondaryText: "#6B21A8",
+     darkTheme: "#0F172A", 
   },
+
   {
     name: "Silver",
-    primaryColor: "#465979",
-    secondaryColor: "#a3abbd",
-    primaryText: "#f3f4f6",
-    secondaryText: "#5c6289",
-    darkTheme: "#111827", // dark (أنسب للـ silver)
+    primaryColor: "#64748B",
+    secondaryColor: "#CBD5E1",
+    primaryText: "#334155",   // slate gray (not white)
+    secondaryText: "#475569",
+      darkTheme: "#0F172A", 
   },
 ];
 

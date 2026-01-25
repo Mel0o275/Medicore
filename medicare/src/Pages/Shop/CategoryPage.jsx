@@ -11,8 +11,10 @@ import { useEffect } from "react";
 import ShopError from "../../Components/shop/ShopError";
 import useAllProducts from "../../Hooks/useAllProducts";
 import ShopLoading from "../../Components/shop/ShopLoading";
-const accent = "#00a297";
+import useTheme from "../../Store/useTheme";
+
 function CategoryPage() {
+  const theme = useTheme();
   const { filters, clearAll } = useShopFilters();
   const { data, isLoading, isError, error } = useAllProducts(filters);
   const products = data?.data?.products || [];
@@ -42,7 +44,9 @@ function CategoryPage() {
   if (isLoading) return <ShopLoading />;
   if (isError) return <ShopError error={error} />;
   return (
-    <section className="pb-14 bg-stone-100/50">
+    <section className="pb-14 "  style={{
+        color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+      }}>
       <ScrollButton />
       <PageTitle title={category} />
 
@@ -50,7 +54,7 @@ function CategoryPage() {
         <div className={`${"col-span-5"} flex flex-col justify-between gap-10`}>
           <div>
             <div className="flex items-center justify-between w-full mb-10">
-              <p className="text-[#00a297]/80 font-medium pl-4">
+              <p className="font-medium pl-4">
                 Showing {products?.length > 0 ? start + 1 : 0}–
                 {Math.min(end, products?.length) || 0} of{" "}
                 {products?.length || 0} results
@@ -71,21 +75,29 @@ function CategoryPage() {
         rounded-2xl shadow-md
         flex flex-col items-center justify-center border
       "
-                style={{
-                  borderColor: accent,
-                  backgroundColor: `${accent}15`,
+                  style={{
+                  borderColor: theme.primaryColor,
+                  backgroundColor:
+                    theme.mode !== "dark"
+                      ? theme.primaryColor
+                      : theme.secondaryText,
                 }}
               >
                 <div
                   className="w-20 h-20 rounded-full flex items-center justify-center mb-5 shadow"
-                  style={{ backgroundColor: `${accent}22` }}
+                   style={{
+                    backgroundColor:
+                      theme.mode !== "dark"
+                        ? theme.primaryColor
+                        : theme.secondaryText,
+                  }}
                 >
-                  <GiMedicines className={`text-4xl text-[${accent}]`} />
+                  <GiMedicines className={`text-4xl `} />
                 </div>
 
                 <h2
                   className="text-2xl font-semibold mb-2"
-                  style={{ color: accent }}
+                
                 >
                   No Products Found
                 </h2>

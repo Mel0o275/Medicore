@@ -21,8 +21,8 @@ export default function MyTab({ page, reviews = [], productTitle, productId }) {
   const theme = useTheme();
 
   return (
-    <div className="border-[0.1px] ">
-      <Box sx={{ width: "100%", typography: "body1" }}>
+    <div className=" ">
+      <Box sx={{ width: "100%", typography: "body1",border:'1px solid',borderColor:'divider' }}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList

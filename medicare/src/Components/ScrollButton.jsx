@@ -28,8 +28,8 @@ function ScrollButton() {
           onClick={scrollToTop}
           className="fixed bottom-10 right-40 p-4 rounded-full  text-lg shadow-lg hover:shadow-lg border-2  transition-all duration-300 z-50"
           style={{
-            color:
-              theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+           color:theme.mode!=='dark'?'white':"#0F172A",
+           borderColor:theme.mode!=='dark'?'white':"#0F172A",
             backgroundColor:
               theme.mode !== "dark" ? theme.primaryColor : theme.secondaryText,
           }}

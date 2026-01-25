@@ -13,7 +13,7 @@ import useAllProducts from "../../Hooks/useAllProducts";
 import ShopError from "../../Components/shop/ShopError";
 import ShopLoading from "../../Components/shop/ShopLoading";
 import useTheme from "../../Store/useTheme";
-const accent = "#00a297";
+
 function Shop() {
   const theme = useTheme();
   const { filters, clearAll } = useShopFilters();
@@ -60,6 +60,7 @@ function Shop() {
       <div className="w-max mb-5 mt-14 mx-8 md:mx-24 flex gap-5 ">
         <>
           <button
+          style={{backgroundColor:theme.primaryColor,color:theme.mode!=='dark'?'white':'#0F172A'}}
             className="w-max rounded-md px-6 text-lg cursor-pointer "
             onClick={() => setShowFilters((prev) => !prev)}
           >
@@ -111,7 +112,7 @@ function Shop() {
         flex flex-col items-center justify-center border
       "
                 style={{
-                  borderColor: accent,
+                  borderColor: theme.primaryColor,
                   backgroundColor:
                     theme.mode !== "dark"
                       ? theme.primaryColor

@@ -84,20 +84,23 @@ function About() {
 
       <div
         className="text-center mx-8 md:mx-24 flex justify-center items-center flex-col"
-        style={{
-          color:
-            theme.mode !== "dark" ? theme.secondaryColor : theme.primaryColor,
+            style={{
+          color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
         }}
       >
         <span className="">Contact us</span>
         <h1 className="text-3xl font-bold py-2">About us info</h1>
-        <p className="w-full md:w-[50%] text-stone-500 pt-2 pb-10">
+        <p className="w-full md:w-[50%]  pt-2 pb-10">
           It is a long-established fact that a reader will be distracted by the
           readable content of a page when looking at its layout. The point of
           using Lorem Ipsum is that it has a more-or-less normal distribution of
           letters, as opposed to using ‘Content here’.
         </p>
-        <NavLink to="/contact">
+        <NavLink to="/contact"  style={{
+          backgroundColor:theme.primaryColor,
+          color:theme.mode!=='dark'?'white':'#0F172A',
+          borderRadius:'5px'
+        }} >
           <button className="font-semibold rounded-md px-4 py-2 cursor-pointer">
             CLICK HERE TO CONTACT US
           </button>

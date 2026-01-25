@@ -16,30 +16,29 @@ export default function MyPagination({ count, page, onChange }) {
         main: mainColor,
       },
     },
-    components: {
-      MuiPaginationItem: {
-        styleOverrides: {
-          root: {
-            transition: "all 0.3s",
+   components: {
+    MuiPaginationItem: {
+      styleOverrides: {
+        root: {
+          transition: "all 0.3s",
+          // Color for unselected pages
+          color: appTheme.mode === "dark" ? "#fff" : mainColor,
+          "&:hover": {
+            backgroundColor: mainColor,
+            color: "#fff",
+            opacity: 0.85,
+          },
+          "&.Mui-selected": {
+            backgroundColor: mainColor,
+            color: "#fff",
             "&:hover": {
               backgroundColor: mainColor,
-              color: "#fff",
-              opacity: 0.85,
-            },
-            "&.Mui-selected": {
-              backgroundColor: mainColor,
-              color: "#fff",
-              "&:hover": {
-                backgroundColor: mainColor,
-                opacity: 0.9,
-              },
+              opacity: 0.9,
             },
           },
-        },
-      },
-    },
+        }}}}
   });
-
+if (count<=1) return;
   return (
     <div className="self-center">
       <ThemeProvider theme={paginationTheme}>

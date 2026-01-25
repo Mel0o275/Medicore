@@ -1,14 +1,10 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import {
   Container,
   Box,
   Typography,
   Button,
-  Rating,
-  Card,
-  CardContent,
-  CardMedia,
   Stack,
   IconButton,
 } from "@mui/material";
@@ -45,8 +41,8 @@ const BestSeller = () => {
     <Container maxWidth="xl" sx={{ py: 5 }}>
       <Box
         sx={{
-          backgroundColor:
-            theme.mode !== "dark" ? theme.primaryColor : theme.secondaryText,
+         
+          boxShadow:5,
           p: 4,
           borderRadius: 2,
           display: "flex",
@@ -88,7 +84,7 @@ const BestSeller = () => {
           <img
             src="/Jolie/forpressuremonitor.jpg"
             alt="Pressure Monitor"
-            style={{ maxWidth: "100%", height: "auto", maxHeight: "400px" }}
+            style={{ maxWidth: "100%", height: "auto", maxHeight: "400px",borderRadius:'5px' }}
           />
         </Box>
       </Box>

@@ -46,23 +46,20 @@ export default function MyAccordion() {
 
   return (
     <div
-      style={{
-        backgroundColor:
-          theme.mode !== "dark" ? theme.primaryColor : theme.secondaryText,
-        color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
-      }}
+
     >
       <Accordion
         sx={{
-          backgroundColor:
-            theme.mode !== "dark" ? theme.primaryColor : theme.secondaryText,
+          backgroundColor:'transparent',
+          border:'1px solid ',
+           borderColor:'divider',
           color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
         }}
         expanded={expanded === "panel1"}
         onChange={handleChange("panel1")}
       >
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <span className="font-bold">Business's Vision</span>
+          <span className="font-bold text-xl">Business's Vision</span>
         </AccordionSummary>
         <AccordionDetails>
           <Typography
@@ -82,15 +79,16 @@ export default function MyAccordion() {
       </Accordion>
       <Accordion
         sx={{
-          backgroundColor:
-            theme.mode !== "dark" ? theme.primaryColor : theme.secondaryText,
+          backgroundColor:'transparent',
+          border:'1px solid ',
+           borderColor:'divider',
           color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
         }}
         expanded={expanded === "panel2"}
         onChange={handleChange("panel2")}
       >
         <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-          <span className="font-bold">Our Mission</span>
+          <span className="font-bold text-xl">Our Mission</span>
         </AccordionSummary>
         <AccordionDetails>
           <Typography
@@ -108,14 +106,17 @@ export default function MyAccordion() {
       </Accordion>
       <Accordion
         sx={{
-          backgroundColor:
-            theme.mode !== "dark" ? theme.primaryColor : theme.secondaryText,
+          backgroundColor:'transparent',
+          border:'1px solid ',
+          borderColor:'divider',
+          color:
+                theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
         }}
         expanded={expanded === "panel3"}
         onChange={handleChange("panel3")}
       >
         <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-          <span className="font-bold">Our Support</span>
+          <span className="font-bold text-xl">Our Support</span>
         </AccordionSummary>
         <AccordionDetails>
           <Typography
