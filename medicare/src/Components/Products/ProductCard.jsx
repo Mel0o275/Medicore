@@ -5,10 +5,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { WishContext } from "../../Context/wishContext";
 import useTheme from "../../Store/useTheme";
-
+import Button from "@mui/material/Button";
 const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
   const navigate = useNavigate();
   const { likedItems, toggleLike } = useContext(WishContext);
+  
   const theme = useTheme();
 
   const handleLike = () => {
@@ -46,28 +47,43 @@ const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
           alt="Back"
           className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         />
-        <div className="absolute right-3 top-3 transition-all duration-300">
-          <MdFavorite
-            onClick={handleLike}
-            className={`cursor-pointer text-3xl p-1.5 rounded-full transition-colors duration-500
-              ${
-                likedItems.includes(_id)
-                  ? ` color:${theme.mode !== "dark" ? theme.primaryText : theme.primaryColor}
-                    backgroundColor: ${
-                      theme.mode !== "dark"
-                        ? theme.primaryColor
-                        : theme.secondaryText
-                    }
-                `
-                  : `color:${theme.mode !== "dark" ? theme.primaryText : theme.primaryColor}
-                    backgroundColor: ${
-                      theme.mode !== "dark"
-                        ? theme.primaryColor
-                        : theme.secondaryText
-                    }`
-              }
-             hover:text-white`}
-          />
+       <div
+  className={`
+    absolute right-3 top-3
+    transition-all duration-300 ease-out
+    ${
+      likedItems.includes(_id)
+        ? "opacity-100 translate-x-0"
+        : "opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0"
+    }
+  `}
+>
+
+      <MdFavorite
+  onClick={(e) => {
+    e.stopPropagation(); // important: prevents card click
+    handleLike();
+  }}
+  className="cursor-pointer text-3xl p-1.5 rounded-full transition-all duration-300 hover:text-white"
+  style={
+    likedItems.includes(_id)
+      ? {
+          color: "#fff",
+          backgroundColor:
+            theme.mode !== "dark"
+              ? theme.secondaryText
+              : theme.primaryText,
+        }
+      : {
+          color:
+            theme.mode !== "dark"
+              ? theme.primaryColor
+              : theme.primaryText,
+          backgroundColor: "#f0f0f0",
+        }
+  }
+/>
+
         </div>
       </div>
 
@@ -87,18 +103,36 @@ const ProductCard = ({ product: { _id, price, title, images, ratings } }) => {
           {price} L.E
         </p>
         <div className="mt-auto flex justify-center items-center">
-          <NavLink
-            to={`/shop/productdetails/${_id}`}
-            onClick={() => window.scrollTo(0, 0)}
-            style={{
-              backgroundColor:theme.primaryColor,
-              color:
-                theme.mode !== "dark" ? 'white' : "#0F172A",
-            }}
-            className="px-3 py-1.5 text-sm rounded-md transform transition-all duration-300 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
-          >
-            View Product
-          </NavLink>
+     
+
+<NavLink
+  to={`/shop/productdetails/${_id}`}
+  onClick={() => window.scrollTo(0, 0)}
+  style={{ textDecoration: "none" }} 
+>
+  <Button
+    variant="contained"
+    sx={{
+     backgroundColor:theme.mode!=='dark'?theme.primaryText:theme.primaryColor,
+      color: theme.mode !== "dark" ? "white" : "#0F172A",
+      textTransform: "none",
+      fontSize: "0.875rem",
+      padding: "6px 12px",
+      borderRadius: "6px",
+      transform: "translateY(2rem)",
+      opacity: 0,
+      transition: "all 0.3s ease",
+      ".group:hover &": {
+        transform: "translateY(0)",
+        opacity: 1,
+      },
+     
+    }}
+  >
+    View Product
+  </Button>
+</NavLink>
+
         </div>
       </div>
     </div>

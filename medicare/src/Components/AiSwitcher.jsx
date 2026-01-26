@@ -6,6 +6,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { SiProbot } from "react-icons/si";
 import useTheme from "../Store/useTheme";
 import { useForm } from "react-hook-form";
 import { useState, useRef, useEffect } from "react";
@@ -13,6 +14,7 @@ import { useAiChatBot } from "../Hooks/aiChatBot/aiChatBot";
 
 import { DotPulse } from "ldrs/react";
 import "ldrs/react/DotPulse.css";
+import ScrollButton from "./ScrollButton";
 
 function AiSwitcher() {
   const messagesEndRef = useRef(null);
@@ -68,7 +70,7 @@ function AiSwitcher() {
   return (
     <Container>
       {/* ================= CHAT WINDOW ================= */}
-
+<ScrollButton/>
       {open && (
         <Box
           sx={{
@@ -113,7 +115,7 @@ function AiSwitcher() {
               background: `linear-gradient(45deg, ${theme.primaryColor}, ${theme.secondaryColor})`,
             }}
           >
-            <Avatar src="/aiChatBot.gif" />
+              <SiProbot size={30} className="animate-bounce"/>
             <Typography fontWeight="bold" color={theme.primaryText}>
               AI Assistant
             </Typography>
@@ -223,34 +225,25 @@ function AiSwitcher() {
           alignItems: "center",
           justifyContent: "center",
           cursor: "pointer",
-          transition: "all 0.3s ease",
-          animation: "pulse 2.5s infinite",
-
+          // transition: "all 0.3s ease",
+          // animation: "pulse 2.5s infinite",
+          backgroundColor:
+      theme.mode !== "dark"
+        ? theme.primaryText
+        : theme.primaryColor,
+    color: theme.mode !== "dark" ? "white" : "#0F172A",
           bottom: { xs: 16, sm: 24 },
           right: { xs: 16, sm: 24 },
           zIndex: 1000,
-          width: { xs: 64, sm: 80 },
-          height: { xs: 64, sm: 80 },
+          width: 50,
+          height:  50 ,
           borderRadius: "50%",
 
-          "&:hover": {
-            transform: "translateY(-6px)",
-          },
+        
         }}
         onClick={() => setOpen(true)}
       >
-        <Avatar
-          src="\aiChatBot.gif"
-          sx={{
-            width: 80,
-            height: 80,
-            cursor: "pointer",
-            transition: "all 0.3s ease",
-            "&:hover": {
-              transform: "translateY(-6px)",
-            },
-          }}
-        />
+      <SiProbot size={22} className="animate-bounce"/>
       </Box>
     </Container>
   );

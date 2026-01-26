@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -74,7 +74,7 @@ function App() {
 
   const theme = React.useMemo(() => buildMuiTheme(themeState), [themeState]);
 
-  console.log("API URL:", import.meta.env.VITE_API_URL);
+
 
   // async function getProducts() {
   //   const API = import.meta.env.VITE_API_URL;
@@ -83,8 +83,6 @@ function App() {
   // }
 
   // useEffect(() => {getProducts()}, []);
-
-  console.log("testing hesham");
 
   return (
     <ThemeProvider theme={theme}>

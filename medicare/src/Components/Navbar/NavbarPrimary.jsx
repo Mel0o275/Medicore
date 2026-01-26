@@ -84,9 +84,7 @@ export default function NavbarPrimary(props) {
   const { count: count } = React.useContext(CartContext);
   const { count: Wishcount } = React.useContext(WishContext);
 
-  // >>>>>>> main
-  console.log(count);
-  console.log(Wishcount);
+
 
   // =======
   React.useEffect(() => {

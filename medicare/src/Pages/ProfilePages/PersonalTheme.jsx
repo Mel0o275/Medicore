@@ -40,7 +40,7 @@ function PersonalTheme() {
           variant="p"
           sx={{ color: mode !== "dark" ? primaryText : primaryColor }}
         >
-          Choose the theme form our theme library{" "}
+          Choose the theme from our theme library{" "}
         </Typography>
         <br /> <br />
         <Grid container spacing={4}>
@@ -50,7 +50,7 @@ function PersonalTheme() {
               size={{ md: 4, sm: 6 }}
               sx={{
                 border: "1px solid",
-                backgroundColor: mode !== "dark" ? primaryColor : secondaryText,
+               
                 borderRadius: "10px",
                 p: 2,
                 transition: "all 0.35s ease",

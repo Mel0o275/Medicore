@@ -24,8 +24,10 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { WishContext } from "../Context/wishContext.jsx";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import useTheme from "../Store/useTheme.jsx";
 
 export default function ProductsDiscount() {
+    const theme = useTheme();
   const { likedItems, toggleLike } = useContext(WishContext);
 
   function handleLike(_id) {
@@ -49,7 +51,6 @@ export default function ProductsDiscount() {
   const products = query?.data?.products || [];
   const limitedProducts = products.slice(0, 12);
 
-  console.log(limitedProducts);
 
   const navigate = useNavigate();
   const { count, setCount } = useContext(CartContext);
@@ -65,7 +66,6 @@ export default function ProductsDiscount() {
       return;
     }
 
-    console.log(item._id);
 
     try {
       const { data } = await axios.post(
@@ -96,6 +96,13 @@ export default function ProductsDiscount() {
                 container
                 key={index}
                 className="bg-white md:h-[160px]  rounded-xl shadow-md overflow-hidden transition hover:shadow-lg cursor-pointer mb-3"
+                  style={{
+                    backgroundColor:
+                      `${theme.primaryColor}aa`, 
+                
+                
+                        
+                  }}
               >
                 {/* Image container */}
                 <Grid size={6}>

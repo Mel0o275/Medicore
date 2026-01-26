@@ -241,7 +241,7 @@ const reviews = [
   {
     id: 1,
     name: "Remy Sharp",
-    avatar: "/static/images/avatar/1.jpg",
+    avatar: "/images/user-14-min.jpg",
     rating: 5,
     review:
       "Excellent pharmacy service! Always deliver my medications on time.",
@@ -249,14 +249,14 @@ const reviews = [
   {
     id: 2,
     name: "Alex Johnson",
-    avatar: "/static/images/avatar/2.jpg",
+    avatar: "/images/user-15-min.jpg",
     rating: 4,
     review: "Professional staff and great customer support.",
   },
   {
     id: 3,
     name: "Sarah Lee",
-    avatar: "/static/images/avatar/3.jpg",
+    avatar: "/images/user-16-min.jpg",
     rating: 5,
     review: "Affordable prices and genuine products. Highly recommended!",
   },

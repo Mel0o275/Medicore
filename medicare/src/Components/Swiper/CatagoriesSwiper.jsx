@@ -10,10 +10,11 @@ import { useState, useEffect } from "react";
 import { categories } from "../../Constants/NavPages.jsx";
 /* -------------------------- MUI --------------------------- */
 import { Box , Card  , CardContent ,Typography ,  CardActionArea } from "@mui/material";
+import useTheme from "../../Store/useTheme.jsx";
 
 
 export default function CategoriesSwipper() {
-
+const theme = useTheme();
   return (
     <Swiper
       spaceBetween={20}
@@ -36,8 +37,7 @@ export default function CategoriesSwipper() {
               height: 280, 
               position: "relative",
               transition: "all 0.3s ease-in-out",
-              border: "1px solid",
-              borderColor: "divider",
+       
               borderRadius: 3,
               overflow: "hidden",
               boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
@@ -54,7 +54,7 @@ export default function CategoriesSwipper() {
               sx={{
                 position: "absolute",
                 inset: 0,
-                bgcolor: "rgba(0,0,0,0.30)",
+                bgcolor: "rgba(0, 0, 0, 0.505)",
               }}
             />
 
@@ -66,8 +66,7 @@ export default function CategoriesSwipper() {
                 alignItems: "center",
                 justifyContent: "center",
                 textAlign: "center",
-                color: "white",
-                p: 3,
+                  p: 3,
               }}
             >
               <CardContent>
@@ -78,6 +77,8 @@ export default function CategoriesSwipper() {
                     fontWeight: 700,
                     mb: 2,
                     fontSize: { xs: "1.1rem", md: "1.4rem" },
+                     color: theme.primaryColor,
+              
                   }}
                 >
                   {ele.title}
@@ -88,6 +89,8 @@ export default function CategoriesSwipper() {
                     lineHeight: 1.6,
                     fontSize: { xs: "0.8rem", md: "0.9rem" },
                     opacity: 0.9,
+                    color: theme.primaryColor,
+                    fontWeight:'600'
                   }}
                 >
                   {ele.desc}

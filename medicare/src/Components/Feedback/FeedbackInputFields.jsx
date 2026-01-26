@@ -56,7 +56,7 @@ export default function FeedbackInputFields({
       <input
         id="fullName"
         {...register("fullName")}
-        className="w-full px-3 py-2 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-main"
+        className="w-full px-3 py-2 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:ring-2 "
         placeholder="Enter your full name"
         type="text"
         autoComplete="name"
@@ -73,7 +73,7 @@ export default function FeedbackInputFields({
       <input
         id="email"
         {...register("email")}
-        className="w-full px-3 py-2 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-main"
+        className="w-full px-3 py-2 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:ring-2"
         placeholder="Enter your email address"
         type="email"
         autoComplete="email"
@@ -91,7 +91,7 @@ export default function FeedbackInputFields({
       <input
         id="product"
         {...register("product")}
-        className="w-full px-3 py-2 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-main"
+        className="w-full px-3 py-2 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:ring-2 "
         placeholder="e.g. Quantum T-Shirt - Blue, Size L"
       />
       {errors.product && (
@@ -127,7 +127,7 @@ export default function FeedbackInputFields({
         id="review"
         {...register("review")}
         rows={4}
-        className="w-full px-3 py-2 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-main"
+        className="w-full px-3 py-2 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:ring-2 "
         placeholder="Write your feedback here..."
       />
       {errors.review && (

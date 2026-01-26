@@ -19,6 +19,7 @@ import axios from "axios";
 import LoadingScreenAnimation from "../../Animations/LoadingScreenAnimation";
 import ProductCard from "../../Components/Products/ProductCard";
 import useTheme from "../../Store/useTheme";
+import ScrollButton from "../../Components/ScrollButton";
 
 const fetchProducts = async () => {
   const url = import.meta.env.VITE_API_URL;
@@ -39,6 +40,7 @@ const BestSeller = () => {
 
   return (
     <Container maxWidth="xl" sx={{ py: 5 }}>
+      <ScrollButton/>
       <Box
         sx={{
          
@@ -54,26 +56,21 @@ const BestSeller = () => {
         }}
       >
         <Stack spacing={2} sx={{ width: "100%", textAlign: "left" }}>
-          <Typography variant="subtitle2" color="text.secondary">
+          <Typography variant="subtitle2" sx={{color:theme.primaryColor}}>
             Up To 50% Off
           </Typography>
-          <Typography variant="h4" fontWeight="bold">
+          <Typography variant="h4" fontWeight="bold"  sx={{color:theme.primaryColor}}>
             For Pressure Monitor
           </Typography>
           <Button
             variant="outlined"
             sx={{
-              color:
-                theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
-
+               
+     backgroundColor:theme.mode!=='dark'?theme.primaryText:theme.primaryColor,
+      color: theme.mode !== "dark" ? "white" : "#0F172A",
               alignSelf: "flex-start",
               width: "fit-content",
-              "&:hover": {
-                backgroundColor:
-                  theme.mode !== "dark"
-                    ? theme.secondaryText
-                    : theme.primaryColor,
-              },
+             
             }}
           >
             View More

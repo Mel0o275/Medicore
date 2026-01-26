@@ -1,4 +1,4 @@
-import PageTitle from "../../Components/PageTitle";
+
 import MyCollapse from "../../Components/shop/MyCollapse";
 import MySelectElement from "../../Components/shop/MySelectElement";
 import ProductsContainer from "../../Components/Products/ProductsContainer";
@@ -13,6 +13,7 @@ import useAllProducts from "../../Hooks/useAllProducts";
 import ShopError from "../../Components/shop/ShopError";
 import ShopLoading from "../../Components/shop/ShopLoading";
 import useTheme from "../../Store/useTheme";
+import { Button } from "@mui/material";
 
 function Shop() {
   const theme = useTheme();
@@ -56,22 +57,31 @@ function Shop() {
       }}
     >
       <ScrollButton />
-      <PageTitle title="shop" />
+     
       <div className="w-max mb-5 mt-14 mx-8 md:mx-24 flex gap-5 ">
         <>
-          <button
-          style={{backgroundColor:theme.primaryColor,color:theme.mode!=='dark'?'white':'#0F172A'}}
-            className="w-max rounded-md px-6 text-lg cursor-pointer "
+          <Button
+          sx={{
+            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+"&:hover": {
+  transform: "translateY(-2px)",
+}}}
+          style={{backgroundColor:theme.mode!=='dark'?theme.primaryText:theme.primaryColor,color:theme.mode!=='dark'?'white':'#0F172A'}}
+            className=" px-6 !text-sm cursor-pointer "
             onClick={() => setShowFilters((prev) => !prev)}
           >
             {showFilters ? "Hide Filters" : "Show Filters"}
-          </button>
-          <button
+          </Button>
+          <Button
+          sx={{boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+"&:hover": {
+  transform: "translateY(-2px)",
+}}}
             onClick={() => clearAll()}
-            className="w-max bg-red-500 text-white rounded-md px-6 text-lg cursor-pointer "
+            className=" !bg-red-500 !text-white !text-sm"
           >
             Clear Filters
-          </button>
+          </Button>
         </>
       </div>
 

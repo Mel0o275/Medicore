@@ -31,6 +31,7 @@ import ProductsDiscount from "../../Components/ProductsDiscount";
 
 import MotionDiv from "../../Animations/HomeAnimation";
 import useTheme from "../../Store/useTheme";
+import ScrollButton from "../../Components/ScrollButton";
 
 export default function Home() {
   const [index, setIndex] = useState(0);
@@ -47,6 +48,7 @@ export default function Home() {
   return (
     <>
       <Container sx={{ p: 2 }}>
+        <ScrollButton/>
         {/* --------------------- Section one ------------------- */}
         <Box>
           <Grid container spacing={2}>
@@ -101,7 +103,7 @@ export default function Home() {
       <Box
         sx={{
           backgroundImage:
-            "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.3)), url('/images/banner-home.jpeg')",
+            "linear-gradient(rgba(0, 0, 0, 0.183), rgba(0,0,0,0.3)), url('/images/banner-home.jpeg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           minHeight: "60vh",
@@ -209,9 +211,8 @@ export default function Home() {
                   className=" rounded-2xl  p-6 flex flex-col items-center "
                   sx={{
                     backgroundColor:
-                      theme.mode !== "dark"
-                        ? theme.primaryColor
-                        : theme.secondaryText,
+                      `${theme.primaryColor}5a`
+                        
                   }}
                 >
                   <img
@@ -487,10 +488,8 @@ export default function Home() {
               <Grid size={{ md: 4, xs: 12 }} key={item.id}>
                 <div
                   style={{
-                    backgroundColor:
-                      theme.mode !== "dark"
-                        ? theme.primaryColor
-                        : theme.secondaryText,
+              backgroundColor:
+                      `${theme.primaryColor}7a`, 
                     borderRadius: "16px",
                     padding: "20px",
                     textAlign: "center",

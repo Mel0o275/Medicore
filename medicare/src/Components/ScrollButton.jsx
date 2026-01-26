@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaArrowUp } from "react-icons/fa";
 import useTheme from "../Store/useTheme";
+import { Button } from "@mui/material";
 function ScrollButton() {
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
@@ -24,18 +25,28 @@ function ScrollButton() {
   return (
     <>
       {isVisible && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-10 right-40 p-4 rounded-full  text-lg shadow-lg hover:shadow-lg border-2  transition-all duration-300 z-50"
-          style={{
-           color:theme.mode!=='dark'?'white':"#0F172A",
-           borderColor:theme.mode!=='dark'?'white':"#0F172A",
-            backgroundColor:
-              theme.mode !== "dark" ? theme.primaryColor : theme.secondaryText,
-          }}
-        >
-          <FaArrowUp />
-        </button>
+     <Button
+  onClick={scrollToTop}
+  className="!fixed !bottom-6 !right-20 shadow-lg transition-all duration-300 z-50"
+  sx={{
+    backgroundColor:
+      theme.mode !== "dark"
+        ? theme.primaryText
+        : theme.primaryColor,
+    color: theme.mode !== "dark" ? "white" : "#0F172A",
+    width: 48,
+    height: 48,
+    minWidth: 0,
+    borderRadius: "50%",
+    p: 0,
+    "&:hover": {
+      opacity: 0.9,
+    },
+  }}
+>
+  <FaArrowUp />
+</Button>
+
       )}
     </>
   );
