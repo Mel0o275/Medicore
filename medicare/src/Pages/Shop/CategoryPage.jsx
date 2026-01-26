@@ -1,4 +1,4 @@
-import PageTitle from "../../Components/PageTitle";
+
 import MySelectElement from "../../Components/shop/MySelectElement";
 import ProductsContainer from "../../Components/Products/ProductsContainer";
 import MyPagination from "../../Components/MyPagination";
@@ -48,7 +48,7 @@ function CategoryPage() {
         color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
       }}>
       <ScrollButton />
-      <PageTitle title={category} />
+     
 
       <div className="mx-8 md:mx-24 flex flex-col gap-5 md:gap-0 md:grid grid-cols-5 mt-10">
         <div className={`${"col-span-5"} flex flex-col justify-between gap-10`}>

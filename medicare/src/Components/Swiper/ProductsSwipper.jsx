@@ -30,7 +30,9 @@ import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import useTheme from "../../Store/useTheme.jsx";
 export default function ProductsSwipper() {
+    const theme = useTheme();
   const { likedItems, toggleLike } = useContext(WishContext);
 
   function handleLike(_id) {
@@ -121,7 +123,14 @@ export default function ProductsSwipper() {
     >
       {products.map((item) => (
         <SwiperSlide key={item.id} className="product-item pb-10">
-          <div className="bg-white rounded-2xl shadow-md overflow-hidden transition hover:shadow-xl cursor-pointer h-[410px] flex flex-col justify-between">
+          <div className=" rounded-2xl shadow-md overflow-hidden transition hover:shadow-xl cursor-pointer h-[410px] flex flex-col justify-between"
+           style={{
+                    backgroundColor:
+                      `${theme.primaryColor}7a`, 
+                
+                
+                        
+                  }}>
             {/* Image container */}
             <div className="relative group h-64 overflow-hidden">
               <img
@@ -208,13 +217,19 @@ export default function ProductsSwipper() {
 
             {/* Product info */}
             <div className="p-4 text-center flex flex-col justify-between flex-1">
-              <Typography variant="body1" className="text-lg font-semibold">
+              <Typography variant="body1" className="text-lg font-semibold" style={{      color:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,}}>
                 {item.title}
               </Typography>
               {/* <Typography variant="p" className="text-gray-500 text-sm flex-1">
                 {item.desc}
               </Typography> */}
-              <Typography variant="p" className="text-xl font-bold mt-2">
+              <Typography variant="p" className="text-xl font-bold mt-2" style={{      color:
+                        theme.mode !== "dark"
+                          ? theme.primaryText
+                          : theme.primaryColor,}}>
                 {item.price}$
               </Typography>
             </div>

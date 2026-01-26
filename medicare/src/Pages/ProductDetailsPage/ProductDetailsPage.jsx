@@ -18,6 +18,7 @@ import ShopError from "../../Components/shop/ShopError";
 import ShopLoading from "../../Components/shop/ShopLoading";
 import MyRating from "../../Components/MyRating/MyRating";
 import useTheme from "../../Store/useTheme";
+import { Button } from "@mui/material";
 
 function ProductDetailsPage() {
   const theme = useTheme();
@@ -195,8 +196,8 @@ function ProductDetailsPage() {
             style={{ color: mainColor }}
           >
             <span
-              className="text-white w-max text-xs px-2 py-1 rounded-md"
-              style={{ backgroundColor: mainColor }}
+              className="w-max text-xs px-2 py-1 rounded-md"
+              style={{ backgroundColor: mainColor, color: theme.mode !== "dark" ? "white" : "#0F172A" }}
             >
               -13%
             </span>
@@ -226,36 +227,38 @@ function ProductDetailsPage() {
             </div>
 
             <div className="flex gap-5 justify-center">
-              <button
+              <Button
                 onClick={addToCart}
-                className="px-6 lg:px-3 py-1.5 text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
-                style={{ backgroundColor: mainColor }}
+                
+                sx={{
+     backgroundColor:theme.mode!=='dark'?theme.primaryText:theme.primaryColor,
+      color: theme.mode !== "dark" ? "white" : "#0F172A",gap:1}}
               >
                 <FaCartPlus />
                 <span className="hidden lg:block">Add To Cart</span>
-              </button>
+              </Button>
 
-              <button
+              <Button
                 onClick={handleToggleWish}
-                className="px-6 lg:px-3 py-1.5 md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row text-white"
-                style={{
-                  backgroundColor: isLiked ? "#ef4444" : mainColor,
-                }}
+                sx={{
+     backgroundColor:theme.mode!=='dark'?theme.primaryText:theme.primaryColor,
+      color: theme.mode !== "dark" ? "white" : "#0F172A",gap:1}}
               >
                 <MdFavorite />
                 <span className="hidden lg:block">
                   {isLiked ? "In Wishlist" : "Add To Wishlist"}
                 </span>
-              </button>
+              </Button>
 
-              <button
-                className="px-6 lg:px-3 py-1.5 text-white md:text-lg rounded-md items-center gap-1 flex md:gap-4 flex-col md:flex-row"
-                style={{ backgroundColor: mainColor }}
+              <Button
+                sx={{
+     backgroundColor:theme.mode!=='dark'?theme.primaryText:theme.primaryColor,
+      color: theme.mode !== "dark" ? "white" : "#0F172A",gap:1}}
                 onClick={() => setOpenModal(true)}
               >
                 <FaShareAlt />
                 <span className="hidden lg:block">Share</span>
-              </button>
+              </Button>
             </div>
           </div>
         </div>

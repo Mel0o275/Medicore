@@ -4,6 +4,7 @@ import CategoryButtons from "../../Components/Feedback/CategoryButtons.jsx";
 import FeedbackInputFields from "../../Components/Feedback/FeedbackInputFields.jsx";
 import axios from "axios";
 import useTheme from "../../Store/useTheme.jsx";
+import ScrollButton from "../../Components/ScrollButton.jsx";
 export default function FeedbackPage() {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -46,6 +47,7 @@ export default function FeedbackPage() {
         color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
       }}
     >
+      <ScrollButton/>
       <Toaster position="top-right" />
       <h1 className="text-3xl font-extrabold text-center mb-2">
         We'd Love to Hear From You

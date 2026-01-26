@@ -9,7 +9,7 @@ export default function Cart() {
   const theme = useTheme();
 
   const API = import.meta.env.VITE_API_URL;
-  console.log(API);
+
 
   const token = localStorage.getItem("token");
   const [cartItems, setCartItems] = useState([]);
@@ -43,9 +43,9 @@ export default function Cart() {
           Authorization: token,
         },
       });
-      console.log(data);
+    
       setCartItems([]);
-      console.log(count);
+ 
       setCount(0);
 
       if (data.message === "success") {
@@ -66,7 +66,6 @@ export default function Cart() {
   const totalAfterDiscount = subtotal - subtotal * discount;
 
   const { count: count, setCount: setCount } = useContext(CartContext);
-  console.log(count);
 
   async function increseCart(itemId) {
     if (!token?.trim()) {
@@ -119,8 +118,7 @@ export default function Cart() {
           Authorization: token,
         },
       });
-      console.log(data);
-      console.log(cartItems);
+
       setCartItems((prev) => prev.filter((item) => item.product_id !== itemId));
       setCount(count - myCount);
     } catch (err) {

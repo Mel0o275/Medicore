@@ -83,12 +83,14 @@ export const arrOfColors = [
   },
 
   {
-    name: "Red",
-    primaryColor: "#9F1239",
-    secondaryColor: "#FB7185",
-    primaryText: "#7F1D1D",   // dark red
-    secondaryText: "#991B1B",
-    darkTheme: "#0F172A", 
+     name: "Red",
+  primaryColor: "#9F1239",     // deep red (buttons, highlights)
+  secondaryColor: "#FB7185",   // soft red accent
+
+  primaryText: "#1F2937",     // dark gray (perfect on light bg)
+  secondaryText: "#374151",   // muted gray for subtitles
+
+  darkTheme: "#020617"
   },
 
   {

@@ -135,11 +135,11 @@ export default function OTPPersonalSecurity() {
                   px: 4,
                   fontWeight: "bold",
                   borderRadius: 3,
-                  background: `linear-gradient(90deg,${theme.primaryColor},${theme.primaryText})`,
+                  background: theme.primaryColor,
                   color:
-                    theme.mode !== "dark"
-                      ? theme.primaryText
-                      : theme.primaryColor,
+                  
+                       theme.primaryText,
+                     
                   ":hover": { opacity: 0.9 },
                 }}
               >

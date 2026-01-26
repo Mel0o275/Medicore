@@ -14,6 +14,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import image1 from "../../../public/Jolie/place_map.PNG";
 import useTheme from "../../Store/useTheme";
+import ScrollButton from "../../Components/ScrollButton";
 
 const ContactUs = () => {
   const theme = useTheme();
@@ -76,33 +77,7 @@ const ContactUs = () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 5 }}>
-      <Box
-        sx={{
-          textAlign: "center",
-          mb: 5,
-        }}
-      >
-        <Typography
-          variant="caption"
-          sx={{
-            color:
-              theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
-          }}
-        >
-          Contact Us
-        </Typography>
-        <Typography
-          variant="h3"
-          component="h1"
-          fontWeight="bold"
-          sx={{
-            color:
-              theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
-          }}
-        >
-          Contact Us
-        </Typography>
-      </Box>
+ <ScrollButton/>
 
       <Grid container spacing={4} sx={{ mb: 5 }}>
         <Grid size={{ xs: 12, md: 6 }}>
@@ -170,12 +145,22 @@ const ContactUs = () => {
                 sx={{
                   backgroundColor:
                     theme.mode !== "dark"
-                      ? theme.primaryColor
-                      : theme.secondaryText,
-                  color:
-                    theme.mode !== "dark"
-                      ? theme.primaryText
-                      : theme.primaryColor,
+                      ? `${theme.primaryColor}2a`
+                      : `${theme.secondaryText}2a`,
+           // input text
+    "& .MuiInputBase-input": {
+      color: theme.mode !== "dark" ? theme.primaryText : "#fff",
+    },
+
+    // label
+    "& .MuiInputLabel-root": {
+      color: theme.mode !== "dark" ? theme.primaryText : "#fff",
+    },
+
+    // focused label
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+    },
                 }}
               />
               <TextField
@@ -186,12 +171,22 @@ const ContactUs = () => {
                 sx={{
                   backgroundColor:
                     theme.mode !== "dark"
-                      ? theme.primaryColor
-                      : theme.secondaryText,
-                  color:
-                    theme.mode !== "dark"
-                      ? theme.primaryText
-                      : theme.primaryColor,
+                      ? `${theme.primaryColor}2a`
+                      : `${theme.secondaryText}2a`,
+               // input text
+    "& .MuiInputBase-input": {
+      color: theme.mode !== "dark" ? theme.primaryText : "#fff",
+    },
+
+    // label
+    "& .MuiInputLabel-root": {
+      color: theme.mode !== "dark" ? theme.primaryText : "#fff",
+    },
+
+    // focused label
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+    },
                 }}
               />
               <TextField
@@ -201,25 +196,35 @@ const ContactUs = () => {
                 rows={5}
                 variant="outlined"
                 sx={{
-                  backgroundColor:
+                backgroundColor:
                     theme.mode !== "dark"
-                      ? theme.primaryColor
-                      : theme.secondaryText,
-                  color:
-                    theme.mode !== "dark"
-                      ? theme.primaryText
-                      : theme.primaryColor,
+                      ? `${theme.primaryColor}2a`
+                      : `${theme.secondaryText}2a`,
+                 // input text
+    "& .MuiInputBase-input": {
+      color: theme.mode !== "dark" ? theme.primaryText : "#fff",
+    },
+
+    // label
+    "& .MuiInputLabel-root": {
+      color: theme.mode !== "dark" ? theme.primaryText : "#fff",
+    },
+
+    // focused label
+    "& .MuiInputLabel-root.Mui-focused": {
+      color: theme.mode !== "dark" ? theme.primaryText : theme.primaryColor,
+    },
                 }}
               />
 
               <Button
                 variant="contained"
                 sx={{
-                  bgcolor: theme.secondaryColor,
-                  color:
-                    theme.mode !== "dark"
-                      ? theme.primaryText
-                      : theme.primaryColor,
+                  backgroundColor:
+      theme.mode !== "dark"
+        ? theme.primaryText
+        : theme.primaryColor,
+    color: theme.mode !== "dark" ? "white" : "#0F172A",
                   "&:hover": {
                     backgroundColor:
                       theme.mode !== "dark"

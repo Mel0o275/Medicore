@@ -21,7 +21,6 @@ function About() {
   return (
     <section className=" pb-14">
       <ScrollButton />
-      <PageTitle title="About Us" />
       <div className="mx-8 md:mx-24 mt-14">
         <MyTab page="about" />
         <MyImgGrid />
